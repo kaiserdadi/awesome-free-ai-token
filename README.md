@@ -139,6 +139,15 @@
 
 单看「哪家额度大」会被带偏。真正省钱的用法是分层——不同层的失效风险不一样，混着用才稳。
 
+```mermaid
+flowchart LR
+    Q["今天要干的活"] --> A{"是什么类型"}
+    A -->|"写代码"| B["编码层<br/>Copilot Free / Kilo Code / Qoder"]
+    A -->|"卡住的难题"| C["兜底层<br/>GLM-4.7-Flash / Gemini Flash"]
+    A -->|"跑批打标"| D["弹药层<br/>百炼 / 火山 / TokenHub"]
+    A -->|"日常轻量"| E["续杯层<br/>WorkBuddy / Qoder / 商汤"]
+```
+
 | 层 | 作用 | 失效风险 | 用哪些 |
 |---|---|---|---|
 | **兜底层** | 永远有得用，活动停了也不影响 | 低（写在价目表里） | GLM-4.7-Flash、硅基流动 9B 以下、Gemini Flash、Cerebras、ERNIE-Speed |
