@@ -1,0 +1,43 @@
+name: 报告过期
+description: 清单里的某条已经失效、额度变了、或入口改了
+title: "[过期] 平台名"
+labels: ["expired"]
+body:
+  - type: input
+    id: item
+    attributes:
+      label: 哪一条
+      description: 平台名，或 data/providers.yaml 里的 id
+      placeholder: 例：qiniu-double11
+    validations:
+      required: true
+
+  - type: dropdown
+    id: what
+    attributes:
+      label: 发生了什么
+      options:
+        - 活动已结束 / 页面 404
+        - 额度变少了
+        - 入口位置改了
+        - 新增了实名 / 绑卡要求
+        - 官方说已下线该模型
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: 你看到了什么
+      description: 贴页面提示、公告原文，或者说明你打开页面时的实际状态
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: 你确认的日期
+      placeholder: 2026-11-09
+    validations:
+      required: true

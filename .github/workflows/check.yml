@@ -1,0 +1,71 @@
+name: 额度体检
+
+on:
+  schedule:
+    # 每周一 09:00 (UTC+8) 跑一次：1:00 UTC
+    - cron: "0 1 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 数据格式校验
+        run: python3 scripts/_data.py
+
+      - name: 生成体检报告
+        run: python3 scripts/check.py --days 14 --report report.md
+
+      - name: 上传报告
+        uses: actions/upload-artifact@v4
+        with:
+          name: free-token-report
+          path: report.md
+
+      - name: 有过期条目就开 Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('report.md', 'utf8');
+            const m = report.match(/已过期 (\d+)/);
+            const expired = m ? parseInt(m[1], 10) : 0;
+            if (expired === 0) {
+              core.info('没有过期条目，跳过。');
+              return;
+            }
+            const title = '额度体检：有 ' + expired + ' 条已过期';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'expired',
+              per_page: 5,
+            });
+            const body = report + '\n\n---\n由 `.github/workflows/check.yml` 自动生成。核实后请更新 `data/providers.yaml` 并关闭本 Issue。';
+            if (issues.length > 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues[0].number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['expired'],
+              });
+            }

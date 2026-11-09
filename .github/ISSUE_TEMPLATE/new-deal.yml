@@ -1,0 +1,92 @@
+name: 提交新额度
+description: 发现一个还没收录的免费额度 / Token / 积分活动
+title: "[新增] 平台名 - 一句话说明"
+labels: ["new-deal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢补充！请尽量把下面填全——**没有出处的条目不会被合并**。
+        如果你已经会改 yaml，直接提 PR 更快，规则见仓库根目录的 CONTRIBUTING.md。
+
+  - type: input
+    id: platform
+    attributes:
+      label: 平台名称
+      placeholder: 例：国家超算互联网 SCNet
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 领取入口
+      description: 直达活动页 / 控制台的链接
+      placeholder: https://
+    validations:
+      required: true
+
+  - type: textarea
+    id: offer
+    attributes:
+      label: 怎么领
+      description: 写清入口路径，别只写「注册送」
+      placeholder: 下载客户端 → 登录 → 左下角活动卡片 → 领取
+    validations:
+      required: true
+
+  - type: input
+    id: value
+    attributes:
+      label: 给多少
+      description: 要可比较的量级（Token / 积分 / Credits / 每天多少次）
+      placeholder: 例：新客 1 亿词元 + 0.1 元购 5000 万
+    validations:
+      required: true
+
+  - type: input
+    id: expiry
+    attributes:
+      label: 截止日期
+      description: 官方写明的截止日；没有就填「未公布」
+      placeholder: 2026-11-30
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 类型
+      options:
+        - 限时活动（有明确截止日）
+        - 每日 / 每月可反复领
+        - 注册 / 实名一次性
+        - 模型在价目表上就是 0 元
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: gates
+    attributes:
+      label: 门槛
+      options:
+        - label: 需要实名认证
+        - label: 需要绑信用卡
+        - label: 额度只能在它自己的客户端里用（导不出标准 API）
+
+  - type: input
+    id: source
+    attributes:
+      label: 出处
+      description: 你从哪看到的？官方页面 / 新闻稿 / 公告截图链接
+      placeholder: https://
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 坑在哪
+      description: 需要特殊 Base URL？默认勾了自动续费？只能夜间用？——这栏最有价值
+    validations:
+      required: false

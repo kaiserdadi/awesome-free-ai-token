@@ -1,0 +1,937 @@
+# 免费 AI 额度数据集（单一数据源）
+#
+# 字段说明见 data/schema.md。改这里，然后跑 `python3 scripts/render.py` 重生成 README 表格。
+# 原则：宁可不收，也不收没出处的。每条必须填 source。
+#
+# type:  daily      = 每天/每月可反复领（续杯型）
+#        signup     = 注册/实名一次性发放
+#        promo      = 限时活动，有截止日
+#        free_model = 模型在价目表上就是 0 元（长期）
+# reset: daily | monthly | once | window | unknown
+# confidence: high（官方页面/官方新闻稿）| medium（媒体或二手整理，交叉过）| low（单一来源，待核）
+
+# ============================================================
+# 中国大陆
+# ============================================================
+
+- id: scnet-double11
+  name: 国家超算互联网 SCNet
+  region: cn
+  type: promo
+  offer: 下载客户端享旗舰模型词元不限量；新用户注册再领 1 亿词元科学计算智能体额度；0.1 元秒杀 5000 万词元包
+  models: 旗舰模型 + 科学计算智能体
+  value: 1 亿词元（新客）+ 0.1 元购 5000 万
+  expiry: 2026-11-30
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://www.scnet.cn
+  source: https://news.sciencenet.cn/htmlnews/2026/11/574358.shtm
+  verified: 2026-11-09
+  confidence: high
+  notes: 双 11 活动，中国科学报报道口径，11-09 起新用户可领。顺手做 AI for Science 的最优解。
+
+- id: zhipu-signup
+  name: 智谱 AI 开放平台（GLM）
+  region: cn
+  type: signup
+  offer: 新用户注册赠送 Token 包，永久有效
+  models: GLM 全系
+  value: 2000 万 Token
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://open.bigmodel.cn
+  source: https://www.kuazhi.com/post/716439208.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 国内最常被当兜底的一家，额度永久有效、并发 30。OpenAI 兼容，改 Base URL 即可。
+
+- id: zhipu-glm-flash
+  name: 智谱 GLM-Flash 系列
+  region: cn
+  type: free_model
+  offer: 价目表 0 元，输入输出全免
+  models: GLM-4.7-Flash（200K）、GLM-5.3-Flash
+  value: 无限量（受 QPS 限制）
+  expiry: long
+  reset: unknown
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://open.bigmodel.cn
+  source: https://aicost.tools/blog/best-llm-apis-with-a-free-tier
+  verified: 2026-11-09
+  confidence: high
+  notes: 长期免费档里中文代码能力最能打的一档。注意并发约 1，适合小流量常驻。
+
+- id: zhipu-zcode-night
+  name: 智谱 ZCode / AutoClaw 夜间包
+  region: cn
+  type: daily
+  offer: 客户端左下角弹窗领取当日额度，23 点生效、次日 9 点过期
+  models: GLM-5.3-Flash
+  value: 单日最高约 3 亿 Token（周末包口径 5 亿）
+  expiry: unknown
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 3
+  url: https://z.ai
+  source: https://post.smzdm.com/p/am9v6rrz
+  verified: 2026-11-09
+  confidence: medium
+  notes: 量极大但只能夜间用，且是活动制随时停。适合睡前挂长任务。额度仅客户端内可用，导不出标准 API。
+
+- id: siliconflow-signup
+  name: 硅基流动 SiliconFlow
+  region: cn
+  type: signup
+  offer: 新用户注册送额度券，另做新手任务可再加
+  models: DeepSeek / Qwen / GLM 等开源模型
+  value: 2000 万 Token（约 14 元）
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://cloud.siliconflow.cn
+  source: https://www.kuazhi.com/post/716439208.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 国内低延迟，OpenAI 兼容，支持微信/支付宝。新手任务能再拿一笔，别忘了做。
+
+- id: siliconflow-small-models
+  name: 硅基流动小模型免费档
+  region: cn
+  type: free_model
+  offer: 9B 参数以下模型长期免费不限量
+  models: Qwen2.5-7B、GLM-4-9B、DeepSeek-R1-Distill-8B 等
+  value: 无限量
+  expiry: long
+  reset: unknown
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://cloud.siliconflow.cn
+  source: https://www.kuazhi.com/post/716439208.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 小模型当分类器、意图识别、批量打标非常够用，零成本挂着跑。
+
+- id: aliyun-bailian-new
+  name: 阿里云百炼（DashScope）
+  region: cn
+  type: signup
+  offer: 控制台首页「新手资源」手动领取，每个模型独立 100 万
+  models: 通义千问全系 + DeepSeek + Kimi + GLM 等 70+
+  value: 约 7000 万 Token（累计）
+  expiry: 2026-12-31
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://bailian.console.aliyun.com
+  source: https://post.m.smzdm.com/p/a6z42x4n
+  verified: 2026-11-09
+  confidence: high
+  notes: 领到后 90 天有效，仅北京地域。双 11 宣传口径称「超 1 亿」，以控制台实发为准。
+
+- id: volcengine-ark-new
+  name: 火山引擎方舟（豆包）
+  region: cn
+  type: signup
+  offer: 新用户每个模型 50 万 Token 安心体验额度
+  models: Doubao-Seed 系列、DeepSeek、Kimi、GLM
+  value: 每模型 50 万 Token
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://console.volcengine.com/ark
+  source: https://post.m.smzdm.com/p/a6z42x4n
+  verified: 2026-11-09
+  confidence: high
+  notes: 安心体验模式超额自动暂停，不会产生意外账单，但要记得关掉自动转付费。
+
+- id: volcengine-daily
+  name: 火山方舟协作奖励计划
+  region: cn
+  type: daily
+  offer: 调用指定模型并上报推理数据，次日返还等量免费 Token 包
+  models: Doubao-Seed-Evolving 等指定模型
+  value: 每日单模型上限 500 万 Token
+  expiry: unknown
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 3
+  url: https://console.volcengine.com/ark
+  source: https://bbs.huaweicloud.cn/blogs/510346
+  verified: 2026-11-09
+  confidence: medium
+  notes: 用多少返多少，返还额度 30 天有效。适合持续跑 Agent 迭代的人，本质是拿数据换额度。
+
+- id: volcengine-double11
+  name: 火山引擎 11.11 AI 智选
+  region: cn
+  type: promo
+  offer: 实名后每个模型每天 200 万自动刷新，活动页标总可用 2000 万+/天
+  models: Kimi-K3.1-Pro、DeepSeek-V4.1、GLM-5.3、Doubao-Seed-2.1
+  value: 2000 万+/天（4 模型合计）
+  expiry: 2026-11-30
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://www.volcengine.com
+  source: https://post.m.smzdm.com/p/a6z42x4n
+  verified: 2026-11-09
+  confidence: medium
+  notes: 活动页没写死截止日，按大厂惯例 11 月中旬收尾，别等。每日刷新是国内最舒服的续杯形态。
+
+- id: tencent-tokenhub
+  name: 腾讯云 TokenHub / 混元
+  region: cn
+  type: signup
+  offer: 新用户每个模型各领 100 万 Token 免费体验包
+  models: DeepSeek、Kimi、GLM、混元、MiniMax
+  value: 每模型 100 万 Token
+  expiry: 2026-12-31
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://cloud.tencent.com/product/tokenhub
+  source: https://post.smzdm.com/p/am9v6rrz
+  verified: 2026-11-09
+  confidence: high
+  notes: 领取日起算 1 年有效。只领近期要用的模型，领了不用会白过期。
+
+- id: baidu-qianfan-free
+  name: 百度智能云千帆
+  region: cn
+  type: free_model
+  offer: ERNIE-Speed / Lite / Tiny 永久免费，QPS 50
+  models: ERNIE-Speed-8K 等
+  value: 无限量（QPS 50）
+  expiry: long
+  reset: unknown
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://console.bce.baidu.com/qianfan
+  source: https://blog.csdn.net/k0933/article/details/161116701
+  verified: 2026-11-09
+  confidence: high
+  notes: 能力不算第一梯队，但 QPS 50 是国内免费档里最宽的，适合高并发打杂。
+
+- id: iflytek-spark-free
+  name: 讯飞星火 Spark Lite
+  region: cn
+  type: free_model
+  offer: Spark Lite / X2.5-1.7B 长期免费，X2.5-4B 限时免费
+  models: Spark Lite、Spark-X2.5-1.7B
+  value: 无限量
+  expiry: long
+  reset: unknown
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://xinghuo.xfyun.cn
+  source: https://www.yeyulingfeng.com/a/1159580.html
+  verified: 2026-11-09
+  confidence: medium
+  notes: 中文与语音能力强。另有大额实名礼包（流传 10 亿 Token 口径），领取弹窗会默认勾选「用完自动计费」，务必取消。
+
+- id: sensenova-tokenplan
+  name: 商汤日日新 SenseNova
+  region: cn
+  type: daily
+  offer: Token Plan 公测期整体免费，滚动窗口刷新，无需绑卡
+  models: SenseNova-6.8-Flash-Lite、U1.5-Fast、DeepSeek-V4-Flash 等 7 款
+  value: 5 小时 12 万积分 + 每周 120 万积分
+  expiry: unknown
+  reset: window
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://platform.sensenova.cn/token-plan
+  source: https://www.allagent.wiki/blog/ai-freebies-20261029
+  verified: 2026-11-09
+  confidence: high
+  notes: 10-27 把 5h 上限从 6 万翻到 12 万，长期公测。多模态（OCR、识图）免费额度里最好用的一家。
+
+- id: stepfun-stepplan
+  name: 阶跃星辰 Step Plan
+  region: cn
+  type: promo
+  offer: 登录送 15 天 + 完成首次调用再送 15 天 + 每邀 1 人双方各 15 天（上限 3 人）
+  models: Step-5-Preview、Step-3.7-Flash、StepAudio-3
+  value: 最高 75 天（不拉人也有 30 天）
+  expiry: unknown
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://platform.stepfun.com
+  source: https://www.allagent.wiki/blog/ai-freebies-20261029
+  verified: 2026-11-09
+  confidence: high
+  notes: 送的是 99 元 Flash Mini 档权益，能调全部旗舰模型。坑：Base URL 必须填 https://api.stepfun.com/step_plan/v1，填标准地址不算「首次调用」且会扣自己余额。
+
+- id: qiniu-ai
+  name: 七牛云 AI 推理
+  region: cn
+  type: signup
+  offer: 创建第一个 API Key 即激活资源包
+  models: DeepSeek、GLM、Qwen、Kimi、豆包等 50+
+  value: 300 万 Token（2 年有效）
+  expiry: 2028-12-31
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://www.qiniu.com/ai/models
+  source: https://www.yeyulingfeng.com/a/1159580.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 一个 Key 通吃国内外模型，OpenAI / Anthropic 双协议。有效期 2 年，是少见的「慢过期」额度。
+
+- id: qiniu-double11
+  name: 七牛云 Conatus 每日额度
+  region: cn
+  type: daily
+  offer: 完成认证后每天自动发放，0 点重置
+  models: 平台在售模型
+  value: 每天 1 亿 Token
+  expiry: 2026-11-30
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://www.qiniu.com/ai/models
+  source: https://post.m.smzdm.com/p/ae6qwe6k
+  verified: 2026-11-09
+  confidence: medium
+  notes: 单日额度国内前列。历史充值满 100 元可升到 10 亿/天。
+
+- id: antling-ling32
+  name: 蚂蚁百灵 Ling-3.2-Flash
+  region: cn
+  type: promo
+  offer: 上线前两周 API 全免费，兼容 OpenAI / Anthropic 双协议
+  models: Ling-3.2-flash（560B MoE，1M 上下文，多模态）
+  value: 期限内不限量
+  expiry: 2026-11-19
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://developer.ant-ling.com
+  source: https://www.chinaz.com/ainews/32130.shtml
+  verified: 2026-11-09
+  confidence: high
+  notes: 11-05 发布，两周免费约到 11-19（按发布日推算，以控制台为准）。同期基准号称超过 Claude Opus 5，官方自测口径。Base URL https://api.ant-ling.com/v1
+
+- id: workbuddy-buddy
+  name: WorkBuddy Buddy 加油站
+  region: cn
+  type: daily
+  offer: 桌面客户端左下角头像 → Buddy 加油站 → 领取今日礼包；连签 7 天额外 1000
+  models: 平台内全模型（含限时 0 倍率模型）
+  value: 每天 100 积分（月约 3000）
+  expiry: unknown
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://www.workbuddy.cn
+  source: https://cloud.tencent.com/developer/article/2766229
+  verified: 2026-11-09
+  confidence: high
+  notes: 只在电脑客户端有，网页版和手机端都没有。0 点刷新，当天不领作废。体验版另每月赠 500 积分。签到积分约 180 天有效。
+
+- id: workbuddy-hy4
+  name: WorkBuddy 混元 Hy3 / Hy4 限免
+  region: cn
+  type: promo
+  offer: Hy3 纯语言任务 0 积分；Hy4 preview 夜间窗口 0 倍率
+  models: Hunyuan Hy3、Hy4-preview
+  value: 窗口内不扣积分
+  expiry: 2026-11-15
+  reset: window
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://www.workbuddy.cn
+  source: https://so.html5.qq.com/page/real/search_news?docid=70000021_7836af03e4a34152
+  verified: 2026-11-09
+  confidence: medium
+  notes: 截止日口径冲突（一说 10-31 已到期，一说延至 11-15），以客户端模型选择器是否显示 0 倍率为准。生图生视频照常计费。
+
+- id: qoder-daily
+  name: Qoder 每日 100 Credits
+  region: cn
+  type: daily
+  offer: 每天 10:00 开放新一轮，桌面端用量面板礼物图标手动领
+  models: Qoder 全系（含 Qwen3.8-Flash 0 倍率）
+  value: 每天 100 Credits（30 天有效）
+  expiry: unknown
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://qoder.com
+  source: https://qoder.com/activities?state=manual
+  verified: 2026-11-09
+  confidence: high
+  notes: 领取窗口到次日 10:00，错过不补，不累积。Qwen3.8-Flash 在 Qoder 内 0 倍率，用它不扣 Credits。
+
+- id: qoder-trial
+  name: Qoder 新用户试用 / 邀请
+  region: cn
+  type: signup
+  offer: 新用户免费试用 2 周 Pro；邀请好友注册双方得 Credits
+  models: 全部旗舰模型
+  value: 试用期约 300 Credits；邀请奖励 50–1000 Credits 不等
+  expiry: unknown
+  reset: once
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://qoder.com/activities
+  source: http://docs.qoder.com/zh/release-notes/lite-launch-announcement
+  verified: 2026-11-09
+  confidence: high
+  notes: 网传「国际版免费 2000 积分」与官方文档口径不符（官方写 2 周 Pro 试用共 300 Credits），以下载后面板显示为准。试用每账号限一次，多开会被封。
+
+- id: doubao-daily
+  name: 豆包（电脑端签到）
+  region: cn
+  type: daily
+  offer: 电脑版左侧活动位或「我 → 免费额度」签到
+  models: 豆包系列
+  value: 每天约 200 额度（周一翻倍）
+  expiry: unknown
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://www.doubao.com
+  source: https://mp.weixin.qq.com/s?__biz=Mzk0NDg2OTY3NA==&mid=2247484200
+  verified: 2026-11-09
+  confidence: medium
+  notes: 官方没公布具体数值，200 是实测口径。只在电脑端，漏签一天少 200。
+
+- id: kimi-voucher
+  name: Kimi 开放平台（月之暗面）
+  region: cn
+  type: signup
+  offer: 新用户实名后发放代金券，抵扣 API 调用
+  models: Kimi K3 系列、K2.5
+  value: 15 元代金券
+  expiry: unknown
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://platform.moonshot.cn
+  source: https://aitujian.cn/free-ai-api.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 券 3 个月有效。注意 Kimi K2 自 10-31 起不再对新注册用户开放，脚本里的模型名要换 K3 系列。
+
+- id: deepseek-new
+  name: DeepSeek 开放平台
+  region: cn
+  type: signup
+  offer: 新用户注册赠送 Token
+  models: DeepSeek V4 / V3.2
+  value: 100 万 ~ 500 万 Token（30 天有效）
+  expiry: unknown
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://platform.deepseek.com
+  source: https://www.toutiao.com/a7685597437486023203
+  verified: 2026-11-09
+  confidence: medium
+  notes: 送多少口径不一（100 万 / 500 万都有人写），但官方单价本来就是全网最低之一，百万 Token 几毛钱，不必太纠结。
+
+- id: modelscope-api
+  name: 魔搭社区 ModelScope 推理 API
+  region: cn
+  type: daily
+  offer: 绑定阿里云账号后每天免费调用额度
+  models: Qwen 系列及社区开源模型
+  value: 每天 2000 次调用
+  expiry: long
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://modelscope.cn
+  source: https://aitujian.cn/free-ai-api.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 按「次」不按 Token，跑短 prompt 很划算；长 prompt 会很快吃满。
+
+- id: mobile-moma
+  name: 移动云 MoMA
+  region: cn
+  type: signup
+  offer: 新用户控制台手动领取（限自营模型）
+  models: 移动自营模型
+  value: 2500 万 Tokens
+  expiry: 2026-12-31
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://ecloud.10086.cn
+  source: https://www.yeyulingfeng.com/a/1159580.html
+  verified: 2026-11-09
+  confidence: medium
+  notes: 自领取起 30 天有效，限流 3000 tokens/分钟。运营商系里额度最实在的一家，模型能力一般。
+
+- id: teleai-daily
+  name: 电信天翼 AI
+  region: cn
+  type: daily
+  offer: 下载客户端手机号注册，每天 0 点重置
+  models: 星辰系列
+  value: 工作日 1.8 亿/天，周末 2 亿/天
+  expiry: unknown
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://teleai.com.cn
+  source: https://mp.weixin.qq.com/s?__biz=MzU2ODk4MDMyNQ==&mid=2247485863
+  verified: 2026-11-09
+  confidence: medium
+  notes: 单日额度国内最高档。但额度限客户端内使用，导不出标准 API，适合当「白嫖型 ChatGPT」用。
+
+- id: streamlake-coding
+  name: 快手万擎 StreamLake
+  region: cn
+  type: free_model
+  offer: 编码模型输入输出全免费
+  models: KAT-Coder-Air-V1、KAT-Coder-Exp-72B-1010
+  value: 无限量
+  expiry: unknown
+  reset: unknown
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://streamlake.com
+  source: https://www.yeyulingfeng.com/a/1159580.html
+  verified: 2026-11-09
+  confidence: medium
+  notes: 只标「免费」没承诺期限。新版 Air-V2.5 已转收费，认准 V1。
+
+- id: shusheng-modian
+  name: 书生·端砚
+  region: cn
+  type: daily
+  offer: 微信扫码登录，每月发放墨点，1 墨点最高抵 5000 万 Token
+  models: 书生系列
+  value: 每月 10 墨点（约 5 亿 Token）
+  expiry: unknown
+  reset: monthly
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://discovery.intern-ai.org.cn
+  source: https://mp.weixin.qq.com/s?__biz=MzU2ODk4MDMyNQ==&mid=2247485863
+  verified: 2026-11-09
+  confidence: medium
+  notes: 按月清零。换算比例取决于模型，别直接按 5 亿规划。
+
+- id: xiaomi-mimo
+  name: 小米 MiMo 开放平台
+  region: cn
+  type: signup
+  offer: 新用户注册赠试用额度
+  models: MiMo 推理系列
+  value: 未公开固定数值
+  expiry: unknown
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://ai.xiaomi.com
+  source: https://aitujian.cn/free-ai-api.html
+  verified: 2026-11-09
+  confidence: low
+  notes: 另有 MiMo Orbit 创造者激励计划，需提交项目审核，通过后给大额 Token 包（不是注册就发）。
+
+- id: aliyun-aistudio
+  name: 百度 AI Studio（算力）
+  region: cn
+  type: daily
+  offer: 每天赠送算力点，可跑 V100/A100 环境
+  models: 免费 GPU 算力（非 Token）
+  value: 每天 8 算力点（约 16 V100 小时）
+  expiry: long
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://aistudio.baidu.com
+  source: https://aitujian.cn/free-ai-api.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 这是算力不是 Token，但对「自己部署开源模型 = 零调用成本」这条路是关键拼图。
+
+- id: tencent-cloudstudio
+  name: 腾讯 Cloud Studio（算力）
+  region: cn
+  type: daily
+  offer: 标准版每月赠开发时长 + GPU 时长，预装 Ollama 与 DeepSeek
+  models: 免费 GPU 算力（非 Token）
+  value: 每月 10000 分钟 + 10000 GPU 分钟（T4 16G）
+  expiry: long
+  reset: monthly
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://cloudstudio.net
+  source: https://aitujian.cn/free-ai-api.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 浏览器里就是 VS Code，空闲约 10 分钟自动关，同时最多 2 个空间。
+
+- id: moyu-double11
+  name: 魔芋 AI 双 11
+  region: cn
+  type: promo
+  offer: 新客 1000 万 + 老号回归 5000 万 + 企业认证 1 亿 + 邀请拉满 1.6 亿
+  models: 聚合多模型
+  value: 合计最高约 2.7 亿
+  expiry: 2026-11-11
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 4
+  url: https://moyu.cn
+  source: https://mp.weixin.qq.com/s?__biz=MzU2ODk4MDMyNQ==&mid=2247485863
+  verified: 2026-11-09
+  confidence: low
+  notes: 数字好看但拆分条件多（连签 11 天那档现在起步已经签不满）。单一来源，建议只当线索，自己上官网核。
+
+# ============================================================
+# 海外
+# ============================================================
+
+- id: google-aistudio
+  name: Google AI Studio / Gemini API
+  region: global
+  type: free_model
+  offer: Flash / Flash-Lite 系列免费层，每天配额重置，无需信用卡
+  models: Gemini 3 Flash、3.5 Flash-Lite、2.5 Flash
+  value: 每天 1000–1500 请求，1M 上下文
+  expiry: long
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://aistudio.google.com
+  source: https://aicost.tools/blog/best-llm-apis-with-a-free-tier
+  verified: 2026-11-09
+  confidence: high
+  notes: 综合最强免费档：模型最新、上下文 1M、不要卡。代价是免费层内容官方明说可能用于改进产品，别喂敏感数据。Pro 系列不在免费层。
+
+- id: groq
+  name: Groq Cloud
+  region: global
+  type: free_model
+  offer: 免费层按模型给每日请求上限，邮箱注册即可
+  models: gpt-oss-120b、gpt-oss-20b、Qwen3.6-27B、Llama 系列
+  value: 30 RPM，1000 请求/天，20 万 Token/天
+  expiry: long
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://console.groq.com
+  source: https://continuumcode.ai/guides/free-llm-api/
+  verified: 2026-11-09
+  confidence: high
+  notes: LPU 推理速度极快，适合 Agent 里的高频小调用（意图分类、工具选择）。限流按组织算，多开 Key 没用。
+
+- id: cerebras
+  name: Cerebras Inference
+  region: global
+  type: free_model
+  offer: 免费层每天固定 Token 额度，无需信用卡
+  models: gpt-oss-120b、Gemma-4-31B、Qwen 系列
+  value: 每天 100 万 Token（5 RPM，8K 上下文）
+  expiry: long
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://cloud.cerebras.ai
+  source: https://continuumcode.ai/guides/free-llm-api/
+  verified: 2026-11-09
+  confidence: medium
+  notes: 输出速度最快的一档（约 3000 tokens/s），但 8K 上下文是硬伤，长文档别指望。2026-07 起原先的永久大额度缩成 $5 试用，实际可用度要自己试。
+
+- id: openrouter
+  name: OpenRouter
+  region: global
+  type: free_model
+  offer: 带 :free 后缀的模型免费调用，一个 Key 通吃多家
+  models: DeepSeek、Llama、Qwen 等 20+ 免费模型
+  value: 20 RPM，50 请求/天（历史充值过 $10 升到 1000/天）
+  expiry: long
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://openrouter.ai
+  source: https://continuumcode.ai/guides/free-llm-api/
+  verified: 2026-11-09
+  confidence: high
+  notes: 最省事的多模型对比入口。免费模型名单经常变，且常被上游限流。国内访问偶有波动。
+
+- id: mistral
+  name: Mistral La Plateforme
+  region: global
+  type: free_model
+  offer: Experiment 免费档，限速可用全系模型
+  models: Mistral Large、Codestral 等
+  value: 约 10 亿 Token/月（官方已不公布具体数值，看控制台）
+  expiry: long
+  reset: monthly
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://console.mistral.ai
+  source: https://aicost.tools/blog/best-llm-apis-with-a-free-tier
+  verified: 2026-11-09
+  confidence: medium
+  notes: 欧洲厂商，1 请求/秒。免费能摸到旗舰模型，做横向评测很划算。
+
+- id: cloudflare-workers-ai
+  name: Cloudflare Workers AI
+  region: global
+  type: free_model
+  offer: 免费套餐每天赠 Neurons，按模型换算成调用量
+  models: Llama 4、Qwen、Mistral 等 50+
+  value: 每天 10000 Neurons
+  expiry: long
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://developers.cloudflare.com/workers-ai/
+  source: https://aicost.tools/blog/best-llm-apis-with-a-free-tier
+  verified: 2026-11-09
+  confidence: high
+  notes: 计量单位是 Neurons 不是 Token，不同模型换算差别大，按实测排预算。UTC 0 点重置。适合已经在用 CF 的项目。
+
+- id: github-models
+  name: GitHub Models
+  region: global
+  type: free_model
+  offer: 用 GitHub 账号直接调 GPT / Llama / Phi 等模型
+  models: GPT-5、GPT-4.1、Llama、Phi
+  value: 10 RPM 起，50–150 请求/天
+  expiry: unknown
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://github.com/marketplace/models
+  source: https://www.hqwc.cn/a/1500378.html
+  verified: 2026-11-09
+  confidence: low
+  notes: 状态存疑：有信源称 2026-07-30 已退役，也有当月清单仍在列。用之前先打开页面确认入口还在不在——这条本身就是「免费清单必须看日期」的活例子。
+
+- id: cohere
+  name: Cohere
+  region: global
+  type: free_model
+  offer: 试用 Key，无需信用卡
+  models: Command A+ 系列
+  value: 每月 1000 次调用
+  expiry: long
+  reset: monthly
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://dashboard.cohere.com
+  source: https://aicost.tools/blog/best-llm-apis-with-a-free-tier
+  verified: 2026-11-09
+  confidence: high
+  notes: 按次数不按 Token，RAG / 检索场景（Embed、Rerank）比对话更值。
+
+- id: nvidia-nim
+  name: NVIDIA NIM (build.nvidia.com)
+  region: global
+  type: signup
+  offer: 邮箱注册后在 API Keys 页生成密钥，兼容 OpenAI 格式
+  models: DeepSeek-V4.1-Flash、GLM-5.3-Flash 等百余模型
+  value: 1000 credits（约 40 RPM）
+  expiry: unknown
+  reset: once
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://build.nvidia.com
+  source: https://post.smzdm.com/p/am9v6rrz
+  verified: 2026-11-09
+  confidence: high
+  notes: 2026-11 新开的大额免费口子，+86 手机号可注册，Location 选 China。Key 默认 12 个月有效，记得改成永不过期，且只显示一次。GLM-5.3 已于 10-28 下线，能用的免费版是 GLM-5.3-Flash。
+
+- id: huggingface-inference
+  name: Hugging Face Inference Providers
+  region: global
+  type: free_model
+  offer: 免费账户每月极小额度的推理额度，可路由数千个社区模型
+  models: 社区模型（含 Llama、Qwen、DeepSeek 蒸馏版）
+  value: 约 $0.10/月
+  expiry: long
+  reset: monthly
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://huggingface.co/docs/inference-providers
+  source: https://www.yesmiracle.net/post/20261019-free-llm-api-tier-guide
+  verified: 2026-11-09
+  confidence: high
+  notes: 典型「有免费层但不能用」：两次真实请求就见底。这里列出来是为了提醒你别把它当方案。
+
+- id: opencode-zen
+  name: OpenCode Zen
+  region: global
+  type: free_model
+  offer: 客户端自带若干免费模型，装完即可用，不需自备 Key
+  models: DeepSeek V4 Flash、MiMo-V2.6-Flash-Free、LongCat-2.0、Nemotron 3 Ultra
+  value: 免费模型不限量（有限速）
+  expiry: unknown
+  reset: unknown
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://opencode.ai
+  source: https://igetoken.com/deals
+  verified: 2026-11-09
+  confidence: medium
+  notes: 免费档数据条款写明「可能用于改进模型」，涉密代码别用。模型会随平台调整，别写死模型名。
+
+- id: kilocode-free
+  name: Kilo Code
+  region: global
+  type: free_model
+  offer: 开源 AI 编程 Agent，内含十余个免费模型，不要 Key、不要卡
+  models: NVIDIA Nemotron 3 Ultra、Nex-N2.5-Pro、MiniMax M2.7、腾讯混元 Hy3
+  value: 约 200 请求/小时
+  expiry: unknown
+  reset: unknown
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://kilocode.ai
+  source: https://www.aitntnews.com/newDetail.html?newId=29843
+  verified: 2026-11-09
+  confidence: medium
+  notes: VS Code / JetBrains / CLI 都有。免费模型列表是活的，新模型上线会自动出现。
+
+- id: copilot-free
+  name: GitHub Copilot Free
+  region: global
+  type: free_model
+  offer: 个人免费档，含代码补全与 Chat
+  models: GPT / Claude Sonnet 可选
+  value: 每月 2000 次补全 + 50 次 Chat
+  expiry: long
+  reset: monthly
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://github.com/features/copilot
+  source: https://www.aitntnews.com/newDetail.html?newId=29843
+  verified: 2026-11-09
+  confidence: high
+  notes: 轻度用户完全够用。学生认证后可直接免费用 Pro（GitHub Student Pack）。
+
+- id: sambanova
+  name: SambaNova Cloud
+  region: global
+  type: free_model
+  offer: 免费层，须先绑卡
+  models: DeepSeek-V3、Llama 系列
+  value: 每天 20 万 Token（20 RPM）
+  expiry: long
+  reset: daily
+  realname: no
+  card: yes
+  difficulty: 3
+  url: https://cloud.sambanova.ai
+  source: https://igetoken.com/
+  verified: 2026-11-09
+  confidence: medium
+  notes: RDU 芯片速度很快，但要绑卡，免费档近年收紧过。不想留卡信息就跳过。
+
+- id: openai-trial
+  name: OpenAI API 试用额度
+  region: global
+  type: signup
+  offer: 新账号赠送 API 额度
+  models: GPT 系列
+  value: $5（3 个月有效）
+  expiry: unknown
+  reset: once
+  realname: no
+  card: yes
+  difficulty: 3
+  url: https://platform.openai.com
+  source: https://youmind.com/zh-CN/landing/x-viral-articles/free-ai-tiers-guide
+  verified: 2026-11-09
+  confidence: medium
+  notes: 通常需绑卡，且部分区号不发。$5 跑不了几次旗舰模型，只够验证联通性。
+
+- id: anthropic-trial
+  name: Anthropic API 试用额度
+  region: global
+  type: signup
+  offer: 新账号赠送 API 额度
+  models: Claude 系列
+  value: 约 $5（14 天有效）
+  expiry: unknown
+  reset: once
+  realname: no
+  card: yes
+  difficulty: 4
+  url: https://console.anthropic.com
+  source: https://youmind.com/zh-CN/landing/x-viral-articles/free-ai-tiers-guide
+  verified: 2026-11-09
+  confidence: low
+  notes: 额度小、时效短、门槛高。同类需求更建议走 OpenRouter 的 :free 或 Cloudflare 路由。
+
+- id: xai-grok
+  name: xAI Grok API
+  region: global
+  type: daily
+  offer: 每月基础免费额度，同意数据用于训练可提到更高档
+  models: Grok 系列
+  value: $25/月（共享数据 $150/月）
+  expiry: unknown
+  reset: monthly
+  realname: no
+  card: yes
+  difficulty: 3
+  url: https://x.ai/api
+  source: https://youmind.com/zh-CN/landing/x-viral-articles/free-ai-tiers-guide
+  verified: 2026-11-09
+  confidence: low
+  notes: 与 OpenAI 类似属「绑卡 + 数据换额度」模式。单一来源，需自行核。
