@@ -9,6 +9,7 @@
 
 from __future__ import annotations
 
+import base64
 import datetime as dt
 import json
 import os
@@ -18,6 +19,9 @@ import _data
 
 OUT_DIR = os.path.join(_data.ROOT, "site")
 OUT_FILE = os.path.join(OUT_DIR, "index.html")
+QR_FILE = os.path.join(_data.ROOT, "assets", "qq-group.png")
+QQ_GROUP = "2154085627"
+QQ_NAME = "新时代领鸡蛋 token"
 
 TEMPLATE = r"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -128,6 +132,9 @@ main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
 .lede h2{margin:0 0 4px; font-size:15px; font-weight:700}
 .lede p{margin:0; font-size:13px; color:var(--ink2); line-height:1.75}
 .lede .k{color:var(--copper); font-weight:700; white-space:nowrap}
+.lede-q{margin-top:7px !important; font-size:12.5px !important; color:var(--ink3) !important}
+.lede-q a{color:var(--copper); border-bottom:1px solid var(--copper-line); font-weight:600}
+.lede-q a:hover{border-bottom-color:var(--copper)}
 .statrow{display:flex; gap:20px; margin-left:auto}
 .stat{text-align:center}
 .stat b{display:block; font-size:20px; line-height:1.2; font-variant-numeric:tabular-nums}
@@ -235,6 +242,31 @@ details .body .lbl{color:var(--ink3); font-size:11px}
 footer{
   max-width:1280px; margin:0 auto; padding:24px; border-top:1px solid var(--line);
   font-size:12px; color:var(--ink3); display:flex; gap:16px; flex-wrap:wrap;
+  scroll-margin-top:150px;
+}
+.qgroup{
+  display:flex; gap:16px; align-items:center; flex-wrap:wrap; min-width:0;
+  width:100%; padding-bottom:18px; margin-bottom:2px; border-bottom:1px dashed var(--line);
+}
+.qrimg{
+  width:120px; height:auto; flex:0 0 auto; display:block; border-radius:10px;
+  border:1px solid var(--line); background:#fff; padding:4px;
+}
+.qmeta{min-width:0; flex:1 1 220px}
+.qtitle{font-size:13px; font-weight:700; color:var(--ink)}
+.qnum{margin:6px 0 7px; font-size:12.5px; color:var(--ink2); display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.qnum b{font-size:14.5px; letter-spacing:.03em; color:var(--ink); font-variant-numeric:tabular-nums}
+.qcopy{
+  border:1px solid var(--line); background:var(--panel); color:var(--ink2);
+  padding:2px 9px; border-radius:999px; font-size:11.5px; line-height:1.6;
+}
+.qcopy:hover{border-color:var(--copper-line); color:var(--copper)}
+.qcopy.done{border-color:#7a9e6f; color:#4d7a41; background:#f4f9f1}
+.qtip{margin:0; font-size:12px; line-height:1.7; color:var(--ink3)}
+@media (max-width:640px){
+  .qrimg{width:96px}
+  /* 手机端 footer 太高会被吸顶栏遮住顶部，隐藏面向维护者的两行说明 */
+  footer > span{display:none}
 }
 
 @media (max-width:640px){
@@ -314,7 +346,15 @@ footer{
   <div id="out"></div>
 </main>
 
-<footer>
+<footer id="qgroup">
+  <div class="qgroup">
+    <img class="qrimg" src="data:image/png;base64,__QR__" alt="QQ 群二维码：__QQNAME__，群号 __QQNUM__" loading="lazy" decoding="async">
+    <div class="qmeta">
+      <div class="qtitle">QQ 群 · __QQNAME__</div>
+      <div class="qnum">群号 <b>__QQNUM__</b><button class="qcopy" id="copyQ" type="button">复制群号</button></div>
+      <p class="qtip">领到好用的、发现哪条失效了、想催更某个平台，都可以丢到群里一起聊。二维码会过期——过期了直接在 QQ 里搜上面的群号。</p>
+    </div>
+  </div>
   <span>数据源 <b>data/providers.yaml</b>，改数据后跑 <b>python3 scripts/build_site.py</b> 重新生成本页</span>
   <span>每条标了出处与可信度，低可信条目请自行核实后再用</span>
 </footer>
@@ -491,6 +531,7 @@ function render(){
     <div>
       <h2>${regionLabel}</h2>
       <p>免费 API、免费 token、签到积分、Credits 都在这里。同一个 AI 在不同入口的免费政策完全不同，所以按 <b class="k">产品 × 形态</b> 拆开写，一条只讲一个入口。</p>
+      <p class="lede-q">发现哪条失效了、或者挖到新羊毛，欢迎来 <a href="#qgroup">QQ 群 __QQNUM__</a> 说一声，一起交流。</p>
     </div>
     <div class="statrow">
       <div class="stat"><b>${longFree}</b><span>长期 0 元</span></div>
@@ -548,6 +589,29 @@ document.addEventListener("keydown",e=>{
 $("#buildInfo").textContent = "数据截至 " + META.built + " · 共 " + DATA.length + " 条 · 国内 " + DATA.filter(d=>d.region==="cn").length + " / 海外 " + DATA.filter(d=>d.region==="global").length;
 counts();
 render();
+
+/* 复制群号：file:// 下 clipboard API 不可用，回退到 execCommand */
+(function(){
+  const btn = $("#copyQ");
+  if(!btn) return;
+  const NUM = "__QQNUM__";
+  const mark = txt => { btn.textContent = txt; btn.classList.add("done"); setTimeout(()=>{ btn.textContent="复制群号"; btn.classList.remove("done"); }, 1700); };
+  const fallback = () => {
+    const ta = document.createElement("textarea");
+    ta.value = NUM; ta.setAttribute("readonly","");
+    ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch(err) { ok = false; }
+    ta.remove();
+    mark(ok ? "已复制" : "请手动记下");
+  };
+  btn.addEventListener("click", ()=>{
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(NUM).then(()=>mark("已复制")).catch(fallback);
+    } else { fallback(); }
+  });
+})();
 </script>
 </body>
 </html>
@@ -582,8 +646,19 @@ def main() -> int:
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     # 防 </script> 提前闭合
     payload = payload.replace("</", "<\\/")
-    html = TEMPLATE.replace("__DATA__", payload).replace(
-        "__META__", json.dumps(meta, ensure_ascii=False)
+
+    if not os.path.exists(QR_FILE):
+        print(f"缺少群二维码图片：{QR_FILE}", file=sys.stderr)
+        return 1
+    with open(QR_FILE, "rb") as fh:
+        qr_b64 = base64.b64encode(fh.read()).decode("ascii")
+
+    html = (
+        TEMPLATE.replace("__DATA__", payload)
+        .replace("__META__", json.dumps(meta, ensure_ascii=False))
+        .replace("__QR__", qr_b64)
+        .replace("__QQNAME__", QQ_NAME)
+        .replace("__QQNUM__", QQ_GROUP)
     )
 
     os.makedirs(OUT_DIR, exist_ok=True)
