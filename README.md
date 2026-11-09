@@ -25,7 +25,7 @@
 
 ## 🔍 网页版
 
-**👉 在线版：[kaiserdadi.github.io/free-ai-token](https://kaiserdadi.github.io/free-ai-token/)**
+**👉 在线版：[kaiserdadi.github.io/awesome-free-ai-token](https://kaiserdadi.github.io/awesome-free-ai-token/)**
 
 不想看表格就打开这个，手机上也能用。
 

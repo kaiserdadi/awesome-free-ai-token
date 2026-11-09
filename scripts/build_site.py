@@ -677,7 +677,8 @@ def main() -> int:
     cn = sum(1 for d in data if d["region"] == "cn")
     prods = {d["product"] for d in data}
     print(f"已生成 site/index.html：{len(data)} 个入口 / {len(prods)} 家平台（国内 {cn} / 海外 {len(data) - cn}），{size:.0f} KB")
-    print(f"外链数量：{html.count('src=\"http')} 个（应为 0）")
+    externals = html.count('src="http')
+    print(f"外链数量：{externals} 个（应为 0）")
     return 0
 
 
