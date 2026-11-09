@@ -69,7 +69,8 @@ def main() -> int:
     lines: list[str] = []
     lines.append(f"# 免费额度体检报告 · {today.isoformat()}")
     lines.append("")
-    lines.append(f"共 {len(items)} 条 ｜ 已过期 {len(buckets['expired'])} ｜ "
+    lines.append(f"共 {len({i['product'] for i in items})} 家平台 / {len(items)} 个入口 ｜ "
+                 f"已过期 {len(buckets['expired'])} ｜ "
                  f"{args.days} 天内到期 {len(buckets['expiring'])} ｜ "
                  f"超 {STALE_DAYS} 天未复核 {len(buckets['stale'])} ｜ "
                  f"长期 {len(buckets['long'])} ｜ 未公布期限 {len(buckets['unknown'])}")

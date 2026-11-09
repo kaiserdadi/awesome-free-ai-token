@@ -29,11 +29,11 @@ TEMPLATE = r"""<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>免费 AI API 额度雷达 · 免费 token / 积分 / Credits 清单</title>
-<meta name="description" content="全网免费 AI API 额度清单：免费 token、免费积分、免费 Credits，国内外 69 条。每条带截止日、出处、可信度，过期自动报警。免费 API 白嫖必备。">
+<meta name="description" content="全网免费 AI API 额度清单：免费 token、免费积分、免费 Credits，国内外 __NPROD__ 家平台、__NTOTAL__ 个入口。每条带截止日、出处、可信度，过期自动报警。免费 API 白嫖必备。">
 <meta name="keywords" content="免费api,免费 API,免费token,免费额度,白嫖,免费AI,大模型,API,free api,free tier,LLM">
 <meta property="og:type" content="website">
 <meta property="og:title" content="免费 AI API 额度雷达">
-<meta property="og:description" content="69 条国内外免费 API 额度：免费 token、积分、Credits。带截止日、出处、可信度，过期自动报警。">
+<meta property="og:description" content="__NPROD__ 家平台、__NTOTAL__ 个入口的国内外免费 API 额度：免费 token、积分、Credits。带截止日、出处、可信度，过期自动报警。">
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{
@@ -102,6 +102,7 @@ select{
   font-size:13.5px; font-weight:600; color:var(--ink2); transition:.15s; white-space:nowrap;
 }
 .tab .n{font-size:11.5px; opacity:.55; margin-left:4px; font-weight:500}
+.tab .u{font-size:11px; opacity:.4; margin-left:1px; font-weight:400}
 .tab[aria-selected="true"]{background:var(--panel); color:var(--ink); box-shadow:0 1px 3px rgba(27,24,21,.1)}
 .tab[aria-selected="true"] .n{opacity:.75}
 
@@ -144,7 +145,7 @@ main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
   display:flex; align-items:baseline; gap:10px; margin:30px 0 14px; padding-bottom:9px;
   border-bottom:1px solid var(--line);
 }
-.sectionhead h2{margin:0; font-size:14px; font-weight:700; letter-spacing:.01em}
+.sectionhead h2{margin:0; font-size:14px; font-weight:700; letter-spacing:.01em; white-space:nowrap; flex:0 0 auto}
 .sectionhead .hint{font-size:12.5px; color:var(--ink3); min-width:0}
 .sectionhead .cnt{margin-left:auto; font-size:12px; color:var(--ink3); font-variant-numeric:tabular-nums; white-space:nowrap; flex:0 0 auto}
 .sectionhead.soon h2{color:var(--red)}
@@ -267,6 +268,8 @@ footer{
   .qrimg{width:96px}
   /* 手机端 footer 太高会被吸顶栏遮住顶部，隐藏面向维护者的两行说明 */
   footer > span{display:none}
+  /* 窄屏放不下「标题 + 说明 + 计数」三截，说明文字是给桌面看的，手机上去掉 */
+  .sectionhead .hint{display:none}
 }
 
 @media (max-width:640px){
@@ -296,9 +299,9 @@ footer{
       <div class="brand-sub" id="buildInfo">数据截至 —</div>
       <div class="spacer"></div>
       <div class="tabs" role="tablist" id="tabs">
-        <button class="tab" role="tab" data-region="cn">国内<span class="n"></span></button>
-        <button class="tab" role="tab" data-region="global">海外<span class="n"></span></button>
-        <button class="tab" role="tab" data-region="all">全部<span class="n"></span></button>
+        <button class="tab" role="tab" data-region="cn">国内<span class="n"></span><span class="u">家</span></button>
+        <button class="tab" role="tab" data-region="global">海外<span class="n"></span><span class="u">家</span></button>
+        <button class="tab" role="tab" data-region="all">全部<span class="n"></span><span class="u">家</span></button>
       </div>
     </div>
     <div class="controls">
@@ -372,9 +375,11 @@ const state = {region:"cn", q:"", type:"", form:"", hideExpired:true, noRealname
 const $ = s => document.querySelector(s);
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
+// 平台数按 product 去重：WorkBuddy 有 12 个入口，只算 1 家
+const pcount = arr => new Set(arr.map(d => d.product)).size;
+
 function counts(){
-  const c = {cn:0, global:0, all:DATA.length};
-  DATA.forEach(d => c[d.region]++);
+  const c = {cn:pcount(DATA.filter(d=>d.region==="cn")), global:pcount(DATA.filter(d=>d.region==="global")), all:pcount(DATA)};
   document.querySelectorAll("#tabs .tab").forEach(t => {
     t.querySelector(".n").textContent = c[t.dataset.region];
   });
@@ -499,7 +504,7 @@ function render(){
   if (arr.length) {
     html += '<div class="sectionhead"><h2>按产品看</h2>'
          +  '<span class="hint">同一产品的不同入口分开写，展开可看模型与备注</span>'
-         +  '<span class="cnt">'+arr.length+' 个产品</span></div>';
+         +  '<span class="cnt">'+arr.length+' 家平台 · '+list.length+' 个入口</span></div>';
   }
 
   if (arr.length) html += '<div class="clusters">';
@@ -524,9 +529,9 @@ function render(){
   const longFree = list.filter(d=>d.type==="free_model").length;
   const live = list.filter(d=>d.type==="daily").length;
   const prom = list.filter(d=>d.type==="promo" && d.status!=="expired").length;
-  const regionLabel = state.region === "cn" ? `国内 ${n} 条`
-                    : state.region === "global" ? `海外 ${n} 条`
-                    : `全部 ${n} 条`;
+  const regionLabel = state.region === "cn" ? `国内 ${pcount(list)} 家平台 · ${n} 个入口`
+                    : state.region === "global" ? `海外 ${pcount(list)} 家平台 · ${n} 个入口`
+                    : `全部 ${pcount(list)} 家平台 · ${n} 个入口`;
   $("#lede").innerHTML = `
     <div>
       <h2>${regionLabel}</h2>
@@ -586,7 +591,8 @@ document.addEventListener("keydown",e=>{
   if(e.key==="Escape" && document.activeElement===$("#q")){ $("#q").value=""; state.q=""; render(); $("#q").blur(); }
 });
 
-$("#buildInfo").textContent = "数据截至 " + META.built + " · 共 " + DATA.length + " 条 · 国内 " + DATA.filter(d=>d.region==="cn").length + " / 海外 " + DATA.filter(d=>d.region==="global").length;
+$("#buildInfo").textContent = "数据截至 " + META.built
+  + " · " + pcount(DATA) + " 家平台 / " + DATA.length + " 个入口";
 counts();
 render();
 
@@ -659,6 +665,8 @@ def main() -> int:
         .replace("__QR__", qr_b64)
         .replace("__QQNAME__", QQ_NAME)
         .replace("__QQNUM__", QQ_GROUP)
+        .replace("__NPROD__", str(len({d["product"] for d in data})))
+        .replace("__NTOTAL__", str(len(data)))
     )
 
     os.makedirs(OUT_DIR, exist_ok=True)
@@ -667,7 +675,8 @@ def main() -> int:
 
     size = os.path.getsize(OUT_FILE) / 1024
     cn = sum(1 for d in data if d["region"] == "cn")
-    print(f"已生成 site/index.html：{len(data)} 条（国内 {cn} / 海外 {len(data) - cn}），{size:.0f} KB")
+    prods = {d["product"] for d in data}
+    print(f"已生成 site/index.html：{len(data)} 个入口 / {len(prods)} 家平台（国内 {cn} / 海外 {len(data) - cn}），{size:.0f} KB")
     print(f"外链数量：{html.count('src=\"http')} 个（应为 0）")
     return 0
 

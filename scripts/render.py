@@ -106,6 +106,10 @@ def build(items: list[dict]) -> str:
     today = dt.date.today()
     cn = sum(1 for i in items if i["region"] == "cn")
     gl = len(items) - cn
+    # 平台数按 product 去重：WorkBuddy 有 12 条入口，只算 1 家
+    prod_cn = len({i["product"] for i in items if i["region"] == "cn"})
+    prod_gl = len({i["product"] for i in items if i["region"] == "global"})
+    prod_all = len({i["product"] for i in items})
     by_type = {k: [i for i in items if i["type"] == k] for k in GROUP_TITLES}
     soon = [
         i
@@ -119,12 +123,15 @@ def build(items: list[dict]) -> str:
     out.append(BEGIN)
     out.append("")
     out.append(
-        f"> 数据截至 **{last_verified}** ｜ 共 **{len(items)}** 条（国内 {cn} · 海外 {gl}）"
+        f"> 数据截至 **{last_verified}** ｜ 共 **{prod_all}** 家平台、**{len(items)}** 个入口"
+        f"（国内 {prod_cn} 家 / {cn} 个入口 · 海外 {prod_gl} 家 / {gl} 个入口）"
         f" ｜ 每日/每月续杯 {len(by_type['daily'])} 条"
         f" ｜ 限时活动 {len(by_type['promo'])} 条（**{len(soon)} 条 14 天内到期或已过期**）"
     )
     out.append("")
-    out.append("| 分类 | 条数 | 一句话 |")
+    out.append("> 平台数按「家」算：同一个产品的 12 个签到入口只记 1 家；入口数才是表格行数。")
+    out.append("")
+    out.append("| 分类 | 入口数 | 一句话 |")
     out.append("|---|---|---|")
     out.append(f"| 限时活动 | {len(by_type['promo'])} | 抢时间，先领后看 |")
     out.append(f"| 每日续杯 | {len(by_type['daily'])} | 攒出来的额度最耐用 |")
@@ -187,10 +194,10 @@ def build_products(items: list[dict], only_multi: bool) -> str:
     out: list[str] = []
     if only_multi:
         out.append(f"> 只列**有两个以上入口**的产品：{len(multi)} 家、"
-                   f"{sum(len(v) for v in multi.values())} 条形态记录。"
+                   f"{sum(len(v) for v in multi.values())} 个入口。"
                    f"完整 {len(groups)} 家见 [docs/products.md](docs/products.md)。")
     else:
-        out.append(f"> 共 {len(groups)} 个产品、{len(items)} 种形态。同一个 AI 换个入口，"
+        out.append(f"> 共 {len(groups)} 家平台、{len(items)} 个入口。同一个 AI 换个入口，"
                    f"免费政策和计费方式可能完全不同——**日常用免费的网页版，要把能力接进程序才上 API**。")
     out.append("")
     out.append("| 产品 | 形态 | 白拿到什么 | 计费方式 | 备注 |")
