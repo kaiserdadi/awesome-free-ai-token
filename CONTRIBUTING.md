@@ -22,6 +22,7 @@ python3 scripts/check.py       # 看体检结果
 - `value` 写成「大量」「海量」「超多」——额度必须可比较；
 - `expiry` 空着不填。真不知道就写 `unknown`，但要在 `notes` 里说明为什么不知道；
 - 前端页面和 API 混着写。**「客户端内 3 亿额度」和「标准 API 300 万」是两回事**，必须讲清是哪一种；
+- `product` 自己另起一个写法（比如已有 `DeepSeek`，你写成 `deepseek` 或 `DeepSeek 官方`）。这会让人和现有条目聚不到一组，等于白写；
 - 需要企业资质审核才发的定向计划（这类对普通读者没意义，可以单开一个 Issue 讨论，但不进主表）。
 
 ### 加分项
@@ -45,8 +46,9 @@ python3 scripts/check.py       # 看体检结果
 
 ## 数据格式备忘
 
-完整字段说明见 [`data/schema.md`](data/schema.md)。三个最容易填错的：
+完整字段说明见 [`data/schema.md`](data/schema.md)。最容易填错的四个：
 
+- `product` + `form`：**一条记录只写「一个产品的一个入口」**。DeepSeek 的网页版、桌面端、API 是三件事，要分开写三条，`product` 都填 `DeepSeek`，`form` 分别填 `web` / `desktop` / `api`。写错了聚合就会散开，读者看不到「同一家换个入口差多少」
 - `type`：`promo`（限时）/ `daily`（续杯）/ `signup`（一次性）/ `free_model`（价目表 0 元）
 - `reset`：`daily` / `monthly` / `once` / `window`（按小时滚动）/ `unknown`
 - `confidence`：`high`（官方可见）/ `medium`（两源印证）/ `low`（单一来源，需自核）
