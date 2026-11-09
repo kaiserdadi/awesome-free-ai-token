@@ -3,7 +3,7 @@
 > 本文件由 `scripts/render.py` 自动生成，**不要手改**。
 > 要改请动 [`data/providers.yaml`](../data/providers.yaml)，然后跑 `python3 scripts/render.py`。
 
-> 共 43 个产品、58 种形态。同一个 AI 换个入口，免费政策和计费方式可能完全不同——**日常用免费的网页版，要把能力接进程序才上 API**。
+> 共 43 个产品、59 种形态。同一个 AI 换个入口，免费政策和计费方式可能完全不同——**日常用免费的网页版，要把能力接进程序才上 API**。
 
 | 产品 | 形态 | 白拿到什么 | 计费方式 | 备注 |
 |---|---|---|---|---|
@@ -14,6 +14,9 @@
 | **WorkBuddy** | 网页版 | 可用，但没有签到与成长计划 | 积分制（无签到） | 网页版定位是「随手用一下」：不碰本地文件、不能跑自动化、没有签到入口。为了领积分去装客户端… |
 | ↳ | 桌面客户端 | 每天 100 积分（月约 3000） | 积分制 | 只在电脑客户端有，网页版和手机端都没有。0 点刷新，当天不领作废。体验版另每月赠 500 … |
 | ↳ | 桌面客户端 | 窗口内不扣积分 | 积分制 | 截止日口径冲突（一说 10-31 已到期，一说延至 11-15），以客户端模型选择器是否显… |
+| **国家超算互联网** | 桌面客户端 | 活动期内不限量 + 1 亿词元智能体额度 | 活动期免费（仅限客户端内） | 关键区别——「不限量」锁在自家客户端里，不是一个能随便接的通用 API。支持 Window… |
+| ↳ | API | 1000 万 Token | 一次性赠金，用完后按 Token 从余额扣 | 注册即到账，30 天有效，活动整体到 12-31。这个包本身锁定 GLM-5.3-Flas… |
+| ↳ | API | 5000 万词元（0.1 元） | 一次性买断词元包 | 每天 10:00 开售、每账号限一次、到账后 30 天有效，过 30 天作废。有二手源说它… |
 | **智谱 GLM** | 桌面客户端 | 单日最高约 3 亿 Token（周末包口径 5 亿） | 活动免费 | 量极大但只能夜间用，且是活动制随时停。适合睡前挂长任务。额度仅客户端内可用，导不出标准 A… |
 | ↳ | API | 2000 万 Token | 按 Token | 国内最常被当兜底的一家，额度永久有效、并发 30。OpenAI 兼容，改 Base URL… |
 | ↳ | API | 无限量（受 QPS 限制） | 0 元 | 长期免费档里中文代码能力最能打的一档。注意并发约 1，适合小流量常驻。 |
@@ -26,8 +29,6 @@
 | ↳ | 桌面客户端 | 试用期约 300 Credits；邀请奖励 50–1000 Credits 不等 | Credits 制 | 网传「国际版免费 2000 积分」与官方文档口径不符（官方写 2 周 Pro 试用共 30… |
 | **七牛云** | API | 300 万 Token（2 年有效） | 按 Token | 一个 Key 通吃国内外模型，OpenAI / Anthropic 双协议。有效期 2 年… |
 | ↳ | API | 每天 1 亿 Token | 按 Token | 单日额度国内前列。历史充值满 100 元可升到 10 亿/天。 |
-| **国家超算互联网** | 桌面客户端 | 活动期内不限量 + 1 亿词元智能体额度 | 活动期免费（仅限客户端内） | 关键区别——「不限量」锁在自家客户端里，不是一个能随便接的通用 API。支持 Window… |
-| ↳ | API | 1000 万 Token（新客）+ 0.1 元购 5000 万 | 赠金 + 按 Token 计费（或 Token Plan 包月） | 真 API，兼容 OpenAI 与 Anthropic 协议，base_url 是 htt… |
 | **硅基流动** | API | 2000 万 Token（约 14 元） | 按 Token | 国内低延迟，OpenAI 兼容，支持微信/支付宝。新手任务能再拿一笔，别忘了做。 |
 | ↳ | API | 无限量 | 0 元 | 小模型当分类器、意图识别、批量打标非常够用，零成本挂着跑。 |
 | **豆包** | 网页版 | 不限量（有频率限制） | 完全免费 | 网页版免费，签到领额度只在电脑客户端。两个入口别搞混：网页版是「随便用」，客户端签到是「攒… |
@@ -65,3 +66,191 @@
 | **阿里云百炼** | API | 约 7000 万 Token（累计） | 按 Token | 领到后 90 天有效，仅北京地域。双 11 宣传口径称「超 1 亿」，以控制台实发为准。 |
 | **魔搭社区** | API | 每天 2000 次调用 | 按次免费 | 按「次」不按 Token，跑短 prompt 很划算；长 prompt 会很快吃满。 |
 | **魔芋 AI** | API | 合计最高约 2.7 亿 | 按 Token | 数字好看但拆分条件多（连签 11 天那档现在起步已经签不满）。单一来源，建议只当线索，自己… |
+
+## 可用模型一览
+
+> `models` 字段的可读版。同一产品下多个入口共用同一批模型时只列一次。
+
+**Anthropic**
+
+- Claude 系列
+
+**Cerebras**
+
+- gpt-oss-120b、Gemma-4-31B、Qwen 系列
+
+**Cloudflare**
+
+- Llama 4、Qwen、Mistral 等 50+
+
+**Cohere**
+
+- Command A+ 系列
+
+**DeepSeek**
+
+- DeepSeek-V4.1-Flash、V4-Pro
+- DeepSeek V4 / V3.2
+
+**GitHub Copilot**
+
+- GPT / Claude Sonnet 可选
+
+**GitHub Models**
+
+- GPT-5、GPT-4.1、Llama、Phi
+
+**Google Gemini**
+
+- Gemini 3 Flash、3.5 Flash-Lite、2.5 Flash
+
+**Groq**
+
+- gpt-oss-120b、gpt-oss-20b、Qwen3.6-27B、Llama 系列
+
+**Hugging Face**
+
+- 社区模型（含 Llama、Qwen、DeepSeek 蒸馏版）
+
+**Kilo Code**
+
+- NVIDIA Nemotron 3 Ultra、Nex-N2.5-Pro、MiniMax M2.7、腾讯混元 Hy3
+
+**Kimi**
+
+- Kimi K3、K2.5
+- Kimi K3 系列、K2.5
+
+**Mistral**
+
+- Mistral Large、Codestral 等
+
+**NVIDIA NIM**
+
+- DeepSeek-V4.1-Flash、GLM-5.3-Flash 等百余模型
+
+**OpenAI**
+
+- GPT 系列
+
+**OpenCode**
+
+- DeepSeek V4 Flash、MiMo-V2.6-Flash-Free、LongCat-2.0、Nemotron 3 Ultra
+
+**OpenRouter**
+
+- DeepSeek、Llama、Qwen 等 20+ 免费模型
+
+**Qoder**
+
+- Qoder 全系（含 Qwen3.8-Flash 0 倍率）
+- 全部旗舰模型
+
+**SambaNova**
+
+- DeepSeek-V3、Llama 系列
+
+**WorkBuddy**
+
+- 平台在售模型
+- 平台内全模型（含限时 0 倍率模型）
+- Hunyuan Hy3、Hy4-preview
+
+**xAI Grok**
+
+- Grok 系列
+
+**七牛云**
+
+- DeepSeek、GLM、Qwen、Kimi、豆包等 50+
+- 平台在售模型
+
+**书生端砚**
+
+- 书生系列
+
+**商汤日日新**
+
+- SenseNova-6.8-Flash-Lite、U1.5-Fast、DeepSeek-V4-Flash 等 7 款
+
+**国家超算互联网**
+
+- 平台旗舰模型（GLM-5.3 / DeepSeek-V4.1 / Kimi-K3 / Qwen3.8 / MiniMax-M3 等）+ 自研科学计算智能体
+- DeepSeek（V4.1-Flash、V4.1-Flash-1017、V4-Pro-0813、V4-Flash-0731）/ 通义千问（Qwen3.8-Max、Qwen3.8-Flash）/ 智谱 GLM（5.3、5.3-Flash、5.2、5.1、5）/ 月之暗面 Kimi（K3、K3.1-Pro、K2.7-Code、K2.6、K2.5）/ MiniMax（M3、M3.1-Flash、M2.7、M2.5）/ 其他（Auto 自动路由、OCR、ASR、文生图、图像编辑、Embedding）
+
+**天翼 AI**
+
+- 星辰系列
+
+**小米 MiMo**
+
+- MiMo 推理系列
+
+**快手万擎**
+
+- KAT-Coder-Air-V1、KAT-Coder-Exp-72B-1010
+
+**智谱 GLM**
+
+- GLM-5.3-Flash
+- GLM 全系
+- GLM-4.7-Flash（200K）、GLM-5.3-Flash
+
+**火山方舟**
+
+- Doubao-Seed 系列、DeepSeek、Kimi、GLM
+- Doubao-Seed-Evolving 等指定模型
+- Kimi-K3.1-Pro、DeepSeek-V4.1、GLM-5.3、Doubao-Seed-2.1
+
+**百度 AI Studio**
+
+- 免费 GPU 算力（非 Token）
+
+**百度千帆**
+
+- ERNIE-Speed-8K 等
+
+**硅基流动**
+
+- DeepSeek / Qwen / GLM 等开源模型
+- Qwen2.5-7B、GLM-4-9B、DeepSeek-R1-Distill-8B 等
+
+**移动云**
+
+- 移动自营模型
+
+**腾讯 Cloud Studio**
+
+- 免费 GPU 算力（非 Token）
+
+**腾讯云 TokenHub**
+
+- DeepSeek、Kimi、GLM、混元、MiniMax
+
+**蚂蚁百灵**
+
+- Ling-3.2-flash（560B MoE，1M 上下文，多模态）
+
+**讯飞星火**
+
+- Spark Lite、Spark-X2.5-1.7B
+
+**豆包**
+
+- 豆包系列
+
+**阶跃星辰**
+
+- Step-5-Preview、Step-3.7-Flash、StepAudio-3
+
+**阿里云百炼**
+
+- 通义千问全系 + DeepSeek + Kimi + GLM 等 70+
+
+**魔搭社区**
+
+- Qwen 系列及社区开源模型
+
+**魔芋 AI**
+
+- 聚合多模型

@@ -206,6 +206,37 @@ def build_products(items: list[dict], only_multi: bool) -> str:
     return "\n".join(out).rstrip()
 
 
+def build_models(items: list[dict]) -> str:
+    """把 models 字段单独摊开。产品表里塞不下，但选平台时这列最有用。"""
+    groups: dict[str, list[dict]] = {}
+    for it in items:
+        groups.setdefault(it["product"], []).append(it)
+
+    out = [
+        "## 可用模型一览",
+        "",
+        "> `models` 字段的可读版。同一产品下多个入口共用同一批模型时只列一次。",
+        "",
+    ]
+    for prod in sorted(groups):
+        seen: list[str] = []
+        for it in sorted(
+            groups[prod],
+            key=lambda x: FORM_ORDER.index(x["form"]) if x["form"] in FORM_ORDER else 99,
+        ):
+            m = (it.get("models") or "").strip()
+            if m and m not in seen:
+                seen.append(m)
+        if not seen:
+            continue
+        out.append(f"**{prod}**")
+        out.append("")
+        for m in seen:
+            out.append(f"- {m}")
+        out.append("")
+    return "\n".join(out).rstrip()
+
+
 def replace_block(text: str, begin: str, end: str, new: str) -> str | None:
     if begin not in text or end not in text:
         return None
@@ -256,7 +287,13 @@ def main() -> int:
         "> 要改请动 [`data/providers.yaml`](../data/providers.yaml)，然后跑 `python3 scripts/render.py`。\n\n"
     )
     with open(doc_path, "w", encoding="utf-8") as fh:
-        fh.write(header + build_products(items, only_multi=False) + "\n")
+        fh.write(
+            header
+            + build_products(items, only_multi=False)
+            + "\n\n"
+            + build_models(items)
+            + "\n"
+        )
 
     print(f"已更新 README.md 与 docs/products.md：{len(items)} 条")
     return 0

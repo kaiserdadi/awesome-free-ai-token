@@ -35,16 +35,16 @@
   confidence: high
   notes: 关键区别——「不限量」锁在自家客户端里，不是一个能随便接的通用 API。支持 Windows / macOS（ARM 与 x86），手机号或微信登录即可，无需先充值。客户端内置 SClaw（基于 OpenClaw 的科研 Agent），可接飞书、钉钉、企业微信、QQ。
 
-- id: scnet-maas
+- id: scnet-maas-newuser
   product: 国家超算互联网
   form: api
-  name: 超算互联网 模型服务（MaaS）
+  name: 超算互联网 模型服务 · 新客 1000 万 Token 包
   region: cn
-  type: promo
-  offer: 新用户注册领 1000 万 Token 包（GLM-5.3-Flash）；0.1 元秒杀 5000 万词元包；Token Plan 订阅 5.4 折
-  models: DeepSeek-V4.1-Flash / V4.1-Flash-1017 / V4-Pro-0813 / V4-Flash-0731、Qwen3.8-Max / Flash、GLM-5.3 / 5.3-Flash / 5.2 / 5.1 / 5、Kimi-K3 / K3.1-Pro / K2.7-Code / K2.6、MiniMax-M3 / M3.1-Flash / M2.7、Auto；另有 OCR、ASR、图像生成、图像编辑、Embedding
-  value: 1000 万 Token（新客）+ 0.1 元购 5000 万
-  billing: 赠金 + 按 Token 计费（或 Token Plan 包月）
+  type: signup
+  offer: 活动期内注册的新账号可领 1000 万 Token 包，注册即到账，每个账号一次
+  models: DeepSeek（V4.1-Flash、V4.1-Flash-1017、V4-Pro-0813、V4-Flash-0731）/ 通义千问（Qwen3.8-Max、Qwen3.8-Flash）/ 智谱 GLM（5.3、5.3-Flash、5.2、5.1、5）/ 月之暗面 Kimi（K3、K3.1-Pro、K2.7-Code、K2.6、K2.5）/ MiniMax（M3、M3.1-Flash、M2.7、M2.5）/ 其他（Auto 自动路由、OCR、ASR、文生图、图像编辑、Embedding）
+  value: 1000 万 Token
+  billing: 一次性赠金，用完后按 Token 从余额扣
   expiry: 2026-12-31
   reset: once
   realname: yes
@@ -54,7 +54,28 @@
   source: https://www.scnet.cn/help/docs/mainsite/mass/tutorial/quickstart.html
   verified: 2026-11-09
   confidence: high
-  notes: 真 API，兼容 OpenAI 与 Anthropic 协议，base_url 是 https://api.scnet.cn/api/llm/v1。按量用 sk- 开头的通用 key，Token Plan 用 sk-tp- 开头的专属 key，两者不能混用。赠金 30 天有效，且赠金用完会自动扣余额，别放着跑。
+  notes: 注册即到账，30 天有效，活动整体到 12-31。这个包本身锁定 GLM-5.3-Flash（1024K 上下文），官方保留按库存换规格的权利。真 API，兼容 OpenAI 与 Anthropic 协议，base_url 是 https://api.scnet.cn/api/llm/v1。按量用 sk- 开头的通用 key，Token Plan 用 sk-tp- 开头的专属 key，两者不能混用。赠金用完后会自动扣余额，别挂脚本放着跑。
+
+- id: scnet-maas-flashsale
+  product: 国家超算互联网
+  form: api
+  name: 超算互联网 模型服务 · 0.1 元秒杀 5000 万词元包
+  region: cn
+  type: promo
+  offer: 0.1 元秒杀 5000 万词元包，原价十七八元
+  models: DeepSeek（V4.1-Flash、V4.1-Flash-1017、V4-Pro-0813、V4-Flash-0731）/ 通义千问（Qwen3.8-Max、Qwen3.8-Flash）/ 智谱 GLM（5.3、5.3-Flash、5.2、5.1、5）/ 月之暗面 Kimi（K3、K3.1-Pro、K2.7-Code、K2.6、K2.5）/ MiniMax（M3、M3.1-Flash、M2.7、M2.5）/ 其他（Auto 自动路由、OCR、ASR、文生图、图像编辑、Embedding）
+  value: 5000 万词元（0.1 元）
+  billing: 一次性买断词元包
+  expiry: 2026-11-30
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 4
+  url: https://www.scnet.cn/ui/mall/service/llm
+  source: https://www.ccidnet.com/kx/1132459.jhtml
+  verified: 2026-11-09
+  confidence: medium
+  notes: 每天 10:00 开售、每账号限一次、到账后 30 天有效，过 30 天作废。有二手源说它和 MaaS 其他新客权益是「六选一」而不是全拿，这条没在官方页核实，抢之前先看活动页。想稳一点可以直接走 MaaS 特惠专场，那里有 0.1 元起的旗舰模型 Token 套餐。
 
 
 - id: zhipu-signup
