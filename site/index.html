@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>免费 AI 额度雷达</title>
+<title>免费 AI API 额度雷达 · 免费 token / 积分 / Credits 清单</title>
+<meta name="description" content="全网免费 AI API 额度清单：免费 token、免费积分、免费 Credits，国内外 69 条。每条带截止日、出处、可信度，过期自动报警。免费 API 白嫖必备。">
+<meta name="keywords" content="免费api,免费 API,免费token,免费额度,白嫖,免费AI,大模型,API,free api,free tier,LLM">
+<meta property="og:type" content="website">
+<meta property="og:title" content="免费 AI API 额度雷达">
+<meta property="og:description" content="69 条国内外免费 API 额度：免费 token、积分、Credits。带截止日、出处、可信度，过期自动报警。">
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{
@@ -39,6 +44,11 @@ input,select{font-family:inherit;font-size:14px;color:var(--ink)}
 .brand{font-size:19px; font-weight:700; letter-spacing:-.02em}
 .brand em{font-style:normal; color:var(--copper)}
 .brand-sub{font-size:12.5px; color:var(--ink3)}
+.brand-tag{
+  font-size:11.5px; color:var(--copper); background:var(--copper-soft);
+  border:1px solid var(--copper-line); border-radius:999px; padding:1px 9px;
+  white-space:nowrap;
+}
 .spacer{flex:1}
 
 .controls{display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding-bottom:12px}
@@ -96,7 +106,7 @@ main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
 }
 .lede h2{margin:0 0 4px; font-size:15px; font-weight:700}
 .lede p{margin:0; font-size:13px; color:var(--ink2); line-height:1.75}
-.lede .k{color:var(--copper); font-weight:700}
+.lede .k{color:var(--copper); font-weight:700; white-space:nowrap}
 .statrow{display:flex; gap:20px; margin-left:auto}
 .stat{text-align:center}
 .stat b{display:block; font-size:20px; line-height:1.2; font-variant-numeric:tabular-nums}
@@ -114,23 +124,23 @@ main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
   background:var(--red); border-radius:2px; margin-right:7px; vertical-align:-1px}
 
 /* 临期条 */
-.urgent{display:grid; gap:1px; background:var(--line2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden}
+.urgent{display:grid; grid-template-columns:minmax(0,1fr); gap:1px; background:var(--line2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden}
 .urow{
-  display:flex; align-items:center; gap:12px; padding:11px 15px;
+  display:flex; align-items:center; gap:12px; padding:11px 15px; min-width:0;
   background:var(--panel); font-size:13.5px; transition:.12s;
 }
 .urow:hover{background:#fffaf3}
 .urow .d{
   font-variant-numeric:tabular-nums; font-weight:700; font-size:12px;
-  min-width:56px; color:var(--red);
+  min-width:56px; flex:0 0 auto; color:var(--red);
 }
 .urow .d.warn{color:var(--copper)}
 .urow .pn{
-  font-weight:600; white-space:nowrap; flex-shrink:0; max-width:56%;
-  overflow:hidden; text-overflow:ellipsis;
+  font-weight:600; white-space:nowrap; max-width:56%; min-width:0;
+  flex:0 1 auto; overflow:hidden; text-overflow:ellipsis;
 }
 .urow .vn{color:var(--ink2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; flex:1}
-.urow .go{margin-left:auto; color:var(--ink3); font-size:12px; white-space:nowrap}
+.urow .go{margin-left:auto; flex:0 0 auto; color:var(--ink3); font-size:12px; white-space:nowrap}
 
 /* 产品组：入口多的独占整行，入口少的并排铺满 */
 .clusters{
@@ -138,6 +148,7 @@ main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
   gap:26px 14px; align-items:start; grid-auto-flow:dense;
 }
 .pgroup{min-width:0}
+.pgroup.wide{grid-column:1 / -1}
 .phead{display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap}
 .phead h3{margin:0; font-size:15px; font-weight:700; letter-spacing:-.01em}
 .phead .pill{
@@ -210,13 +221,16 @@ footer{
   .top-inner,.filters,main,footer{padding-left:14px; padding-right:14px}
   .grid{grid-template-columns:1fr}
   .clusters{grid-template-columns:1fr}
-  .pgroup{grid-column:span 1 !important}
+  .pgroup,.pgroup.wide{grid-column:1 / -1 !important}
   .statrow{width:100%; justify-content:space-between; margin-left:0; gap:8px}
   .lede{gap:14px; padding:14px 15px}
   .search{max-width:none}
   .filters{gap:10px}
-  .urow .pn{max-width:66%}
+  .urow{flex-wrap:wrap; gap:4px 10px; padding:10px 13px}
+  .urow .d{min-width:52px}
+  .urow .pn{max-width:100%; white-space:normal; overflow:visible; flex:1 1 100%; order:2}
   .urow .vn{display:none}
+  .urow .go{order:1; margin-left:auto; font-size:11.5px}
 }
 </style>
 </head>
@@ -225,7 +239,8 @@ footer{
 <div class="top">
   <div class="top-inner">
     <div class="brandline">
-      <div class="brand">免费 <em>AI</em> 额度雷达</div>
+      <div class="brand">免费 <em>AI</em> API 额度雷达</div>
+      <span class="brand-tag">token · 积分 · Credits</span>
       <div class="brand-sub" id="buildInfo">数据截至 —</div>
       <div class="spacer"></div>
       <div class="tabs" role="tablist" id="tabs">
@@ -420,8 +435,8 @@ function render(){
     const soon = g.its.filter(d=>d.days!==null&&d.days!==undefined&&d.days>=0&&d.days<=21);
     const dl = soon.length ? '<span class="deadline">最近截止 '+soon[0].expiry+'</span>' : "";
     const npromo = g.its.filter(d=>d.type==="promo").length;
-    const span = Math.min(g.its.length, 3);
-    html += '<div class="pgroup" style="grid-column:span '+span+'"><div class="phead">'
+    const wide = g.its.length >= 3;
+    html += '<div class="pgroup'+(wide?' wide':'')+'"><div class="phead">'
          +  '<h3>'+esc(g.p)+'</h3>'
          +  '<span class="pill">'+g.its.length+' 个入口'+(npromo?' · 限时 '+npromo:'')+'</span>'
          +  dl
@@ -441,7 +456,7 @@ function render(){
   $("#lede").innerHTML = `
     <div>
       <h2>${regionLabel}</h2>
-      <p>同一个 AI 在不同入口的免费政策完全不同，所以这里按 <b class="k">产品 × 形态</b> 拆开写，一条只讲一个入口。</p>
+      <p>免费 API、免费 token、签到积分、Credits 都在这里。同一个 AI 在不同入口的免费政策完全不同，所以按 <b class="k">产品 × 形态</b> 拆开写，一条只讲一个入口。</p>
     </div>
     <div class="statrow">
       <div class="stat"><b>${longFree}</b><span>长期 0 元</span></div>

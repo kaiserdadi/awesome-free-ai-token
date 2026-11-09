@@ -1,4 +1,4 @@
-# 全网免费 AI 额度雷达 · Free AI Token Radar
+# 全网免费 AI API 额度雷达 · Free AI Token Radar
 
 ![license](https://img.shields.io/badge/license-MIT-black)
 ![data](https://img.shields.io/badge/数据-YAML_驱动-blue)
@@ -6,6 +6,8 @@
 
 > 这不是又一份「2000 万 Token 免费领」的清单。
 > **每一条都带截止日、带出处、带可信度，过期了会自动被标出来。**
+
+**免费 API**、免费 token、每日签到积分、Credits、白嫖算力——全都收在这一个仓库里，国内外分开列，每条标明还能领多久。
 
 这类清单最大的问题不是不全，是**过期了还在传**。你照着半年前的文章去注册，页面早就 404；你不确定是自己的操作错了，还是活动没了，白折腾一小时。
 
