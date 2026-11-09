@@ -692,12 +692,12 @@
 - id: workbuddy-hy4
   product: WorkBuddy
   form: desktop
-  name: WorkBuddy 混元 Hy3 / Hy4 限免
+  name: WorkBuddy 混元 Hy4 限时免费
   region: cn
   type: promo
-  offer: Hy3 纯语言任务 0 积分；Hy4 preview 夜间窗口 0 倍率
+  offer: Hy4 preview 夜间窗口 0 倍率、不扣积分；Hy3 纯语言任务同样 0 积分
   models: Hunyuan Hy3、Hy4-preview
-  value: 窗口内不扣积分
+  value: 夜间窗口 0 倍率
   billing: 积分制
   expiry: 2026-11-15
   reset: window

@@ -146,8 +146,11 @@ main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
   min-width:56px; color:var(--red);
 }
 .urow .d.warn{color:var(--copper)}
-.urow .pn{font-weight:600; white-space:nowrap; flex-shrink:0}
-.urow .vn{color:var(--ink2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+.urow .pn{
+  font-weight:600; white-space:nowrap; flex-shrink:0; max-width:56%;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.urow .vn{color:var(--ink2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; flex:1}
 .urow .go{margin-left:auto; color:var(--ink3); font-size:12px; white-space:nowrap}
 
 /* 产品组：入口多的独占整行，入口少的并排铺满 */
@@ -233,7 +236,8 @@ footer{
   .lede{gap:14px; padding:14px 15px}
   .search{max-width:none}
   .filters{gap:10px}
-  .urow .vn{flex:1; min-width:0}
+  .urow .pn{max-width:66%}
+  .urow .vn{display:none}
 }
 </style>
 </head>
@@ -394,9 +398,9 @@ function render(){
          +  '<span class="hint">21 天内截止，先领再说</span>'
          +  '<span class="cnt">'+urgent.length+' 条</span></div><div class="urgent">';
     urgent.forEach(d => {
-      html += '<a class="urow" href="'+esc(d.url)+'" target="_blank" rel="noopener">'
+      html += '<a class="urow" href="'+esc(d.url)+'" target="_blank" rel="noopener" title="'+esc(d.product+" · "+d.name+" · "+d.value)+'">'
            +  '<span class="d'+(d.days>7?" warn":"")+'">'+(d.days===0?"今天":"剩 "+d.days+" 天")+'</span>'
-           +  '<span class="pn">'+esc(d.product)+'</span>'
+           +  '<span class="pn">'+esc(d.name)+'</span>'
            +  '<span class="vn">'+esc(d.value)+' · '+esc(d.billing)+'</span>'
            +  '<span class="go">'+esc(FORM[d.form]||d.form)+' ↗</span></a>';
     });
