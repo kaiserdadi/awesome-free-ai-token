@@ -169,7 +169,6 @@ main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
   gap:26px 14px; align-items:start; grid-auto-flow:dense;
 }
 .pgroup{min-width:0}
-.pgroup.wide{grid-column:1 / -1}
 .phead{display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap}
 .phead h3{margin:0; font-size:15px; font-weight:700; letter-spacing:-.01em}
 .phead .pill{
@@ -401,6 +400,20 @@ function card(d){
     + '</article>';
 }
 
+// 按容器实际列数给产品组分配跨列，避免 span 超出列数生成隐式列
+function applySpans(){
+  const wrap = document.querySelector(".clusters");
+  if (!wrap) return;
+  const GAP = 14, MIN = 320;
+  const cols = Math.max(1, Math.floor((wrap.clientWidth + GAP) / (MIN + GAP)));
+  wrap.querySelectorAll(".pgroup").forEach(g=>{
+    const n = parseInt(g.dataset.n || "1", 10);
+    const span = Math.min(n, cols);
+    g.style.gridColumn = (span >= cols) ? "1 / -1" : ("span " + span);
+  });
+}
+window.addEventListener("resize", ()=>{ applySpans(); });
+
 function render(){
   const list = DATA.filter(passes);
 
@@ -456,8 +469,7 @@ function render(){
     const soon = g.its.filter(d=>d.days!==null&&d.days!==undefined&&d.days>=0&&d.days<=21);
     const dl = soon.length ? '<span class="deadline">最近截止 '+soon[0].expiry+'</span>' : "";
     const npromo = g.its.filter(d=>d.type==="promo").length;
-    const wide = g.its.length >= 3;
-    html += '<div class="pgroup'+(wide?' wide':'')+'"><div class="phead">'
+    html += '<div class="pgroup" data-n="'+g.its.length+'"><div class="phead">'
          +  '<h3>'+esc(g.p)+'</h3>'
          +  '<span class="pill">'+g.its.length+' 个入口'+(npromo?' · 限时 '+npromo:'')+'</span>'
          +  dl
@@ -466,6 +478,7 @@ function render(){
   if (arr.length) html += '</div>';
 
   $("#out").innerHTML = html;
+  applySpans();
 
   const n = list.length;
   const longFree = list.filter(d=>d.type==="free_model").length;

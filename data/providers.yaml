@@ -1469,3 +1469,423 @@
   verified: 2026-11-09
   confidence: low
   notes: 与 OpenAI 类似属「绑卡 + 数据换额度」模式。单一来源，需自行核。
+
+- id: bailian-free-quota
+  product: 阿里云百炼
+  form: api
+  name: 百炼 新客各模型 100 万 Token
+  region: cn
+  type: signup
+  offer: 开通百炼后系统自动给每个模型发 100 万 Token，80 多个模型各自独立、互不共享，合计约 8000 万
+  models: 通义千问全系（Qwen3.8-Max / Plus / Flash、Qwen3-Max-Thinking）、DeepSeek 系、Kimi 系、GLM 系、MiniMax 系等 150+ 模型
+  value: 每模型 100 万 Token（合计约 8000 万）
+  billing: 一次性赠额，用完自动转按量付费
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://bailian.console.aliyun.com
+  source: https://help.aliyun.com/zh/model-studio/new-free-quota
+  verified: 2026-11-09
+  confidence: high
+  notes: 只在华北2（北京）地域发放，其他地域没有。开通前必须先实名，不实名不发额度。额度有效期 90 天，从开通、模型发布、申请通过三者中最晚的算起；到期不补发、不延期，同一实名主体重新注册也领不到。每个模型的额度独立，一个用完不会自动切到另一个，要手动改 model 参数。Batch 调用、模型调优、模型部署、OSS 都不抵扣。主账号和 RAM 子账号共享同一份额度。建议先开「免费额度用完即停」，避免手滑扣费。
+
+- id: bailian-intl
+  product: 阿里云百炼
+  form: api
+  name: 百炼 国际站（新加坡）免实名额度
+  region: global
+  type: signup
+  offer: 国际站在新加坡地域开通百炼，不需要实名就能领各模型新人免费额度
+  models: 通义千问国际版全系（Qwen3.8 系列、Qwen-Max 等）
+  value: 每模型 100 万 Token（90 天）
+  billing: 一次性赠额，用完需实名才能继续付费使用
+  expiry: long
+  reset: once
+  realname: no
+  card: no
+  difficulty: 4
+  url: https://www.alibabacloud.com/product/modelstudio
+  source: https://www.alibabacloud.com/help/tc/doc-detail/2766612.html
+  verified: 2026-11-09
+  confidence: high
+  notes: 这条和国内站正好相反——国内站必须先实名，国际站新加坡地域明确写「无需实名认证即可获取和使用免费额度」。只有新加坡地域有额度。开通后额度可能有延迟，两小时内生效。用来绕过实名限制，代价是要有国际站账号。
+
+- id: qwen-app
+  product: 通义千问
+  form: app
+  name: 通义千问 App / 网页版
+  region: cn
+  type: free_model
+  offer: 对话、联网搜索、文档解析、图片理解全部免费，不限次数（有频率限制）
+  models: Qwen3.8-Max、Qwen3-Max-Thinking 等旗舰模型
+  value: 不限量（有频率限制）
+  billing: 完全免费
+  expiry: long
+  reset: unknown
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://www.tongyi.com
+  source: https://www.tongyi.com
+  verified: 2026-11-09
+  confidence: high
+  notes: C 端产品，和百炼 API 完全是两套东西——这里的免费额度不能变成 API Key。想写代码调接口的走百炼那条。
+
+- id: ark-free-tokens
+  product: 火山方舟
+  form: api
+  name: 方舟 每模型 50 万 Token 免费额度
+  region: cn
+  type: signup
+  offer: 每个模型开通即送 50 万 Token 免费推理额度，20 多个主力模型累加超过 2500 万
+  models: Doubao-Seed-2.1-pro / 2.1-turbo / Evolving / Character、DeepSeek 系、Kimi 系等
+  value: 每模型 50 万 Token（累计 2500 万+）
+  billing: 一次性赠额，超出转按量付费
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://console.volcengine.com/ark
+  source: https://www.volcengine.com/product/ark
+  verified: 2026-11-09
+  confidence: high
+  notes: 每个模型单独一份，不是共享池，所以得挨个点「开通服务」才拿得满。官方活动页原话是「单个模型可免费领取 50 万 Tokens，累计超过 2500 万」。
+
+- id: ark-safe-mode
+  product: 火山方舟
+  form: api
+  name: 方舟 安心体验模式（防扣费）
+  region: cn
+  type: signup
+  offer: 开启后调用只消耗免费额度，接近用完自动暂停服务，不会产生任何费用
+  models: 除多模态向量化与同声传译外的全部模型
+  value: 防扣费开关（不额外给额度）
+  billing: 超出免费额度即停，不转付费
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 1
+  url: https://www.volcengine.com/docs/82379/1465347
+  source: https://www.volcengine.com/docs/82379/1465347
+  verified: 2026-11-09
+  confidence: high
+  notes: 账号维度的开关，只有「没开通过模型服务」的新账号能开，而且一旦关掉就再也开不回来，务必想清楚再点。它只抵扣 token，联网插件、知识库照样单独收费。文档更新时间 2026-11-02。
+
+- id: ark-multimodal
+  product: 火山方舟
+  form: api
+  name: 方舟 图像 / 语音 / 向量免费额度
+  region: cn
+  type: signup
+  offer: 生图 50~200 张、语音合成 5000 字符、声音复刻 10 个、流式语音识别 20 小时、embedding 50 万 Token、联网插件 2 万次/月
+  models: Doubao-Seedream-5.0-lite / 4.5 / 4.0、Doubao-语音合成、Doubao-声音复刻、Doubao-流式语音识别、Doubao-embedding-vision
+  value: 生图 50~200 张 + 语音 20 小时 + 联网 2 万次/月
+  billing: 一次性赠额
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://www.volcengine.com/product/ark
+  source: https://www.volcengine.com/product/ark
+  verified: 2026-11-09
+  confidence: high
+  notes: 这些和文本模型的 50 万 Token 完全分开算，互不挤占。做多模态 demo 基本够用，生图那档 5.0-lite 只有 50 张，4.x 是 200 张。
+
+- id: siliconflow-free-models
+  product: 硅基流动
+  form: api
+  name: 硅基流动 7 个永久 0 元模型
+  region: cn
+  type: free_model
+  offer: 7 个中小参数模型价格直接标 0，永久免费，不消耗赠送额度
+  models: Qwen3-8B、Qwen3.5-4B、Qwen2.5-7B-Instruct、GLM-4-9B-0414、GLM-Z1-9B-0414、DeepSeek-R1-0528-Qwen3-8B、Xing4.0-29B
+  value: 不限量（受速率限制）
+  billing: 0 元
+  expiry: long
+  reset: unknown
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://cloud.siliconflow.cn
+  source: https://docs.siliconflow.cn/introduction
+  verified: 2026-11-09
+  confidence: medium
+  notes: 真正的天花板是限速不是额度——0 元档跑在固定速率上，充值也不会提升，批量跑几分钟就 429。适合低频常驻的小任务（翻译、摘要、意图分类、RAG 检索）。免费清单会变，接之前去价格页确认目标模型还标着 0。
+
+- id: tencent-hunyuan-pack
+  product: 腾讯云 TokenHub
+  form: api
+  name: 腾讯混元 首次开通 100 万 Token
+  region: cn
+  type: signup
+  offer: 首次开通混元送 100 万 Token，10 款主力模型共享；Embedding 另送 100 万
+  models: Hunyuan Hy3 / Hy4 preview、role-latest、translation、Hunyuan-a13b、Hunyuan-embedding 等
+  value: 100 万 Token + 100 万 Embedding
+  billing: 一次性资源包，1 年内有效
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 3
+  url: https://cloud.tencent.com/product/hunyuan
+  source: https://cloud.tencent.com/document/product/1729
+  verified: 2026-11-09
+  confidence: high
+  notes: 有效期 1 年，是国内少见的长期包。**额度耗尽后默认不会自动转后付费**，得手动开通，这点反而安全。需先过腾讯云实名。base_url 是 https://api.hunyuan.cloud.tencent.com/v1，OpenAI 兼容。
+
+- id: tencent-hunyuan-lite
+  product: 腾讯云 TokenHub
+  form: api
+  name: 混元 Lite 永久免费
+  region: cn
+  type: free_model
+  offer: Hunyuan-Lite 价格标 0，永久免费，可用来兜底
+  models: Hunyuan-Lite（256K 上下文）
+  value: 不限量（受速率限制）
+  billing: 0 元
+  expiry: long
+  reset: unknown
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://cloud.tencent.com/product/hunyuan
+  source: https://cloud.tencent.com/document/product/1729
+  verified: 2026-11-09
+  confidence: medium
+  notes: 轻量任务够用（写正则、翻译段落、改注释），复杂推理别指望它。注意混元已经换代到 Tencent Hy 品牌，Lite 是否还在价目表上建议进控制台核一眼。
+
+- id: tencent-yuanbao
+  product: 腾讯元宝
+  form: app
+  name: 腾讯元宝 App / 网页版
+  region: cn
+  type: free_model
+  offer: 对话、AI 生图、AI 视频、AI 播客全部免费，注册即可用
+  models: 混元 Hy3 / Hy4、DeepSeek 系（可切换）
+  value: 不限量（有频率限制）
+  billing: 完全免费
+  expiry: long
+  reset: unknown
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://yuanbao.tencent.com
+  source: https://yuanbao.tencent.com
+  verified: 2026-11-09
+  confidence: high
+  notes: 混元本身不是 C 端产品，普通用户免费用的是元宝。缺点是不能接工作流、不能自动化跑任务，只能人机对话。要写代码调接口走 TokenHub 那条。
+
+- id: qianfan-per-model
+  product: 百度千帆
+  form: api
+  name: 千帆 每模型 100 万 Token
+  region: cn
+  type: signup
+  offer: 开通后每个模型发 100 万 Token 免费额度，ERNIE-4.5 系列 90 天有效
+  models: ERNIE-4.5-Turbo（128K/32K/VL）、ERNIE-X1-Turbo、DeepSeek-V3/R1、Qwen3、Kimi-K2-Instruct、bge-large 等
+  value: 每模型 100 万 Token
+  billing: 一次性赠额，用完转按量付费
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://console.bce.baidu.com/qianfan/overview
+  source: https://cloud.baidu.com/doc/qianfan-api/index.html
+  verified: 2026-11-09
+  confidence: medium
+  notes: 读并同意协议后系统自动开通并发额度，不用手动领。第三方模型（DeepSeek、Qwen）也在这个池子里，所以千帆等于一个能顺带薅多家模型额度的入口。
+
+- id: qianfan-ernie-speed
+  product: 百度千帆
+  form: api
+  name: 千帆 ERNIE-Speed 永久免费
+  region: cn
+  type: free_model
+  offer: ERNIE-Speed / ERNIE-Lite 价格 0 元，永久免费，QPS 约 50
+  models: ERNIE-Speed-8K、ERNIE-Lite
+  value: 不限量（QPS 约 50）
+  billing: 0 元
+  expiry: long
+  reset: unknown
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://console.bce.baidu.com/qianfan/overview
+  source: https://cloud.baidu.com/doc/qianfan-api/index.html
+  verified: 2026-11-09
+  confidence: medium
+  notes: QPS 50 在免费档里算很宽，适合做常驻小服务。有信源说 ERNIE-3.5-8K 也永久免费不限量，口径不一，以控制台价格页标 0 的为准。
+
+- id: spark-lite
+  product: 讯飞星火
+  form: api
+  name: 星火 Spark Lite 永久免费
+  region: cn
+  type: free_model
+  offer: Spark Lite 模型永久免费，Token 总量不限，QPS 2
+  models: Spark Lite（端侧小模型）
+  value: 不限量（QPS 2）
+  billing: 0 元
+  expiry: long
+  reset: unknown
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://xinghuo.xfyun.cn
+  source: https://www.xfyun.cn/doc/spark/Web.html
+  verified: 2026-11-09
+  confidence: medium
+  notes: 国内免费档里门槛最低的一档——有信源说免实名免绑卡，OpenAI 格式兼容。QPS 2 只够个人低频试水，做产品会被限死。星火现在改叫 Spark X2 系列，Lite 是否还在建议进控制台核。
+
+- id: spark-newuser
+  product: 讯飞星火
+  form: api
+  name: 星火 新客 Token 包
+  region: cn
+  type: signup
+  offer: 个人实名认证送 20 万 Token，企业认证送 100 万 Token
+  models: Spark X2-Flash（192K）、Spark Ultra、Spark Pro
+  value: 20 万（个人）/ 100 万（企业）
+  billing: 一次性赠额
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://xinghuo.xfyun.cn
+  source: https://www.xfyun.cn/doc/spark/Web.html
+  verified: 2026-11-09
+  confidence: low
+  notes: 额度口径最乱的一家：20 万/100 万来自分梯整理，另有信源说 500 万、也有说 200 万~1400 万新人福利。**以你实名后控制台实际到账为准**。
+
+- id: minimax-voucher
+  product: MiniMax
+  form: api
+  name: MiniMax 开放平台 15 元代金券
+  region: cn
+  type: signup
+  offer: 注册自动赠送 15 元代金券，折合约 350 万~700 万 Token
+  models: MiniMax-M3 / M3.1-Flash / M2.7 全模态系列、海螺语音与视频模型
+  value: 15 元（约 350 万~700 万 Token）
+  billing: 代金券抵扣，用完转按量付费
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://platform.minimaxi.com
+  source: https://platform.minimaxi.com/document
+  verified: 2026-11-09
+  confidence: medium
+  notes: 全模态是这个平台的特点——文本、语音、视频同一套 API，原生多 SDK 与 MCP 兼容，国内直连不用代理。代金券有效期各说不一，建议注册当天就跑通一次。
+
+- id: hailuo-app
+  product: MiniMax
+  form: app
+  name: 海螺 AI App / 网页版
+  region: cn
+  type: free_model
+  offer: 对话、AI 视频生成、语音克隆有免费额度，每日刷新
+  models: MiniMax M 系列、海螺视频、海螺语音
+  value: 每日免费额度（视频按条数）
+  billing: 完全免费（超出需订阅）
+  expiry: long
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://hailuoai.com
+  source: https://hailuoai.com
+  verified: 2026-11-09
+  confidence: medium
+  notes: 视频生成这一档基本是国内最便宜的免费入口。C 端额度和开放平台 API 的额度是两套，不能互相转化。
+
+- id: baichuan-voucher
+  product: 百川智能
+  form: api
+  name: 百川 注册送 80 元代金券
+  region: cn
+  type: signup
+  offer: 注册即送 80 元体验代金券，折合约 500 万 Token
+  models: Baichuan4 系列、Baichuan4-Air、医疗增强模型 M3
+  value: 80 元（约 500 万 Token）
+  billing: 代金券抵扣
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://platform.baichuan-ai.com
+  source: https://platform.baichuan-ai.com/docs
+  verified: 2026-11-09
+  confidence: medium
+  notes: 80 元在国产平台里算给得多的，但模型能力和生态比头部弱一档。医疗场景是它的差异点。
+
+- id: stepfun-audio
+  product: 阶跃星辰
+  form: api
+  name: 阶跃 stepaudio 音频模型限时免费
+  region: cn
+  type: promo
+  offer: stepaudio-3 系列音频多模态模型限时免费调用，CORS 完全开放
+  models: stepaudio-3 系列（语音理解与生成）
+  value: 限时免费（不限量）
+  billing: 活动期 0 元
+  expiry: long
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://platform.stepfun.com
+  source: https://platform.stepfun.com/docs
+  verified: 2026-11-09
+  confidence: low
+  notes: 只覆盖音频多模态这一条线，不是全模型免费，别把标题读成「整站免费」。CORS 通配符全开，适合直接从前端调用做语音 demo。截止日没查到明确公告。
+
+- id: meituan-catpaw
+  product: 美团 CatPaw
+  form: desktop
+  name: CatPaw 猫爪（公测免费）
+  region: cn
+  type: promo
+  offer: 公测期客户端完全免费，每日重置海量 Token，Ask / Agent 双模式
+  models: LongCat / Flash-Lite 系列自研模型
+  value: 每日重置（Flash-Lite 额度很大）
+  billing: 公测期 0 元
+  expiry: long
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://catpaw.meituan.com
+  source: https://freeaidog.com
+  verified: 2026-11-09
+  confidence: low
+  notes: 信源只有单一聚合站，公测随时可能结束或转收费，**动身前先去官网确认还在公测**。IDE 内实时预览、国内直连不用代理，这一点比多数海外工具省事。
+
+- id: ark-daily
+  product: 火山方舟
+  form: api
+  name: 方舟 每日 200 万 Token
+  region: cn
+  type: daily
+  offer: 开通后每天发放 200 万 Token，按天重置，是目前国内日额度最大的一档
+  models: 豆包 Doubao-Seed 系列主力模型
+  value: 每天 200 万 Token
+  billing: 每日免费额度，超出按量付费
+  expiry: long
+  reset: daily
+  realname: yes
+  card: no
+  difficulty: 3
+  url: https://console.volcengine.com/ark
+  source: https://uuaihub.com/blog/free-ai-api-guide-2026
+  verified: 2026-11-09
+  confidence: low
+  notes: 入口名字各说不一（有叫「协作奖励计划」的），且必须手动开通模型才生效。**两个二手源都提到这一档，但我在官方活动页没直接看到，以控制台为准**，没找到入口别以为活动没了。
