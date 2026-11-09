@@ -81,10 +81,10 @@
 - id: zhipu-signup
   product: 智谱 GLM
   form: api
-  name: 智谱 AI 开放平台（GLM）
+  name: 智谱 GLM 新客赠额
   region: cn
   type: signup
-  offer: 新用户注册赠送 Token 包，永久有效
+  offer: 手机号注册送 2000 万 Token 体验包，全系模型可用，另附 120 次图像与视频生成
   models: GLM 全系
   value: 2000 万 Token
   billing: 按 Token
@@ -93,32 +93,53 @@
   realname: yes
   card: no
   difficulty: 1
-  url: https://open.bigmodel.cn
-  source: https://www.kuazhi.com/post/716439208.html
+  url: https://maas-api.bigmodel.cn
+  source: https://maas-api.bigmodel.cn/
   verified: 2026-11-09
   confidence: high
-  notes: 国内最常被当兜底的一家，额度永久有效、并发 30。OpenAI 兼容，改 Base URL 即可。
+  notes: **额度要实名认证之后才到账**，只注册不认证就一直是 0，这是「感觉没免费」最常见的原因。官方落地页现在写的是「新用户注册得 2000 万 Tokens」，注册后去控制台看「资源包」确认是否已发放。并发 30，OpenAI 兼容，改 Base URL 即可。
 
 - id: zhipu-glm-flash
   product: 智谱 GLM
   form: api
-  name: 智谱 GLM-Flash 系列
+  name: 智谱 GLM-Flash 免费档
   region: cn
   type: free_model
-  offer: 价目表 0 元，输入输出全免
-  models: GLM-4.7-Flash（200K）、GLM-5.3-Flash
-  value: 无限量（受 QPS 限制）
+  offer: 价格页直接标 0 元，输入免费、输出免费、缓存也免费
+  models: GLM-4.7-Flash（200K，文本）、GLM-4.6V-Flash（视觉）、GLM-4-Flash-250414（128K）、GLM-Z1-Flash（128K）
+  value: 不限量，受并发限制
   billing: 0 元
   expiry: long
   reset: unknown
   realname: yes
   card: no
   difficulty: 1
-  url: https://open.bigmodel.cn
-  source: https://aicost.tools/blog/best-llm-apis-with-a-free-tier
+  url: https://bigmodel.cn/pricing?tab=api
+  source: https://bigmodel.cn/pricing?tab=api
   verified: 2026-11-09
   confidence: high
-  notes: 长期免费档里中文代码能力最能打的一档。注意并发约 1，适合小流量常驻。
+  notes: 官方价格页 FAQ 明确只点了两个——文本 GLM-4.7-Flash（200K）和视觉 GLM-4.6V-Flash，输入输出缓存全免费。关键提醒：GLM-5.3-Flash 名字里带 Flash 但**要钱**，标准价输入 0.8 元、输出 2.8 元（限时五折 0.4 / 1.4），别拿它当免费模型用，这是最容易踩的坑。免费档并发很低（实测约 1，社区另有 30 的说法），适合单人、小流量、批量离线处理，不适合多人并发服务。
+
+- id: zhipu-invite
+  product: 智谱 GLM
+  form: web
+  name: 智谱 GLM 邀好友
+  region: cn
+  type: signup
+  offer: 通过邀请链接注册，双方各得额外 Tokens，邀请人累计口径最高 2 亿
+  models: GLM 全系
+  value: 最高 2 亿 Token（累计口径）
+  billing: 按 Token（赠金）
+  expiry: unknown
+  reset: once
+  realname: yes
+  card: no
+  difficulty: 2
+  url: https://maas-api.bigmodel.cn
+  source: https://maas-api.bigmodel.cn/
+  verified: 2026-11-09
+  confidence: medium
+  notes: 官方落地页写「最高可领取总计 2 亿 Tokens 资源包」，这是邀请累加的上限，不是单人一次到手。别被标题里的 2 亿误导，实际按邀请人数阶梯发放，到账以控制台资源包为准。
 
 - id: zhipu-zcode-night
   product: 智谱 GLM
@@ -623,6 +644,28 @@
   verified: 2026-11-09
   confidence: medium
   notes: 最容易漏的一条，藏在设置里而不是活动页。关联免费，但暂不支持解绑，绑之前确认是你常用的账号。
+
+- id: workbuddy-article
+  product: WorkBuddy
+  form: web
+  name: WorkBuddy 社区投稿
+  region: cn
+  type: signup
+  offer: 在腾讯云开发者社区发布 WorkBuddy 实操文章并带上指定标签，按稿件质量给奖励
+  models: 平台内全模型（仅用于兑换积分）
+  value: 普通稿 500，精选最高 3000
+  billing: 积分或成长值（口径冲突）
+  expiry: unknown
+  reset: once
+  realname: no
+  card: no
+  difficulty: 4
+  url: https://cloud.tencent.com/developer
+  source: https://ai.chattools.top/article/68124
+  verified: 2026-11-09
+  confidence: low
+  notes: 记一笔冲突——有信源说这篇奖励的是「成长值」而不是 AI 积分，也有信源说官方明确表示暂无对应的积分活动。所以它可能只是荣誉性的，投之前先在活动页确认奖励形式，别为了积分写一整篇。
+
 
 - id: workbuddy-limited-task
   product: WorkBuddy
