@@ -65,14 +65,14 @@ python3 scripts/build_site.py   # 数据改了，重生成 site/index.html
 
 <!-- AUTO:START 由 scripts/render.py 生成，不要手改这一段 -->
 
-> 数据截至 **2026-11-09** ｜ 共 **89** 条（国内 71 · 海外 18） ｜ 每日/每月续杯 18 条 ｜ 限时活动 10 条（**4 条 14 天内到期或已过期**）
+> 数据截至 **2026-11-09** ｜ 共 **108** 条（国内 77 · 海外 31） ｜ 每日/每月续杯 18 条 ｜ 限时活动 10 条（**4 条 14 天内到期或已过期**）
 
 | 分类 | 条数 | 一句话 |
 |---|---|---|
 | 限时活动 | 10 | 抢时间，先领后看 |
 | 每日续杯 | 18 | 攒出来的额度最耐用 |
-| 注册一次性 | 31 | 一次给一大笔 |
-| 长期免费模型 | 30 | 兜底，不依赖活动 |
+| 注册一次性 | 32 | 一次给一大笔 |
+| 长期免费模型 | 48 | 兜底，不依赖活动 |
 
 ### 限时活动
 
@@ -147,6 +147,7 @@ python3 scripts/build_site.py   # 数据改了，重生成 site/index.html
 | [百川 注册送 80 元代金券](https://platform.baichuan-ai.com) | 注册即送 80 元体验代金券，折合约 500 万 Token | 80 元（约 500 万 Token） | 长期 | 实名 | 中 |
 | [超算互联网 模型服务 · 新客 1000 万 Token 包](https://www.scnet.cn/ui/mall/service/llm) | 活动期内注册的新账号可领 1000 万 Token 包，注册即到账，每个账号一次 | 1000 万 Token | 2026-12-31（剩 52 天） | 实名 | 高 |
 | [WorkBuddy 邀约好友](https://www.workbuddy.cn) | 好友通过你的链接注册并完成首次对话得 50；7 天内累计用满 3 天再得 100；好友 30 天内首次订阅付费，双方各得 500 | 最高 650 积分/人 | 未公布 | 无 | 中 |
+| [蛙池 AI 内测（送 2200 蛙蛙币）](https://digpool.cn) | 斗象科技 / 漏洞盒子出品的 AI 渗透 Agent，凭内测邀请码注册即送 2200 蛙蛙币，全功能体验 | 2200 蛙蛙币（约合 220 元），积分制 10 元 = 100 积分 | 未公布 | 无 | 高 |
 | [腾讯混元 首次开通 100 万 Token](https://cloud.tencent.com/product/hunyuan) | 首次开通混元送 100 万 Token，10 款主力模型共享；Embedding 另送 100 万 | 100 万 Token + 100 万 Embedding | 长期 | 实名 | 高 |
 | [WorkBuddy 社区投稿](https://cloud.tencent.com/developer) | 在腾讯云开发者社区发布 WorkBuddy 实操文章并带上指定标签，按稿件质量给奖励 | 普通稿 500，精选最高 3000 | 未公布 | 无 | 低 |
 | [NVIDIA NIM (build.nvidia.com) 🌐](https://build.nvidia.com) | 邮箱注册后在 API Keys 页生成密钥，兼容 OpenAI 格式 | 1000 credits（约 40 RPM） | 未公布 | 无 | 高 |
@@ -169,6 +170,11 @@ python3 scripts/build_site.py   # 数据改了，重生成 site/index.html
 | [Kimi 网页版](https://kimi.com) | 网页端直接对话，长上下文与联网搜索免费 | 不限量（有频率限制） | 长期 | 实名 | 中 |
 | [DeepSeek 网页版](https://chat.deepseek.com) | 打开网页登录即可对话，深度思考与联网搜索默认可用 | 不限量（有频率限制） | 长期 | 实名 | 高 |
 | [DeepSeek 手机 App](https://www.deepseek.com) | 应用商店搜索安装，登录即用，与网页版同一套额度 | 不限量（有频率限制） | 长期 | 实名 | 高 |
+| [TRAE 国内版 免费档](https://www.trae.cn/pricing) | 字节的 AI 原生 IDE，免费档官方口径是「所有功能均可免费使用」，每月给 500 积分 | 每月 500 积分 + 2 个云端任务并发 | 长期 | 无 | 高 |
+| [Qoder CN 个人社区版](https://docs.qoder.cn) | 阿里云原通义灵码，个人社区版免费，含补全、问答、多文件编辑与编程智能体 | 补全与问答不限次，编程智能体对话 50 轮次/月 | 长期 | 无 | 高 |
+| [文心快码 个人标准版](https://comate.baidu.com) | 百度 AI 编程助手，个人标准版免费，注册另赠 10 元体验金 | 个人标准版免费 + ¥10 体验金 | 长期 | 无 | 中 |
+| [CodeBuddy 体验版](https://copilot.tencent.com) | 腾讯 AI IDE，体验版每月 500 积分 + 不限次代码补全 | 每月 500 积分 + 无限补全 | 长期 | 无 | 中 |
+| [CodeGeeX 免费版](https://codegeex.cn) | 智谱的开源编程助手，免费版给全功能，模型可自己本地部署 | 免费版全功能不限量 | 长期 | 无 | 中 |
 | [通义千问 App / 网页版](https://www.tongyi.com) | 对话、联网搜索、文档解析、图片理解全部免费，不限次数（有频率限制） | 不限量（有频率限制） | 长期 | 无 | 高 |
 | [腾讯元宝 App / 网页版](https://yuanbao.tencent.com) | 对话、AI 生图、AI 视频、AI 播客全部免费，注册即可用 | 不限量（有频率限制） | 长期 | 无 | 高 |
 | [星火 Spark Lite 永久免费](https://xinghuo.xfyun.cn) | Spark Lite 模型永久免费，Token 总量不限，QPS 2 | 不限量（QPS 2） | 长期 | 无 | 中 |
@@ -186,10 +192,23 @@ python3 scripts/build_site.py   # 数据改了，重生成 site/index.html
 | [OpenCode Zen 🌐](https://opencode.ai) | 客户端自带若干免费模型，装完即可用，不需自备 Key | 免费模型不限量（有限速） | 未公布 | 无 | 中 |
 | [Kilo Code 🌐](https://kilocode.ai) | 开源 AI 编程 Agent，内含十余个免费模型，不要 Key、不要卡 | 约 200 请求/小时 | 未公布 | 无 | 中 |
 | [GitHub Copilot Free 🌐](https://github.com/features/copilot) | 个人免费档，含代码补全与 Chat | 每月 2000 次补全 + 50 次 Chat | 长期 | 无 | 高 |
+| [Bolt.new 免费档 🌐](https://bolt.new/pricing) | StackBlitz 的浏览器内全栈 AI 建站，免费档每月 100 万 token（每日 30 万上限） | 每月 100 万 token，日限 30 万 | 长期 | 无 | 高 |
+| [Lovable 免费档 🌐](https://lovable.dev/pricing) | 对话生成全栈 Web 应用，免费档每天 5 个 build credits（每月上限 30） | 5 credits/天，30/月 | 长期 | 无 | 高 |
 | [Mistral La Plateforme 🌐](https://console.mistral.ai) | Experiment 免费档，限速可用全系模型 | 约 10 亿 Token/月（官方已不公布具体数值，看控制台） | 长期 | 无 | 中 |
 | [Cloudflare Workers AI 🌐](https://developers.cloudflare.com/workers-ai/) | 免费套餐每天赠 Neurons，按模型换算成调用量 | 每天 10000 Neurons | 长期 | 无 | 高 |
 | [Hugging Face Inference Providers 🌐](https://huggingface.co/docs/inference-providers) | 免费账户每月极小额度的推理额度，可路由数千个社区模型 | 约 $0.10/月 | 长期 | 无 | 高 |
+| [TRAE 国际版 Free 🌐](https://www.trae.ai/pricing) | 免费档每月 5000 次补全 + 一笔一次性 AI 用量，只能走 Auto 模式 | 每月 5000 次补全 + 一次性用量额度 + 2 个云端任务 | 长期 | 无 | 高 |
+| [Cursor Hobby 🌐](https://cursor.com/pricing) | 免费档含每月 2000 次补全 + 50 次慢速高级模型请求，Agent 与 Chat 都能用 | 每月 2000 次补全 + 50 次慢请求 | 长期 | 无 | 高 |
+| [Devin Desktop Free 🌐](https://windsurf.com/pricing) | 免费档给轻量配额 + 不限次 Tab 补全，Cascade Agent 可用 | 每月 25 Cascade credits + 无限补全 | 长期 | 无 | 中 |
+| [Kiro Free 🌐](https://kiro.dev/pricing) | AWS 的 spec 驱动 AI IDE，免费档每月 50 credits，新用户另送 500 | 每月 50 credits + 新用户 500 赠送 | 长期 | 无 | 高 |
+| [Antigravity 免费预览 🌐](https://antigravity.google) | Google 的 Agent 开发平台（IDE + App + CLI），预览期免费，按周给配额，全部功能开放 | 每周配额（具体数字官方未公示） | 长期 | 无 | 高 |
+| [Zed 免费版 🌐](https://zed.dev/pricing) | Rust 写的开源编辑器，本体免费，AI 每月 2000 次 edit prediction，也可自带 key 或外接 Claude Code / Codex | 每月 2000 次编辑预测 + 自带 key 不限 | 长期 | 无 | 中 |
+| [Cline（开源，自带 Key） 🌐](https://cline.bot) | Apache-2.0 开源的 VS Code Agent 扩展，工具本身免费，模型用你自己的 key 或本地模型 | 工具免费无限制，只付模型钱 | 长期 | 无 | 高 |
+| [Roo Code（开源，自带 Key） 🌐](https://roocode.com) | 开源 VS Code Agent 扩展（Cline 分支），免费，支持多角色模式与自定义规则 | 工具免费无限制 | 长期 | 无 | 高 |
+| [v0 免费档 🌐](https://v0.app/pricing) | 描述生成 React / Next.js 界面，免费档每天 7 条消息，新用户另有 $5 一次性额度 | 7 条消息/天 + $5 首充额度 | 长期 | 无 | 高 |
+| [JetBrains AI Free 🌐](https://www.jetbrains.com/ai/) | JetBrains IDE 内置 AI 助手免费档，本地模型补全不限，云端模型每月 3 credits | 每月 3 credits（本地补全不限） | 长期 | 无 | 中 |
 | [SambaNova Cloud 🌐](https://cloud.sambanova.ai) | 免费层，须先绑卡 | 每天 20 万 Token（20 RPM） | 长期 | 绑卡 | 中 |
+| [Strix（开源 AI 渗透 Agent） 🌐](https://github.com/usestrix/strix) | Apache-2.0 开源的 AI 渗透测试 Agent，pip 装完即用，模型用你自己的 key | 工具完全免费，只付模型钱（配本地模型可零成本） | 长期 | 无 | 高 |
 
 > 🌐 = 海外平台，通常需要自备网络环境。门槛列只写「注册时要过什么关」，实际折腾程度另见 `data/providers.yaml` 的 `difficulty` 字段（1 最省事，5 最费劲）。
 >
@@ -206,7 +225,7 @@ python3 scripts/build_site.py   # 数据改了，重生成 site/index.html
 DeepSeek 是最典型的例子——网页版全功能免费，桌面端 Harness 送 6 元赠金，API 纯按 Token 收钱。很多人试了一下 API 觉得「这玩意儿要花钱」，其实他只是用错了入口。
 
 <!-- PRODUCTS:START 由 scripts/render.py 生成，不要手改这一段 -->
-> 只列**有两个以上入口**的产品：16 家、57 条形态记录。完整 48 家见 [docs/products.md](docs/products.md)。
+> 只列**有两个以上入口**的产品：17 家、59 条形态记录。完整 66 家见 [docs/products.md](docs/products.md)。
 
 | 产品 | 形态 | 白拿到什么 | 计费方式 | 备注 |
 |---|---|---|---|---|
@@ -261,6 +280,8 @@ DeepSeek 是最典型的例子——网页版全功能免费，桌面端 Harness
 | ↳ | API | 15 元（约 350 万~700 万 Token） | 代金券抵扣，用完转按量付费 | 全模态是这个平台的特点——文本、语音、视频同一套 API，原生多 SDK 与 MCP 兼容… |
 | **Qoder** | 桌面客户端 · 每日 100 Credits | 每天 100 Credits（30 天有效） | Credits 制 | 领取窗口到次日 10:00，错过不补，不累积。Qwen3.8-Flash 在 Qoder … |
 | ↳ | 桌面客户端 · 新用户试用 / 邀请 | 试用期约 300 Credits；邀请奖励 50–1000 Credits 不等 | Credits 制 | 网传「国际版免费 2000 积分」与官方文档口径不符（官方写 2 周 Pro 试用共 30… |
+| **TRAE** | IDE 插件 · 国内版 免费档 | 每月 500 积分 + 2 个云端任务并发 | 订阅制（积分） | 国内版 trae.cn 与国际版 trae.ai 是两套独立计费，别混着看。SOLO 与 … |
+| ↳ | IDE 插件 · 国际版 Free | 每月 5000 次补全 + 一次性用量额度 + 2 个云端任务 | 订阅制 | 最容易踩的坑——补全按月刷新，但 Agent / Chat 的用量额度是一次性的，用完不补… |
 | **七牛云** | API · AI 推理 | 300 万 Token（2 年有效） | 按 Token | 一个 Key 通吃国内外模型，OpenAI / Anthropic 双协议。有效期 2 年… |
 | ↳ | API · Conatus 每日额度 | 每天 1 亿 Token | 按 Token | 单日额度国内前列。历史充值满 100 元可升到 10 亿/天。 |
 | **豆包** | 网页版 | 不限量（有频率限制） | 完全免费 | 网页版免费，签到领额度只在电脑客户端。两个入口别搞混：网页版是「随便用」，客户端签到是「攒… |

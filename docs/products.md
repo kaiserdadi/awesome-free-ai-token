@@ -3,7 +3,7 @@
 > 本文件由 `scripts/render.py` 自动生成，**不要手改**。
 > 要改请动 [`data/providers.yaml`](../data/providers.yaml)，然后跑 `python3 scripts/render.py`。
 
-> 共 48 个产品、89 种形态。同一个 AI 换个入口，免费政策和计费方式可能完全不同——**日常用免费的网页版，要把能力接进程序才上 API**。
+> 共 66 个产品、108 种形态。同一个 AI 换个入口，免费政策和计费方式可能完全不同——**日常用免费的网页版，要把能力接进程序才上 API**。
 
 | 产品 | 形态 | 白拿到什么 | 计费方式 | 备注 |
 |---|---|---|---|---|
@@ -58,41 +58,60 @@
 | ↳ | API | 15 元（约 350 万~700 万 Token） | 代金券抵扣，用完转按量付费 | 全模态是这个平台的特点——文本、语音、视频同一套 API，原生多 SDK 与 MCP 兼容… |
 | **Qoder** | 桌面客户端 · 每日 100 Credits | 每天 100 Credits（30 天有效） | Credits 制 | 领取窗口到次日 10:00，错过不补，不累积。Qwen3.8-Flash 在 Qoder … |
 | ↳ | 桌面客户端 · 新用户试用 / 邀请 | 试用期约 300 Credits；邀请奖励 50–1000 Credits 不等 | Credits 制 | 网传「国际版免费 2000 积分」与官方文档口径不符（官方写 2 周 Pro 试用共 30… |
+| **TRAE** | IDE 插件 · 国内版 免费档 | 每月 500 积分 + 2 个云端任务并发 | 订阅制（积分） | 国内版 trae.cn 与国际版 trae.ai 是两套独立计费，别混着看。SOLO 与 … |
+| ↳ | IDE 插件 · 国际版 Free | 每月 5000 次补全 + 一次性用量额度 + 2 个云端任务 | 订阅制 | 最容易踩的坑——补全按月刷新，但 Agent / Chat 的用量额度是一次性的，用完不补… |
 | **七牛云** | API · AI 推理 | 300 万 Token（2 年有效） | 按 Token | 一个 Key 通吃国内外模型，OpenAI / Anthropic 双协议。有效期 2 年… |
 | ↳ | API · Conatus 每日额度 | 每天 1 亿 Token | 按 Token | 单日额度国内前列。历史充值满 100 元可升到 10 亿/天。 |
 | **豆包** | 网页版 | 不限量（有频率限制） | 完全免费 | 网页版免费，签到领额度只在电脑客户端。两个入口别搞混：网页版是「随便用」，客户端签到是「攒… |
 | ↳ | 桌面客户端 | 每天约 200 额度（周一翻倍） | 免费额度 | 官方没公布具体数值，200 是实测口径。只在电脑端，漏签一天少 200。 |
 | **阶跃星辰** | API · Step Plan | 最高 75 天（不拉人也有 30 天） | 订阅制 | 送的是 99 元 Flash Mini 档权益，能调全部旗舰模型。坑：Base URL 必… |
 | ↳ | API · 阶跃 stepaudio … | 限时免费（不限量） | 活动期 0 元 | 只覆盖音频多模态这一条线，不是全模型免费，别把标题读成「整站免费」。CORS 通配符全开，… |
+| **AWS Kiro** | IDE 插件 | 每月 50 credits + 新用户 500 赠送 | 订阅制（credits） | 强制先写需求（EARS 格式）、设计文档、任务清单，再让 Agent 动手，专治 AI 写… |
 | **Anthropic** | API | 约 $5（14 天有效） | 按 Token | 额度小、时效短、门槛高。同类需求更建议走 OpenRouter 的 :free 或 Clo… |
+| **Bolt.new** | 网页版 | 每月 100 万 token，日限 30 万 | 订阅制（token） | 不用填卡。免费档会给站点挂 Bolt 品牌标识，不能绑自定义域名，文件上传限 10MB。两… |
 | **Cerebras** | API | 每天 100 万 Token（5 RPM，8K 上下文） | 按 Token | 输出速度最快的一档（约 3000 tokens/s），但 8K 上下文是硬伤，长文档别指望… |
+| **Cline** | IDE 插件 | 工具免费无限制，只付模型钱 | 自带 Key（BYOK） | 它本身不送 token——价值在于能把你白嫖到的所有免费 API key 接进同一个壳子里… |
 | **Cloudflare** | API | 每天 10000 Neurons | 按 Neurons | 计量单位是 Neurons 不是 Token，不同模型换算差别大，按实测排预算。UTC 0… |
+| **CodeGeeX** | IDE 插件 | 免费版全功能不限量 | 订阅制 | VS Code / JetBrains 插件形态，也提供 Lingma 之外的另一条路。P… |
 | **Cohere** | API | 每月 1000 次调用 | 按调用次数 | 按次数不按 Token，RAG / 检索场景（Embed、Rerank）比对话更值。 |
+| **Cursor** | IDE 插件 | 每月 2000 次补全 + 50 次慢请求 | 订阅制 | 50 次请求摊到每天只有 2~3 次，活跃开发一两周就见底——免费档是试用档，不是日常档。… |
 | **GitHub Copilot** | IDE 插件 | 每月 2000 次补全 + 50 次 Chat | 订阅制 | 轻度用户完全够用。学生认证后可直接免费用 Pro（GitHub Student Pack）。 |
 | **GitHub Models** | API | 10 RPM 起，50–150 请求/天 | 免费层 | 状态存疑：有信源称 2026-07-30 已退役，也有当月清单仍在列。用之前先打开页面确认… |
+| **Google Antigravity** | IDE 插件 | 每周配额（具体数字官方未公示） | 免费预览 | 目前最划算的白嫖入口之一——不花钱就能用 Claude Sonnet 4.6 和 Gemi… |
 | **Google Gemini** | API | 每天 1000–1500 请求，1M 上下文 | 免费层 + 按量 | 综合最强免费档：模型最新、上下文 1M、不要卡。代价是免费层内容官方明说可能用于改进产品，… |
 | **Groq** | API | 30 RPM，1000 请求/天，20 万 Token/天 | 按 Token | LPU 推理速度极快，适合 Agent 里的高频小调用（意图分类、工具选择）。限流按组织算… |
 | **Hugging Face** | API | 约 $0.10/月 | 按量 | 典型「有免费层但不能用」：两次真实请求就见底。这里列出来是为了提醒你别把它当方案。 |
+| **JetBrains AI** | IDE 插件 | 每月 3 credits（本地补全不限） | 订阅制 | 只对本来就买了 IDEA / PyCharm 的人有意义——本地补全免费无限，3 cred… |
 | **Kilo Code** | IDE 插件 | 约 200 请求/小时 | 免费模型 | VS Code / JetBrains / CLI 都有。免费模型列表是活的，新模型上线会… |
+| **Lovable** | 网页版 | 5 credits/天，30/月 | 订阅制（credits） | 一次像样的构建大概 0.5~1.5 credit，免费档一天能做 3~4 次真改动。免费档… |
 | **Mistral** | API | 约 10 亿 Token/月（官方已不公布具体数值，看控制台） | 按 Token | 欧洲厂商，1 请求/秒。免费能摸到旗舰模型，做横向评测很划算。 |
 | **NVIDIA NIM** | API | 1000 credits（约 40 RPM） | 按 Token | 2026-11 新开的大额免费口子，+86 手机号可注册，Location 选 China… |
 | **OpenAI** | API | $5（3 个月有效） | 按 Token | 通常需绑卡，且部分区号不发。$5 跑不了几次旗舰模型，只够验证联通性。 |
 | **OpenCode** | 命令行 | 免费模型不限量（有限速） | 免费模型 | 免费档数据条款写明「可能用于改进模型」，涉密代码别用。模型会随平台调整，别写死模型名。 |
 | **OpenRouter** | API | 20 RPM，50 请求/天（历史充值过 $10 升到 1000/天） | 按 Token | 最省事的多模型对比入口。免费模型名单经常变，且常被上游限流。国内访问偶有波动。 |
+| **Qoder CN（原通义灵码）** | IDE 插件 | 补全与问答不限次，编程智能体对话 50 轮次/月 | 订阅制（Credits） | 重要时间点——通义灵码已于 2026-05-20 正式更名为 Qoder CN，「个人专业… |
+| **Roo Code** | IDE 插件 | 工具免费无限制 | 自带 Key（BYOK） | 比 Cline 多了 Orchestrator / Architect / Code 等角… |
 | **SambaNova** | API | 每天 20 万 Token（20 RPM） | 按 Token | RDU 芯片速度很快，但要绑卡，免费档近年收紧过。不想留卡信息就跳过。 |
+| **Strix** | 命令行 | 工具完全免费，只付模型钱（配本地模型可零成本） | 自带 Key（BYOK） | 7.3 万 star，Agent 跑在 Docker 沙箱里（Kali 镜像），自带 Ca… |
+| **Windsurf（现 Devin Desktop）** | IDE 插件 | 每月 25 Cascade credits + 无限补全 | 订阅制 | 2026-06-02 起 Windsurf 更名为 Devin Desktop，老链接会跳… |
+| **Zed** | IDE 插件 | 每月 2000 次编辑预测 + 自带 key 不限 | 订阅制 | GPL-3.0 / Apache-2.0 双协议，编辑器本身开源。真正的玩法是自带 API… |
+| **v0 by Vercel** | 网页版 | 7 条消息/天 + $5 首充额度 | 订阅制（credits） | 只出前端（React + Next.js + Tailwind + shadcn/ui），… |
 | **xAI Grok** | API | $25/月（共享数据 $150/月） | 按 Token | 与 OpenAI 类似属「绑卡 + 数据换额度」模式。单一来源，需自行核。 |
 | **书生端砚** | 网页版 | 每月 10 墨点（约 5 亿 Token） | 墨点制 | 按月清零。换算比例取决于模型，别直接按 5 亿规划。 |
 | **商汤日日新** | API | 5 小时 12 万积分 + 每周 120 万积分 | 公测免费 | 10-27 把 5h 上限从 6 万翻到 12 万，长期公测。多模态（OCR、识图）免费额… |
 | **天翼 AI** | 桌面客户端 | 工作日 1.8 亿/天，周末 2 亿/天 | 免费额度 | 单日额度国内最高档。但额度限客户端内使用，导不出标准 API，适合当「白嫖型 ChatGP… |
 | **小米 MiMo** | API | 未公开固定数值 | 按 Token | 另有 MiMo Orbit 创造者激励计划，需提交项目审核，通过后给大额 Token 包（… |
 | **快手万擎** | API | 无限量 | 0 元 | 只标「免费」没承诺期限。新版 Air-V2.5 已转收费，认准 V1。 |
+| **文心快码 Comate** | IDE 插件 | 个人标准版免费 + ¥10 体验金 | 订阅制 | 免费层给得比较实在，Multi-Agent 与 Figma2Code 不限次。付费专业版 … |
 | **百川智能** | API | 80 元（约 500 万 Token） | 代金券抵扣 | 80 元在国产平台里算给得多的，但模型能力和生态比头部弱一档。医疗场景是它的差异点。 |
 | **百度 AI Studio** | 网页版 | 每天 8 算力点（约 16 V100 小时） | 免费算力 | 这是算力不是 Token，但对「自己部署开源模型 = 零调用成本」这条路是关键拼图。 |
 | **移动云** | API | 2500 万 Tokens | 按 Token | 自领取起 30 天有效，限流 3000 tokens/分钟。运营商系里额度最实在的一家，模… |
 | **美团 CatPaw** | 桌面客户端 | 每日重置（Flash-Lite 额度很大） | 公测期 0 元 | 信源只有单一聚合站，公测随时可能结束或转收费，**动身前先去官网确认还在公测**。IDE … |
 | **腾讯 Cloud Studio** | 网页版 | 每月 10000 分钟 + 10000 GPU 分钟（T4 16G） | 免费算力 | 浏览器里就是 VS Code，空闲约 10 分钟自动关，同时最多 2 个空间。 |
+| **腾讯 CodeBuddy** | IDE 插件 | 每月 500 积分 + 无限补全 | 订阅制（积分） | 国产几家里免费额度偏紧的一档，重度用很快见底。标准版 ¥99/月（连续包月 ¥70），国际… |
 | **腾讯元宝** | 手机 App | 不限量（有频率限制） | 完全免费 | 混元本身不是 C 端产品，普通用户免费用的是元宝。缺点是不能接工作流、不能自动化跑任务，只… |
 | **蚂蚁百灵** | API | 期限内不限量 | 按 Token | 11-05 发布，两周免费约到 11-19（按发布日推算，以控制台为准）。同期基准号称超过… |
+| **蛙池 AI** | 桌面客户端 | 2200 蛙蛙币（约合 220 元），积分制 10 元 = 100 积分 | 积分（蛙蛙币） | 需要内测邀请码（官网或白帽交流群领）。Windows / macOS 双端客户端，内置蛙伴… |
 | **通义千问** | 手机 App | 不限量（有频率限制） | 完全免费 | C 端产品，和百炼 API 完全是两套东西——这里的免费额度不能变成 API Key。想写… |
 | **魔搭社区** | API | 每天 2000 次调用 | 按次免费 | 按「次」不按 Token，跑短 prompt 很划算；长 prompt 会很快吃满。 |
 | **魔芋 AI** | API | 合计最高约 2.7 亿 | 按 Token | 数字好看但拆分条件多（连签 11 天那档现在起步已经签不满）。单一来源，建议只当线索，自己… |
@@ -101,21 +120,41 @@
 
 > `models` 字段的可读版。同一产品下多个入口共用同一批模型时只列一次。
 
+**AWS Kiro**
+
+- Claude Sonnet 4.5、DeepSeek 3.2、Qwen3、GLM-5（Auto 模式路由）
+
 **Anthropic**
 
 - Claude 系列
+
+**Bolt.new**
+
+- 平台自动路由（Claude / GPT 等）
 
 **Cerebras**
 
 - gpt-oss-120b、Gemma-4-31B、Qwen 系列
 
+**Cline**
+
+- 任意（OpenAI / Anthropic / Gemini / DeepSeek / Ollama 本地）
+
 **Cloudflare**
 
 - Llama 4、Qwen、Mistral 等 50+
 
+**CodeGeeX**
+
+- GLM 系列
+
 **Cohere**
 
 - Command A+ 系列
+
+**Cursor**
+
+- 自有多模型（Claude / GPT / Gemini 系列）
 
 **DeepSeek**
 
@@ -130,6 +169,10 @@
 
 - GPT-5、GPT-4.1、Llama、Phi
 
+**Google Antigravity**
+
+- Gemini 3.1 Pro / Flash、Claude Sonnet 4.6、GPT-OSS
+
 **Google Gemini**
 
 - Gemini 3 Flash、3.5 Flash-Lite、2.5 Flash
@@ -142,6 +185,10 @@
 
 - 社区模型（含 Llama、Qwen、DeepSeek 蒸馏版）
 
+**JetBrains AI**
+
+- 内置本地模型 + 云端 Claude / GPT
+
 **Kilo Code**
 
 - NVIDIA Nemotron 3 Ultra、Nex-N2.5-Pro、MiniMax M2.7、腾讯混元 Hy3
@@ -150,6 +197,10 @@
 
 - Kimi K3、K2.5
 - Kimi K3 系列、K2.5
+
+**Lovable**
+
+- 平台自带（Claude 等）
 
 **MiniMax**
 
@@ -181,9 +232,30 @@
 - Qoder 全系（含 Qwen3.8-Flash 0 倍率）
 - 全部旗舰模型
 
+**Qoder CN（原通义灵码）**
+
+- Qwen 系列为主，可切 GLM / DeepSeek / Kimi / MiniMax
+
+**Roo Code**
+
+- 任意（BYOK）
+
 **SambaNova**
 
 - DeepSeek-V3、Llama 系列
+
+**Strix**
+
+- OpenAI / Anthropic / Google / Bedrock / Vertex / OpenRouter / 本地 Ollama
+
+**TRAE**
+
+- 豆包 Seed 2.1、DeepSeek-V4.1、GLM-5.3、Kimi、MiniMax 可切
+- Auto 模式自动路由（Claude / GPT / Gemini 等）
+
+**Windsurf（现 Devin Desktop）**
+
+- 自有 Cascade 多模型
 
 **WorkBuddy**
 
@@ -192,6 +264,14 @@
 - 平台内全模型（含限时 0 倍率模型）
 - 平台内全模型
 - Hunyuan Hy3、Hy4-preview
+
+**Zed**
+
+- Claude、GPT、Gemini、Grok（自选）
+
+**v0 by Vercel**
+
+- Vercel 路由（Claude / GPT / Gemini）
 
 **xAI Grok**
 
@@ -226,6 +306,10 @@
 **快手万擎**
 
 - KAT-Coder-Air-V1、KAT-Coder-Exp-72B-1010
+
+**文心快码 Comate**
+
+- 文心 ERNIE 系列 + DeepSeek
 
 **智谱 GLM**
 
@@ -275,6 +359,10 @@
 
 - 免费 GPU 算力（非 Token）
 
+**腾讯 CodeBuddy**
+
+- 混元 + DeepSeek + GLM 可切
+
 **腾讯云 TokenHub**
 
 - DeepSeek、Kimi、GLM、混元、MiniMax
@@ -288,6 +376,10 @@
 **蚂蚁百灵**
 
 - Ling-3.2-flash（560B MoE，1M 上下文，多模态）
+
+**蛙池 AI**
+
+- DeepSeek-V4-Pro / Flash、GLM-5.2、MiniMax-M3、Kimi-K2.7-Code、Qwen3.7-Max、豆包 Seed 2.0
 
 **讯飞星火**
 

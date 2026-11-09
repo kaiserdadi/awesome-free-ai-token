@@ -107,8 +107,8 @@ select{
   display:flex; gap:18px; flex-wrap:wrap; align-items:center;
   font-size:13px;
 }
-.fgroup{display:flex; gap:6px; align-items:center}
-.flabel{color:var(--ink3); font-size:12px; margin-right:2px}
+.fgroup{display:flex; gap:6px; align-items:center; flex-wrap:wrap; row-gap:6px; min-width:0}
+.flabel{color:var(--ink3); font-size:12px; margin-right:2px; white-space:nowrap}
 .chip{
   border:1px solid var(--line); background:var(--panel); color:var(--ink2);
   padding:4px 11px; border-radius:999px; font-size:12.5px; transition:.15s;
@@ -138,8 +138,8 @@ main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
   border-bottom:1px solid var(--line);
 }
 .sectionhead h2{margin:0; font-size:14px; font-weight:700; letter-spacing:.01em}
-.sectionhead .hint{font-size:12.5px; color:var(--ink3)}
-.sectionhead .cnt{margin-left:auto; font-size:12px; color:var(--ink3); font-variant-numeric:tabular-nums}
+.sectionhead .hint{font-size:12.5px; color:var(--ink3); min-width:0}
+.sectionhead .cnt{margin-left:auto; font-size:12px; color:var(--ink3); font-variant-numeric:tabular-nums; white-space:nowrap; flex:0 0 auto}
 .sectionhead.soon h2{color:var(--red)}
 .sectionhead.soon h2::before{content:""; display:inline-block; width:3px; height:12px;
   background:var(--red); border-radius:2px; margin-right:7px; vertical-align:-1px}
