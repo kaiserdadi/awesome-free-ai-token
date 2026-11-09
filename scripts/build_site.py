@@ -124,6 +124,474 @@ body{
 }
 """
 
+# 深空宇宙变体（--cosmic）：整站换成深色星际底，视觉冲击优先。
+# 与 COOL_CSS 互斥，只加样式不动结构与数据，原版 index.html 不受影响。
+COSMIC_CSS = r"""
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes angspin{to{--ang:360deg}}
+@keyframes flowline{to{background-position:220% 0}}
+@keyframes nebreathe{0%,100%{opacity:.85} 50%{opacity:1}}
+@keyframes twinkle{0%,100%{opacity:.72} 50%{opacity:1}}
+@keyframes pulseGlow{0%,100%{opacity:.55} 50%{opacity:1}}
+
+:root{
+  --bg:#04060e;
+  --panel:#0b1224;
+  --ink:#e9f1ff;
+  --ink2:#a6b6d6;
+  --ink3:#6b7c9d;
+  --line:rgba(122,158,232,.17);
+  --line2:rgba(122,158,232,.09);
+  --copper:#5ecbff;
+  --copper-soft:rgba(94,203,255,.12);
+  --copper-line:rgba(94,203,255,.34);
+  --red:#ff6272;
+  --red-soft:rgba(255,98,114,.14);
+  --green:#3ce0a6;
+  --green-soft:rgba(60,224,166,.13);
+  --blue:#6aa8ff;
+  --blue-soft:rgba(106,168,255,.14);
+  --violet:#b18bff;
+  --violet-soft:rgba(177,139,255,.15);
+  --shadow:0 24px 60px -34px rgba(0,0,0,.98);
+  --radius:16px;
+  color-scheme:dark;
+}
+
+html{background:#010206}
+html,body{overflow-x:clip}
+body{
+  background:
+    radial-gradient(1080px 460px at 50% -14%, rgba(126,186,255,.50) 0%, rgba(92,142,255,.14) 34%, rgba(92,142,255,0) 62%),
+    radial-gradient(720px 380px at 102% -10%, rgba(192,112,255,.36) 0%, rgba(192,112,255,0) 62%),
+    radial-gradient(480px 320px at -6% 4%, rgba(0,212,255,.18) 0%, rgba(0,212,255,0) 64%),
+    #010206;
+  background-attachment:fixed;
+}
+@supports not (background-attachment: fixed){
+  body{background:#010206}
+}
+
+/* 星云层（只做透明度呼吸，不重绘） */
+body::before{
+  content:""; position:fixed; inset:-8% -8% -8% -8%; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(40% 24% at 50% -4%, rgba(150,215,255,.30), transparent 72%),
+    radial-gradient(26% 18% at 88% 6%, rgba(190,150,255,.24), transparent 74%),
+    radial-gradient(30% 20% at 4% 34%, rgba(255,86,176,.08), transparent 76%),
+    radial-gradient(110% 18% at 50% 118%, rgba(94,203,255,.10), transparent 66%);
+  filter:blur(24px);
+  animation:nebreathe 26s ease-in-out infinite;
+}
+
+/* 星点层：硬边圆点，锐利不发虚；少量亮星带光晕 */
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    radial-gradient(circle at 26px 44px, #fff 0 1.2px, transparent 1.4px),
+    radial-gradient(circle at 152px 96px, rgba(210,234,255,.95) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 248px 210px, #fff 0 1.4px, transparent 1.6px),
+    radial-gradient(circle at 88px 168px, rgba(180,212,255,.9) 0 .9px, transparent 1.1px),
+    radial-gradient(circle at 196px 268px, #fff 0 1.5px, transparent 1.7px),
+    radial-gradient(circle at 40px 236px, rgba(214,232,255,.85) 0 .9px, transparent 1.1px),
+    radial-gradient(circle at 300px 130px, rgba(255,255,255,.8) 0 .8px, transparent 1px),
+
+    radial-gradient(circle at 64px 132px, #fff 0 1.2px, transparent 1.4px),
+    radial-gradient(circle at 318px 58px, #fff 0 1.6px, transparent 1.8px),
+    radial-gradient(circle at 412px 306px, rgba(198,224,255,.92) 0 1.1px, transparent 1.3px),
+    radial-gradient(circle at 202px 414px, #fff 0 1.4px, transparent 1.6px),
+    radial-gradient(circle at 466px 196px, rgba(206,232,255,.85) 0 .9px, transparent 1.1px),
+    radial-gradient(circle at 128px 448px, rgba(255,236,250,.9) 0 1.3px, transparent 1.5px),
+
+    radial-gradient(circle at 112px 476px, rgba(220,238,255,.9) 0 1.1px, transparent 1.3px),
+    radial-gradient(circle at 402px 664px, #fff 0 1.5px, transparent 1.7px),
+    radial-gradient(circle at 764px 336px, rgba(206,232,255,.85) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 236px 782px, rgba(255,238,252,.9) 0 1.3px, transparent 1.5px),
+    radial-gradient(circle at 706px 542px, rgba(198,224,255,.88) 0 1.1px, transparent 1.3px),
+    radial-gradient(circle at 88px 620px, rgba(255,255,255,.82) 0 .9px, transparent 1.1px),
+
+    /* 三颗亮星：核心 + 光晕 */
+    radial-gradient(circle at 586px 168px, #fff 0 1.4px, rgba(150,205,255,.55) 2.2px, rgba(120,180,255,.10) 6px, transparent 11px),
+    radial-gradient(circle at 180px 340px, #fff 0 1.2px, rgba(190,215,255,.45) 2px, rgba(120,180,255,.08) 5.5px, transparent 10px),
+    radial-gradient(circle at 830px 470px, #fff 0 1.3px, rgba(255,200,240,.45) 2px, rgba(255,150,220,.08) 6px, transparent 11px);
+  background-size:
+    320px 320px, 320px 320px, 320px 320px, 320px 320px, 320px 320px, 320px 320px, 320px 320px,
+    520px 520px, 520px 520px, 520px 520px, 520px 520px, 520px 520px, 520px 520px,
+    820px 820px, 820px 820px, 820px 820px, 820px 820px, 820px 820px, 820px 820px,
+    1180px 1180px, 1180px 1180px, 1180px 1180px;
+  background-repeat:repeat;
+  animation:twinkle 13s ease-in-out infinite;
+}
+
+/* 内容抬到星层之上 */
+main,footer{position:relative; z-index:1}
+
+::selection{background:rgba(94,203,255,.32); color:#fff}
+::-webkit-scrollbar{width:11px; height:11px}
+::-webkit-scrollbar-track{background:#04060e}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#22315a,#182340); border-radius:8px; border:2px solid #04060e;
+}
+::-webkit-scrollbar-thumb:hover{background:#2e4478}
+
+/* ── 顶栏 ───────────────────────────── */
+.top{
+  background:rgba(3,5,13,.62);
+  backdrop-filter:saturate(150%) blur(26px); -webkit-backdrop-filter:saturate(150%) blur(26px);
+  border-bottom:1px solid rgba(122,158,232,.18);
+  box-shadow:0 24px 60px -48px #000;
+}
+.top::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  pointer-events:none; background-size:220% 100%;
+  background-image:linear-gradient(90deg,
+    rgba(94,203,255,0) 0%, rgba(94,203,255,.85) 18%,
+    rgba(177,139,255,.9) 42%, rgba(255,142,203,.75) 64%,
+    rgba(94,203,255,0) 88%);
+  animation:flowline 11s linear infinite;
+}
+
+.brand{color:#f5f9ff; font-size:22px; letter-spacing:-.02em; text-shadow:0 0 32px rgba(94,203,255,.55)}
+.brand em{
+  color:transparent;
+  background:linear-gradient(100deg,#7ee0ff 0%,#b18bff 58%,#ff8ecb 100%);
+  -webkit-background-clip:text; background-clip:text;
+  filter:drop-shadow(0 0 16px rgba(126,224,255,.75));
+}
+.brand-tag{
+  color:#9fe6ff; background:rgba(94,203,255,.10);
+  border-color:rgba(94,203,255,.30);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+.brand-sub{color:var(--ink3)}
+
+.search input{
+  background:rgba(9,14,27,.82); border-color:rgba(122,158,232,.20); color:var(--ink);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.search input::placeholder{color:#5f7092}
+.search input:focus{
+  border-color:rgba(94,203,255,.62);
+  box-shadow:0 0 0 3px rgba(94,203,255,.13), 0 0 28px -8px rgba(94,203,255,.75);
+}
+.search kbd{background:#0a1122; border-color:rgba(122,158,232,.20); color:var(--ink3)}
+
+select{
+  background-color:rgba(9,14,27,.82); border-color:rgba(122,158,232,.20); color:var(--ink);
+}
+select option{background:#0a1020; color:#e9f1ff}
+
+.tabs{background:rgba(8,12,24,.72); border:1px solid rgba(122,158,232,.16)}
+.tab{color:#94a6c8}
+.tab[aria-selected="true"]{
+  background:linear-gradient(180deg,rgba(94,203,255,.22),rgba(94,203,255,.07));
+  color:#eaf8ff;
+  box-shadow:
+    0 0 0 1px rgba(94,203,255,.45),
+    0 0 26px -8px rgba(94,203,255,.85),
+    inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+.chip{
+  border-color:rgba(122,158,232,.20); background:rgba(13,19,35,.78); color:var(--ink2);
+}
+.chip:hover{
+  border-color:rgba(94,203,255,.52); color:#8fe6ff;
+  box-shadow:0 0 20px -6px rgba(94,203,255,.65);
+}
+.chip[aria-pressed="true"]{
+  background:linear-gradient(180deg,#2f9fd6,#1d6f9c);
+  border-color:rgba(120,214,255,.62); color:#f2fbff; font-weight:700;
+  box-shadow:0 0 20px -8px rgba(94,203,255,.75), inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+/* ── 首屏说明卡：视觉中心 ─────────────── */
+.lede{
+  position:relative; overflow:hidden;
+  padding:34px 32px;
+  gap:32px;
+  background:
+    radial-gradient(95% 70% at 50% -32%, rgba(170,235,255,.20), transparent 62%),
+    radial-gradient(110% 180% at 4% -50%, rgba(94,203,255,.14), transparent 62%),
+    radial-gradient(85% 150% at 98% 140%, rgba(177,139,255,.12), transparent 64%),
+    linear-gradient(180deg,rgba(152,192,255,.10),rgba(10,18,40,.44));
+  backdrop-filter:blur(22px) saturate(150%); -webkit-backdrop-filter:blur(22px) saturate(150%);
+  border:1px solid rgba(140,220,255,.52);
+  border-radius:20px;
+  box-shadow:
+    0 0 0 1px rgba(94,203,255,.12),
+    0 0 140px -20px rgba(126,224,255,.72),
+    0 0 56px -16px rgba(177,139,255,.52),
+    0 44px 96px -54px #000,
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+.lede::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:1px; z-index:2;
+  background-image:linear-gradient(90deg,
+    rgba(94,203,255,0), rgba(94,203,255,.95) 22%, rgba(177,139,255,.95) 52%,
+    rgba(255,142,203,.8) 76%, rgba(94,203,255,0));
+  background-size:220% 100%;
+  animation:flowline 8s linear infinite;
+}
+.lede::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:.55;
+  background-image:
+    radial-gradient(1px 1px at 12% 26%, rgba(255,255,255,.9), transparent 62%),
+    radial-gradient(1.4px 1.4px at 47% 14%, rgba(198,226,255,.85), transparent 62%),
+    radial-gradient(1px 1px at 68% 74%, rgba(255,255,255,.8), transparent 62%),
+    radial-gradient(1.6px 1.6px at 88% 36%, rgba(255,214,244,.8), transparent 62%),
+    radial-gradient(1px 1px at 28% 86%, rgba(168,206,255,.75), transparent 62%);
+}
+.lede > *{position:relative; z-index:1}
+.lede h2{
+  font-size:28px; font-weight:800; letter-spacing:-.015em; line-height:1.25;
+  margin-bottom:10px;
+  color:transparent;
+  background:linear-gradient(94deg,#ffffff 0%,#9fe6ff 44%,#c3a5ff 100%);
+  -webkit-background-clip:text; background-clip:text;
+  filter:drop-shadow(0 0 22px rgba(94,203,255,.42));
+}
+.lede p{font-size:13.5px; line-height:1.8; max-width:720px}
+.lede .k{color:#8fe6ff; text-shadow:0 0 18px rgba(94,203,255,.55)}
+.lede-q a{color:#8fe6ff; border-bottom-color:rgba(94,203,255,.42)}
+.lede-q a:hover{border-bottom-color:#8fe6ff}
+
+.statrow{gap:34px}
+.stat b{
+  font-size:32px; letter-spacing:.01em; line-height:1.1;
+  color:transparent;
+  background:linear-gradient(180deg,#ffffff 0%,#8fe6ff 62%,#3fa9ff 100%);
+  -webkit-background-clip:text; background-clip:text;
+  filter:drop-shadow(0 0 16px rgba(94,203,255,.6));
+}
+.stat span{color:#8ea3c6; font-size:12px; letter-spacing:.02em}
+
+@media (max-width:640px){
+  .lede{padding:22px 18px; gap:18px}
+  .lede h2{font-size:20px}
+  .stat b{font-size:24px}
+  .statrow{gap:18px}
+}
+
+/* ── 分区标题 ───────────────────────── */
+.sectionhead{border-bottom-color:rgba(122,158,232,.17)}
+.sectionhead h2{color:#eaf2ff}
+.sectionhead h2::before{
+  content:""; display:inline-block; width:3px; height:12px; border-radius:2px;
+  margin-right:8px; vertical-align:-1px;
+  background:linear-gradient(180deg,#7ee0ff,#b18bff);
+  box-shadow:0 0 12px rgba(126,224,255,.8);
+}
+.sectionhead.soon h2{color:#ff828e; text-shadow:0 0 22px rgba(255,98,114,.45)}
+.sectionhead.soon h2::before{background:linear-gradient(180deg,#ff8b96,#ff4f63); box-shadow:0 0 12px rgba(255,98,114,.8)}
+.sectionhead .hint,.sectionhead .cnt{color:var(--ink3)}
+
+/* ── 临期条 ─────────────────────────── */
+.urgent{
+  background:rgba(122,158,232,.10);
+  border-color:rgba(255,98,114,.22);
+  box-shadow:0 0 46px -26px rgba(255,98,114,.75);
+}
+.urow{background:rgba(12,17,32,.90)}
+.urow:hover{background:rgba(30,20,38,.92)}
+.urow .d{color:#ff7d89}
+.urow .d.warn{color:#ffc06a}
+
+/* ── 产品组标题 ─────────────────────── */
+.phead h3{color:#f2f7ff}
+.phead .pill{
+  background:rgba(122,158,232,.11);
+  border-color:rgba(122,158,232,.22);
+  color:#95a8ca;
+}
+.phead .deadline{color:#ff7d89}
+
+/* ── 卡片：深空玻璃 ─────────────────── */
+.card{
+  background:
+    radial-gradient(140% 90% at 50% -24%, rgba(126,186,255,.11), transparent 60%),
+    linear-gradient(180deg,rgba(146,180,255,.075),rgba(16,26,52,.34));
+  border:1px solid rgba(152,186,242,.17);
+  border-radius:16px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 20px 48px -34px rgba(0,0,0,1);
+  transition:border-color .22s, transform .22s, box-shadow .22s, background .22s;
+}
+.card::before{
+  content:""; position:absolute; left:15px; right:15px; top:0; height:1px;
+  pointer-events:none; opacity:.6; transition:opacity .22s;
+  background:linear-gradient(90deg,
+    rgba(94,203,255,0), rgba(94,203,255,.75) 30%,
+    rgba(177,139,255,.75) 68%, rgba(94,203,255,0));
+}
+.card::after{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(180deg,rgba(94,203,255,.13),transparent 44%);
+  opacity:0; transition:opacity .26s;
+}
+.card:hover{
+  transform:translateY(-2px);
+  border-color:transparent;
+  background:
+    linear-gradient(180deg,rgba(25,35,62,.94),rgba(10,15,29,.96)) padding-box,
+    conic-gradient(from var(--ang),
+      rgba(94,203,255,.95), rgba(177,139,255,.95) 26%,
+      rgba(94,203,255,.30) 52%, rgba(255,142,203,.85) 76%,
+      rgba(94,203,255,.95)) border-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 0 1px rgba(94,203,255,.16),
+    0 0 46px -12px rgba(94,203,255,.55),
+    0 34px 76px -44px #000;
+  animation:angspin 3.4s linear infinite;
+}
+.card:hover::before{opacity:1}
+.card:hover::after{opacity:1}
+.card[data-status="expired"]{opacity:.42; filter:grayscale(.5)}
+.card[data-status="expired"]:hover{opacity:.72}
+
+.card h4{color:#f4f8ff; letter-spacing:-.005em}
+.big{
+  color:#8fe6ff;
+  text-shadow:0 0 24px rgba(94,203,255,.42), 0 0 2px rgba(143,230,255,.6);
+}
+.big small{color:var(--ink3)}
+
+.cd{color:var(--ink3)}
+.cd.hot{color:#ff7d89; text-shadow:0 0 16px rgba(255,98,114,.5)}
+.cd.warn{color:#ffc06a}
+
+.tag.form{
+  background:rgba(122,158,232,.15); color:#b9c9e6; border-color:rgba(122,158,232,.24);
+}
+.tag.promo{background:rgba(255,98,114,.17); color:#ff929c; border-color:rgba(255,98,114,.32)}
+.tag.daily{background:rgba(60,224,166,.16); color:#63f2bf; border-color:rgba(60,224,166,.32)}
+.tag.signup{background:rgba(106,168,255,.17); color:#93c4ff; border-color:rgba(106,168,255,.32)}
+.tag.free_model{background:rgba(177,139,255,.18); color:#c8adff; border-color:rgba(177,139,255,.32)}
+
+.kv{border-top-color:rgba(122,158,232,.12)}
+.kv b{color:#b8c8e6}
+.kv .warn{color:#ff7d89}
+
+details .body{
+  background:rgba(6,10,21,.94);
+  border-color:rgba(122,158,232,.14);
+}
+details summary{color:var(--ink2)}
+details summary:hover{color:#8fe6ff}
+.links a{color:#7eb8ff; text-shadow:0 0 18px rgba(106,168,255,.35)}
+
+/* ── 底部群卡 ───────────────────────── */
+footer{border-top-color:rgba(122,158,232,.22); color:#93a6c8}
+.qgroup{border-bottom-color:rgba(122,158,232,.20)}
+.qrimg{
+  background:#fff; padding:5px; border-radius:12px;
+  border:1px solid rgba(94,203,255,.55);
+  box-shadow:0 0 34px -8px rgba(94,203,255,.75);
+}
+.qtitle{color:#f4f8ff}
+.qnum b{color:#fff; text-shadow:0 0 18px rgba(94,203,255,.55)}
+.qcopy{
+  background:rgba(10,16,30,.88); border-color:rgba(122,158,232,.26); color:var(--ink2);
+}
+.qcopy:hover{
+  border-color:rgba(94,203,255,.62); color:#8fe6ff;
+  box-shadow:0 0 22px -6px rgba(94,203,255,.7);
+}
+.qcopy.done{
+  border-color:rgba(60,224,166,.7); color:#63f2bf; background:rgba(60,224,166,.13);
+}
+.qtip{color:#93a6c8}
+.lede-q{color:#8fa3c6 !important}
+
+@keyframes orbPulse{0%,100%{opacity:.88} 50%{opacity:1}}
+
+
+/* 顶部极光带：横贯全屏的彩色辉光，让顶栏变成"舷窗玻璃" */
+.sky-aurora{
+  position:fixed; z-index:0; pointer-events:none;
+  left:0; right:0; top:-60px; height:400px;
+  background:
+    radial-gradient(58% 100% at 18% 0%, rgba(94,203,255,.34), transparent 70%),
+    radial-gradient(52% 92% at 54% -8%, rgba(158,122,255,.32), transparent 72%),
+    radial-gradient(44% 84% at 86% 2%, rgba(255,118,198,.20), transparent 72%),
+    radial-gradient(70% 60% at 50% 40%, rgba(120,190,255,.12), transparent 76%);
+  filter:blur(46px);
+  animation:auroraShift 26s ease-in-out infinite;
+}
+@keyframes auroraShift{
+  0%,100%{transform:translateX(-2.5%) scaleY(1)}
+  50%{transform:translateX(2.5%) scaleY(1.14)}
+}
+
+/* 星野封面：顶栏与内容之间的一段太空，底部托着一颗巨行星的边缘 */
+.sky-hero{
+  position:relative; height:262px; overflow:hidden; pointer-events:none;
+  margin-bottom:10px;
+  background-image:
+    radial-gradient(circle at 8% 18%, #fff 0 1.3px, transparent 1.5px),
+    radial-gradient(circle at 23% 42%, rgba(210,234,255,.9) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 41% 12%, #fff 0 1.5px, transparent 1.7px),
+    radial-gradient(circle at 58% 34%, rgba(200,228,255,.85) 0 1.1px, transparent 1.3px),
+    radial-gradient(circle at 72% 9%, #fff 0 1.2px, transparent 1.4px),
+    radial-gradient(circle at 88% 27%, rgba(255,240,250,.9) 0 1.4px, transparent 1.6px),
+    radial-gradient(circle at 15% 62%, rgba(190,220,255,.8) 0 .9px, transparent 1.1px),
+    radial-gradient(circle at 34% 74%, #fff 0 1.1px, transparent 1.3px),
+    radial-gradient(circle at 66% 66%, rgba(210,234,255,.8) 0 .9px, transparent 1.1px),
+    radial-gradient(circle at 82% 56%, #fff 0 1.2px, transparent 1.4px),
+    radial-gradient(circle at 94% 72%, rgba(200,228,255,.75) 0 .9px, transparent 1.1px);
+}
+/* 星云（先绘制，压在球之下） */
+.sky-hero::before{
+  content:""; position:absolute; inset:-40px -10% 0 -10%;
+  background:
+    radial-gradient(44% 110% at 20% 0%, rgba(94,203,255,.26), transparent 70%),
+    radial-gradient(40% 100% at 62% -14%, rgba(158,122,255,.30), transparent 72%),
+    radial-gradient(34% 88% at 92% 2%, rgba(255,118,198,.18), transparent 72%);
+  filter:blur(40px);
+}
+/* 巨行星：2600px 直径，只露顶部一段弧 */
+.sky-hero::after{
+  content:""; position:absolute; left:50%; top:110px; transform:translateX(-50%);
+  width:10000px; height:10000px; border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(3,6,16,1) 0 68.9%,
+      rgba(10,28,68,1) 69.9%,
+      rgba(30,76,158,1) 70.26%,
+      rgba(72,146,226,.98) 70.42%,
+      rgba(172,230,255,1) 70.53%,
+      rgba(190,212,255,.62) 70.61%,
+      rgba(130,178,255,.20) 70.74%,
+      rgba(94,203,255,0) 71.04%);
+  animation:orbPulse 18s ease-in-out infinite;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+  -webkit-mask-size:100vw 100%; -webkit-mask-position:center top; -webkit-mask-repeat:no-repeat;
+  mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+  mask-size:100vw 100%; mask-position:center top; mask-repeat:no-repeat;
+}
+
+@media (max-width:640px){
+  .sky-hero{height:140px}
+  .sky-hero::after{height:3200px; width:3200px; top:74px}
+}
+.sky-vignette{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(118% 86% at 50% 20%, transparent 34%, rgba(0,0,0,.42) 74%, rgba(0,0,0,.72) 100%);
+}
+
+@media (max-width:640px){
+  .sky-aurora{height:300px; filter:blur(34px)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  body::before,body::after,.sky-hero::after,.sky-aurora,.top::after,.lede::before,.tab[aria-selected="true"],.card:hover,.qcopy{
+    animation:none !important;
+  }
+}
+"""
+
 TEMPLATE = r"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -771,17 +1239,30 @@ def main() -> int:
     )
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    cool = "--cool" in sys.argv
-    out_file = os.path.join(OUT_DIR, "cool.html") if cool else OUT_FILE
-    if cool:
-        html = html.replace("</head>", "<style>\n" + COOL_CSS + "\n</style>\n</head>", 1)
+    # 三种皮：默认暖白 / --cool 铜色描边 / --cosmic 深空宇宙
+    skin = "cosmic" if "--cosmic" in sys.argv else ("cool" if "--cool" in sys.argv else "")
+    out_file = os.path.join(OUT_DIR, skin + ".html") if skin else OUT_FILE
+    css = {"cool": COOL_CSS, "cosmic": COSMIC_CSS}.get(skin)
+    if css:
+        html = html.replace("</head>", "<style>\n" + css + "\n</style>\n</head>", 1)
+    if skin == "cosmic":
+        # 仅深空版插入背景装饰层，原版结构不受影响
+        html = html.replace(
+            "<body>",
+            '<body>\n<div class="sky-aurora" aria-hidden="true"></div>'
+            '<div class="sky-vignette" aria-hidden="true"></div>',
+            1,
+        )
+        html = html.replace(
+            "<main>", '<div class="sky-hero" aria-hidden="true"></div>\n<main>', 1
+        )
     with open(out_file, "w", encoding="utf-8") as fh:
         fh.write(html)
 
     size = os.path.getsize(out_file) / 1024
     cn = sum(1 for d in data if d["region"] == "cn")
     prods = {d["product"] for d in data}
-    label = "site/cool.html（炫酷版）" if cool else "site/index.html"
+    label = ("site/%s.html（%s）" % (skin, {"cool": "炫酷版", "cosmic": "深空版"}[skin])) if skin else "site/index.html"
     print(f"已生成 {label}：{len(data)} 个入口 / {len(prods)} 家平台（国内 {cn} / 海外 {len(data) - cn}），{size:.0f} KB")
     externals = html.count('src="http')
     print(f"外链数量：{externals} 个（应为 0）")
