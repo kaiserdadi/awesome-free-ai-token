@@ -163,6 +163,17 @@ def clip(text: str, n: int = 46) -> str:
     return text if len(text) <= n else text[: n - 1] + "…"
 
 
+def short_name(item: dict) -> str:
+    """同一产品下同形态有多条时，用名字的差异部分区分，避免一整列都是「桌面客户端」。"""
+    name = esc(item["name"])
+    prod = esc(item["product"])
+    if "·" in name:
+        name = name.rsplit("·", 1)[-1].strip()
+    elif name.startswith(prod):
+        name = name[len(prod):].strip(" 　-—")
+    return name if len(name) <= 14 else name[:13] + "…"
+
+
 def build_products(items: list[dict], only_multi: bool) -> str:
     """按「产品 × 形态」聚合。同一个 AI 换个入口，收费方式常常是两回事。"""
     groups: dict[str, list[dict]] = {}
@@ -194,10 +205,13 @@ def build_products(items: list[dict], only_multi: bool) -> str:
             ),
         )
         for i, it in enumerate(arr):
+            form = FORM_CN.get(it["form"], it["form"])
+            if sum(1 for x in arr if x["form"] == it["form"]) > 1:
+                form = f"{form} · {short_name(it)}"
             out.append(
                 "| {p} | {f} | {v} | {b} | {n} |".format(
                     p=f"**{esc(prod)}**" if i == 0 else "↳",
-                    f=FORM_CN.get(it["form"], it["form"]),
+                    f=form,
                     v=esc(it["value"]),
                     b=esc(it["billing"]),
                     n=clip(it["notes"]),

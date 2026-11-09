@@ -475,7 +475,176 @@
   source: https://cloud.tencent.com/developer/article/2766229
   verified: 2026-11-09
   confidence: high
-  notes: 只在电脑客户端有，网页版和手机端都没有。0 点刷新，当天不领作废。体验版另每月赠 500 积分。签到积分约 180 天有效。
+  notes: 只在电脑客户端有，网页版和手机端都没有。0 点刷新，当天不领作废。加油站是活动制，分期换期，换期后名字和周期会变，别假设永远开着。连签奖励口径有分歧——一说 7 天额外 1000，一说整轮 7 天合计 1600，以页面实际显示为准。
+
+- id: workbuddy-monthly
+  product: WorkBuddy
+  form: desktop
+  name: WorkBuddy 体验版月赠积分
+  region: cn
+  type: daily
+  offer: 免费（体验版）账号每月自动发放基础积分，不用做任何操作
+  models: 平台内全模型
+  value: 每月 500 积分
+  billing: 积分制
+  expiry: long
+  reset: monthly
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://www.workbuddy.cn
+  source: https://developer.cloud.tencent.com/article/2766229
+  verified: 2026-11-09
+  confidence: high
+  notes: 每月 1 日刷新，当月有效、用不完清零。这是「底薪」，加油站和任务才是主力。500 积分大约够跑 30 个中等任务。
+
+- id: workbuddy-travel
+  product: WorkBuddy
+  form: desktop
+  name: WorkBuddy 派 Buddy 去旅行
+  region: cn
+  type: daily
+  offer: 左下角头像 → 成长计划 → 派 Buddy 去旅行，点「派出去」，回来领积分与盲盒
+  models: 平台内全模型（仅用于兑换积分）
+  value: 每天 5~10 积分 + 盲盒
+  billing: 积分制
+  expiry: unknown
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://www.workbuddy.cn
+  source: https://developer.cloud.tencent.com/article/2766229
+  verified: 2026-11-09
+  confidence: medium
+  notes: 收益看 Buddy 稀有度，R 级约 5~6 分，UR 级（暴富喵）8~10 分，10 分是单次上限。有加成 60% 出自 R 级。当顺手彩蛋，别当主力。攒的能量 10 点开一次盲盒，能开出积分、周边或限定形象。
+
+- id: workbuddy-task
+  product: WorkBuddy
+  form: desktop
+  name: WorkBuddy 成长计划任务中心
+  region: cn
+  type: signup
+  offer: 头像 → 成长计划 → 任务，新手任务与体验任务，完成即得积分
+  models: 平台内全模型
+  value: 单任务 100~300，一次性合计 1000+
+  billing: 积分制
+  expiry: unknown
+  reset: once
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://www.workbuddy.cn
+  source: https://developer.cloud.tencent.com/article/2766229
+  verified: 2026-11-09
+  confidence: high
+  notes: 先清两个 300 分的大头（新建任务并发起对话、设计创意模式建 1 个画布），再顺手做 100 分的（体验灵感案例、桌面端对话 1 次、读完资料库介绍）。做完必须手动点「领取奖励」，不会自动到账。有些任务只给盲盒不给积分，动手前先看奖励栏。体验类任务启动十几秒就能停，不用等跑完。
+
+- id: workbuddy-streak
+  product: WorkBuddy
+  form: desktop
+  name: WorkBuddy 连续登录活跃地图
+  region: cn
+  type: daily
+  offer: 连登满 7 / 14 / 28 天三个节点，分别兑换能量、积分、补登卡与抽奖次数
+  models: 平台内全模型
+  value: 最高 150 积分/档 + 补登卡
+  billing: 积分制
+  expiry: unknown
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://www.workbuddy.cn
+  source: https://developer.cloud.tencent.com/article/2766229
+  verified: 2026-11-09
+  confidence: medium
+  notes: 硬规则——当天必须真的跟 Buddy 对话过一次才算打卡，只打开不算，断一天连击清零。7 天档给 2 能量 + 补登卡，14 天档 +50 积分，28 天档 +150 积分。每个节点要自己点「兑换」，不点不会到账。
+
+- id: workbuddy-lottery
+  product: WorkBuddy
+  form: desktop
+  name: WorkBuddy 福利抽奖
+  region: cn
+  type: daily
+  offer: 用连登送的抽奖次数在转盘抽奖，奖品为积分或周边
+  models: 平台内全模型（仅用于兑换积分）
+  value: 10 或 100 积分
+  billing: 积分制
+  expiry: unknown
+  reset: daily
+  realname: no
+  card: no
+  difficulty: 1
+  url: https://www.workbuddy.cn
+  source: https://developer.cloud.tencent.com/article/2766229
+  verified: 2026-11-09
+  confidence: medium
+  notes: 抽奖次数每日刷新，当天有就用掉，别攒过期。中 100 的概率不高，别算进固定收入。
+
+- id: workbuddy-invite
+  product: WorkBuddy
+  form: desktop
+  name: WorkBuddy 邀约好友
+  region: cn
+  type: signup
+  offer: 好友通过你的链接注册并完成首次对话得 50；7 天内累计用满 3 天再得 100；好友 30 天内首次订阅付费，双方各得 500
+  models: 平台内全模型（仅用于兑换积分）
+  value: 最高 650 积分/人
+  billing: 积分制
+  expiry: unknown
+  reset: once
+  realname: no
+  card: no
+  difficulty: 3
+  url: https://www.workbuddy.cn
+  source: https://cloud.tencent.com/developer/article/2772631
+  verified: 2026-11-09
+  confidence: medium
+  notes: 650 里最后 500 要先付费，别为了这点专门开订阅。协议明确禁止批量刷邀请，异常 IP 或设备会判违规并追回积分。国际版规则不同（我 +100、好友 +350），别混算。邀请人奖励通常 6 个月有效，新人礼 1 个月。
+
+- id: workbuddy-bind
+  product: WorkBuddy
+  form: desktop
+  name: WorkBuddy 关联账号一次性积分
+  region: cn
+  type: signup
+  offer: 电脑端 设置 → 个人主页 → 前往管理中心，关联腾讯文档 / 腾讯会议 / ima / 腾讯网盘
+  models: 平台内全模型（仅用于兑换积分）
+  value: 100 积分
+  billing: 积分制
+  expiry: unknown
+  reset: once
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://www.workbuddy.cn
+  source: https://cloud.tencent.com/developer/article/2772631
+  verified: 2026-11-09
+  confidence: medium
+  notes: 最容易漏的一条，藏在设置里而不是活动页。关联免费，但暂不支持解绑，绑之前确认是你常用的账号。
+
+- id: workbuddy-limited-task
+  product: WorkBuddy
+  form: desktop
+  name: WorkBuddy 限时专家体验任务
+  region: cn
+  type: promo
+  offer: 召唤指定的限时专家并对话一次，领积分；其中腾讯轻量云专家额外送 1 个月轻量应用服务器
+  models: 平台内全模型
+  value: 100 积分/个，另有实物或云资源
+  billing: 积分制
+  expiry: 2026-11-15
+  reset: once
+  realname: no
+  card: no
+  difficulty: 2
+  url: https://www.workbuddy.cn
+  source: https://mp.weixin.qq.com/s?__biz=Mzg2NzI1ODY3Nw==&mid=2247483771
+  verified: 2026-11-09
+  confidence: medium
+  notes: 成长计划任务里带截止日的那批，随版本更新换一批。11 月这一期看到三条——腾讯轻量云专家（截止 11-13，送 1 个月轻量云）、无畏契约拼豆专家（截止 11-15）、和平精英主题（11-02 已结束）。部分任务要求电脑端 5.5.3 以上。以任务页实际显示为准。
+
 
 - id: workbuddy-hy4
   product: WorkBuddy
