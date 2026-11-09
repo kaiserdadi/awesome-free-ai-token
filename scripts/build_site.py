@@ -23,6 +23,107 @@ QR_FILE = os.path.join(_data.ROOT, "assets", "qq-group.png")
 QQ_GROUP = "2154085627"
 QQ_NAME = "新时代领鸡蛋 token"
 
+# 炫酷变体（--cool）：把「旋转描边」做成全站的边框语言。
+# 只加样式，不动结构与数据，原版 index.html 不受影响。
+COOL_CSS = r"""
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes angspin{to{--ang:360deg}}
+@keyframes flowslide{to{background-position:200% 0}}
+
+body{
+  background:
+    radial-gradient(1100px 520px at 72% -12%, #fdf0e0 0%, rgba(253,240,224,0) 62%),
+    var(--bg);
+}
+@supports (background-attachment:fixed){
+  body{background-attachment:fixed}
+}
+
+.top::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:1.5px;
+  pointer-events:none; background-size:200% 100%;
+  background-image:linear-gradient(90deg,rgba(180,83,10,0) 0%,#b4530a 16%,#ffc38a 32%,#b4530a 48%,rgba(180,83,10,0) 64%);
+  animation:flowslide 7s linear infinite;
+}
+
+.tab{border:1px solid transparent}
+.tab[aria-selected="true"]{
+  background:
+    linear-gradient(var(--panel),var(--panel)) padding-box,
+    conic-gradient(from var(--ang),#b4530a,#ffc38a 22%,#b4530a 45%,#f0a15c 68%,#b4530a) border-box;
+  animation:angspin 3.6s linear infinite;
+}
+
+.card{
+  border:1.5px solid transparent !important;
+  background:
+    linear-gradient(var(--panel),var(--panel)) padding-box,
+    conic-gradient(from var(--ang),#f7ecdb 0deg,#eed6ae 60deg,#cf7a25 128deg,#ffb373 172deg,#eed6ae 236deg,#f7ecdb 360deg) border-box;
+}
+.card::after{
+  content:""; position:absolute; left:14px; right:14px; top:0; height:2px; border-radius:0 0 2px 2px;
+  background-image:linear-gradient(90deg,rgba(180,83,10,0),#b4530a 12%,#ff9d4d 50%,#b4530a 88%,rgba(180,83,10,0));
+  background-size:200% 100%; opacity:.8; transition:opacity .25s; pointer-events:none;
+}
+.card:hover::after{opacity:1; animation:flowslide 2.6s linear infinite}
+.card:hover{
+  animation:angspin 2.6s linear infinite;
+  box-shadow:0 1px 2px rgba(27,24,21,.04), 0 14px 34px -18px rgba(180,83,10,.45);
+}
+
+.lede{
+  border:1px solid transparent !important;
+  background:
+    linear-gradient(180deg,#fffdfa,#fdf8f0) padding-box,
+    conic-gradient(from var(--ang),#f2ddc4 0deg,#e9c9a2 70deg,#c8762a 130deg,#ffcf9c 170deg,#e9c9a2 240deg,#f2ddc4 360deg) border-box;
+  animation:angspin 9s linear infinite;
+}
+
+.qrimg{
+  border:1px solid transparent !important;
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    conic-gradient(from var(--ang),#e8dccb,#cf8a45 42%,#f7d3a6 58%,#e8dccb) border-box;
+  animation:angspin 8s linear infinite;
+}
+
+.sectionhead h2::before{background:linear-gradient(180deg,#b4530a,#e2a463)}
+.sectionhead.soon h2::before{background:linear-gradient(180deg,#b3352a,#e08a80)}
+
+.stat b{
+  background:linear-gradient(165deg,#8a3f06,#c8661a 58%,#e0973f);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+.qcopy{
+  border:1px solid transparent !important; color:var(--copper);
+  background:
+    linear-gradient(var(--panel),var(--panel)) padding-box,
+    conic-gradient(from var(--ang),#b4530a,#ffd0a3 24%,#b4530a 48%,#f0a15c 72%,#b4530a) border-box;
+  animation:angspin 3s linear infinite;
+}
+.qcopy:hover{color:#8a3f06}
+.qcopy.done{
+  animation:none; color:#4d7a41; border-color:#7a9e6f !important;
+  background:#f4f9f1;
+}
+
+.links a{position:relative}
+.links a::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:linear-gradient(90deg,#b4530a,#ffc38a);
+  transform:scaleX(0); transform-origin:left; transition:transform .25s ease;
+}
+.links a:hover::after{transform:scaleX(1)}
+
+.pgroup{transition:transform .25s ease}
+.pgroup:hover{transform:translateY(-1px)}
+
+@media (prefers-reduced-motion: reduce){
+  .top::after,.tab[aria-selected="true"],.card:hover,.qcopy{animation:none !important}
+}
+"""
+
 TEMPLATE = r"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -670,13 +771,18 @@ def main() -> int:
     )
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    with open(OUT_FILE, "w", encoding="utf-8") as fh:
+    cool = "--cool" in sys.argv
+    out_file = os.path.join(OUT_DIR, "cool.html") if cool else OUT_FILE
+    if cool:
+        html = html.replace("</head>", "<style>\n" + COOL_CSS + "\n</style>\n</head>", 1)
+    with open(out_file, "w", encoding="utf-8") as fh:
         fh.write(html)
 
-    size = os.path.getsize(OUT_FILE) / 1024
+    size = os.path.getsize(out_file) / 1024
     cn = sum(1 for d in data if d["region"] == "cn")
     prods = {d["product"] for d in data}
-    print(f"已生成 site/index.html：{len(data)} 个入口 / {len(prods)} 家平台（国内 {cn} / 海外 {len(data) - cn}），{size:.0f} KB")
+    label = "site/cool.html（炫酷版）" if cool else "site/index.html"
+    print(f"已生成 {label}：{len(data)} 个入口 / {len(prods)} 家平台（国内 {cn} / 海外 {len(data) - cn}），{size:.0f} KB")
     externals = html.count('src="http')
     print(f"外链数量：{externals} 个（应为 0）")
     return 0
