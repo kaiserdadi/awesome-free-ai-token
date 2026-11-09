@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>免费 AI 额度雷达</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#faf8f4; --panel:#fffefc; --ink:#1b1815; --ink2:#57504a; --ink3:#918a80;
+  --line:#e9e3d9; --line2:#f3eee6;
+  --copper:#b4530a; --copper-soft:#fdf2e4; --copper-line:#f0d9bb;
+  --red:#b3352a; --red-soft:#fceceb;
+  --green:#2c7355; --green-soft:#eaf4ee;
+  --blue:#2c5f8a; --blue-soft:#ecf2f8;
+  --violet:#5b4b8a; --violet-soft:#f0edf8;
+  --shadow:0 1px 2px rgba(27,24,21,.04), 0 8px 24px -12px rgba(27,24,21,.12);
+  --radius:14px;
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+input,select{font-family:inherit;font-size:14px;color:var(--ink)}
+
+/* ── 顶栏 ───────────────────────────── */
+.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(250,248,244,.86);
+  backdrop-filter:saturate(180%) blur(14px); -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.top-inner{max-width:1280px; margin:0 auto; padding:14px 24px 0}
+.brandline{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:14px}
+.brand{font-size:19px; font-weight:700; letter-spacing:-.02em}
+.brand em{font-style:normal; color:var(--copper)}
+.brand-sub{font-size:12.5px; color:var(--ink3)}
+.spacer{flex:1}
+
+.controls{display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding-bottom:12px}
+.search{position:relative; flex:1; min-width:200px; max-width:340px}
+.search input{
+  width:100%; padding:8px 12px 8px 32px; border:1px solid var(--line);
+  border-radius:9px; background:var(--panel); outline:none; transition:.15s;
+}
+.search input:focus{border-color:var(--copper-line); box-shadow:0 0 0 3px var(--copper-soft)}
+.search svg{position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:.4}
+.search kbd{
+  position:absolute; right:8px; top:50%; transform:translateY(-50%);
+  font-size:11px; color:var(--ink3); border:1px solid var(--line);
+  border-radius:4px; padding:0 5px; background:var(--bg); font-family:inherit;
+}
+select{
+  padding:8px 26px 8px 10px; border:1px solid var(--line); border-radius:9px;
+  background:var(--panel) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%23918a80'/></svg>") no-repeat right 9px center;
+  appearance:none; outline:none;
+}
+
+/* ── 地区切换 ───────────────────────── */
+.tabs{display:flex; gap:4px; background:#eee8dd; padding:3px; border-radius:10px}
+.tab{
+  border:0; background:transparent; padding:7px 15px; border-radius:8px;
+  font-size:13.5px; font-weight:600; color:var(--ink2); transition:.15s; white-space:nowrap;
+}
+.tab .n{font-size:11.5px; opacity:.55; margin-left:4px; font-weight:500}
+.tab[aria-selected="true"]{background:var(--panel); color:var(--ink); box-shadow:0 1px 3px rgba(27,24,21,.1)}
+.tab[aria-selected="true"] .n{opacity:.75}
+
+/* ── 筛选 chips ─────────────────────── */
+.filters{
+  max-width:1280px; margin:0 auto; padding:0 24px 11px;
+  display:flex; gap:18px; flex-wrap:wrap; align-items:center;
+  font-size:13px;
+}
+.fgroup{display:flex; gap:6px; align-items:center}
+.flabel{color:var(--ink3); font-size:12px; margin-right:2px}
+.chip{
+  border:1px solid var(--line); background:var(--panel); color:var(--ink2);
+  padding:4px 11px; border-radius:999px; font-size:12.5px; transition:.15s;
+}
+.chip:hover{border-color:var(--copper-line); color:var(--copper)}
+.chip[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:#fff}
+.chip.sm{padding:3px 9px; font-size:12px}
+
+/* ── 主体 ───────────────────────────── */
+main{max-width:1280px; margin:0 auto; padding:26px 24px 80px}
+.lede{
+  display:flex; gap:26px; flex-wrap:wrap; align-items:center;
+  padding:18px 20px; margin-bottom:24px;
+  background:linear-gradient(180deg,#fffdfa,#fdf8f0);
+  border:1px solid var(--copper-line); border-radius:var(--radius);
+}
+.lede h2{margin:0 0 4px; font-size:15px; font-weight:700}
+.lede p{margin:0; font-size:13px; color:var(--ink2); line-height:1.75}
+.lede .k{color:var(--copper); font-weight:700}
+.statrow{display:flex; gap:20px; margin-left:auto}
+.stat{text-align:center}
+.stat b{display:block; font-size:20px; line-height:1.2; font-variant-numeric:tabular-nums}
+.stat span{font-size:11.5px; color:var(--ink3)}
+
+.sectionhead{
+  display:flex; align-items:baseline; gap:10px; margin:30px 0 14px; padding-bottom:9px;
+  border-bottom:1px solid var(--line);
+}
+.sectionhead h2{margin:0; font-size:14px; font-weight:700; letter-spacing:.01em}
+.sectionhead .hint{font-size:12.5px; color:var(--ink3)}
+.sectionhead .cnt{margin-left:auto; font-size:12px; color:var(--ink3); font-variant-numeric:tabular-nums}
+.sectionhead.soon h2{color:var(--red)}
+.sectionhead.soon h2::before{content:""; display:inline-block; width:3px; height:12px;
+  background:var(--red); border-radius:2px; margin-right:7px; vertical-align:-1px}
+
+/* 临期条 */
+.urgent{display:grid; gap:1px; background:var(--line2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden}
+.urow{
+  display:flex; align-items:center; gap:12px; padding:11px 15px;
+  background:var(--panel); font-size:13.5px; transition:.12s;
+}
+.urow:hover{background:#fffaf3}
+.urow .d{
+  font-variant-numeric:tabular-nums; font-weight:700; font-size:12px;
+  min-width:56px; color:var(--red);
+}
+.urow .d.warn{color:var(--copper)}
+.urow .pn{font-weight:600; white-space:nowrap; flex-shrink:0}
+.urow .vn{color:var(--ink2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+.urow .go{margin-left:auto; color:var(--ink3); font-size:12px; white-space:nowrap}
+
+/* 产品组：入口多的独占整行，入口少的并排铺满 */
+.clusters{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:26px 14px; align-items:start; grid-auto-flow:dense;
+}
+.pgroup{min-width:0}
+.phead{display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap}
+.phead h3{margin:0; font-size:15px; font-weight:700; letter-spacing:-.01em}
+.phead .pill{
+  font-size:11px; color:var(--ink3); border:1px solid var(--line);
+  border-radius:999px; padding:1px 8px; background:var(--panel);
+}
+.phead .deadline{margin-left:auto; font-size:12px; color:var(--red); font-weight:600}
+
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:12px}
+.card{
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+  padding:15px 16px 13px; box-shadow:var(--shadow);
+  display:flex; flex-direction:column; gap:9px; position:relative;
+  transition:border-color .15s, transform .15s, box-shadow .15s;
+}
+.card:hover{transform:translateY(-1px); border-color:var(--copper-line); box-shadow:0 2px 4px rgba(27,24,21,.05), 0 14px 30px -16px rgba(27,24,21,.22)}
+.card[data-status="expired"]{opacity:.55; filter:grayscale(.4)}
+.card[data-status="expired"]:hover{opacity:.8}
+
+.ctop{display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+.tag{
+  font-size:11px; font-weight:600; padding:2px 7px; border-radius:5px;
+  border:1px solid transparent; letter-spacing:.01em;
+}
+.tag.form{background:#f4f1ea; color:var(--ink2); border-color:#ece6db}
+.tag.promo{background:var(--red-soft); color:var(--red)}
+.tag.daily{background:var(--green-soft); color:var(--green)}
+.tag.signup{background:var(--blue-soft); color:var(--blue)}
+.tag.free_model{background:var(--violet-soft); color:var(--violet)}
+.cd{margin-left:auto; font-size:11.5px; font-variant-numeric:tabular-nums; color:var(--ink3); white-space:nowrap}
+.cd.hot{color:var(--red); font-weight:700}
+.cd.warn{color:var(--copper); font-weight:600}
+
+.card h4{margin:0; font-size:14.5px; font-weight:700; line-height:1.45; letter-spacing:-.005em}
+.big{
+  font-size:17px; font-weight:700; color:var(--copper); line-height:1.35;
+  letter-spacing:-.01em;
+}
+.big small{font-size:12px; color:var(--ink3); font-weight:500; margin-left:6px}
+.billing{font-size:12.5px; color:var(--ink2)}
+.offer{font-size:13px; color:var(--ink2); margin:0; line-height:1.65}
+
+.kv{display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--ink3); border-top:1px solid var(--line2); padding-top:9px; margin-top:auto}
+.kv b{font-weight:600; color:var(--ink2)}
+.kv .warn{color:var(--red)}
+
+details{font-size:12.5px; color:var(--ink2)}
+details summary{
+  cursor:pointer; color:var(--ink2); outline:none; list-style:none;
+  user-select:none; display:inline-flex; align-items:center; gap:5px;
+  font-size:12.5px; padding:1px 0;
+}
+details summary:hover{color:var(--copper)}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"›"; display:inline-block; transition:.18s; font-size:14px}
+details[open] summary::before{transform:rotate(90deg)}
+details .body{margin-top:7px; padding:9px 11px; background:#fbf9f4; border-radius:8px; line-height:1.7; border:1px solid var(--line2)}
+details .body .lbl{color:var(--ink3); font-size:11px}
+
+.links{display:flex; gap:12px; font-size:12px; padding-top:2px}
+.links a{color:var(--blue); border-bottom:1px solid transparent}
+.links a:hover{border-bottom-color:var(--blue)}
+.empty{padding:60px 20px; text-align:center; color:var(--ink3); font-size:14px}
+footer{
+  max-width:1280px; margin:0 auto; padding:24px; border-top:1px solid var(--line);
+  font-size:12px; color:var(--ink3); display:flex; gap:16px; flex-wrap:wrap;
+}
+
+@media (max-width:640px){
+  .top-inner,.filters,main,footer{padding-left:14px; padding-right:14px}
+  .grid{grid-template-columns:1fr}
+  .clusters{grid-template-columns:1fr}
+  .pgroup{grid-column:span 1 !important}
+  .statrow{width:100%; justify-content:space-between; margin-left:0; gap:8px}
+  .lede{gap:14px; padding:14px 15px}
+  .search{max-width:none}
+  .filters{gap:10px}
+  .urow .vn{flex:1; min-width:0}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-inner">
+    <div class="brandline">
+      <div class="brand">免费 <em>AI</em> 额度雷达</div>
+      <div class="brand-sub" id="buildInfo">数据截至 —</div>
+      <div class="spacer"></div>
+      <div class="tabs" role="tablist" id="tabs">
+        <button class="tab" role="tab" data-region="cn">国内<span class="n"></span></button>
+        <button class="tab" role="tab" data-region="global">海外<span class="n"></span></button>
+        <button class="tab" role="tab" data-region="all">全部<span class="n"></span></button>
+      </div>
+    </div>
+    <div class="controls">
+      <label class="search">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>
+        <input id="q" type="search" placeholder="搜产品、模型、额度…" autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+      <select id="sort">
+        <option value="urgent">紧急优先</option>
+        <option value="count">入口多优先</option>
+        <option value="easy">难度低优先</option>
+        <option value="name">按名称</option>
+      </select>
+    </div>
+  </div>
+  <div class="filters">
+    <div class="fgroup" id="fType">
+      <span class="flabel">领取方式</span>
+      <button class="chip" data-v="">全部</button>
+      <button class="chip" data-v="promo">限时活动</button>
+      <button class="chip" data-v="daily">每日续杯</button>
+      <button class="chip" data-v="signup">注册一次性</button>
+      <button class="chip" data-v="free_model">长期 0 元</button>
+    </div>
+    <div class="fgroup" id="fForm">
+      <span class="flabel">形态</span>
+      <button class="chip sm" data-v="">全部</button>
+      <button class="chip sm" data-v="api">API</button>
+      <button class="chip sm" data-v="desktop">客户端</button>
+      <button class="chip sm" data-v="web">网页</button>
+      <button class="chip sm" data-v="app">App</button>
+      <button class="chip sm" data-v="ide">IDE</button>
+      <button class="chip sm" data-v="cli">CLI</button>
+    </div>
+    <div class="fgroup">
+      <button class="chip" id="tHideExpired" aria-pressed="true">隐藏已过期</button>
+      <button class="chip" id="tNoRealname" aria-pressed="false">免实名</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="lede" id="lede"></div>
+  <div id="out"></div>
+</main>
+
+<footer>
+  <span>数据源 <b>data/providers.yaml</b>，改数据后跑 <b>python3 scripts/build_site.py</b> 重新生成本页</span>
+  <span>每条标了出处与可信度，低可信条目请自行核实后再用</span>
+</footer>
+
+<script>
+const DATA = [{"id":"scnet-client","product":"国家超算互联网","form":"desktop","name":"超算互联网客户端（SCNet 智能体客户端 / SClaw）","region":"cn","type":"promo","offer":"双 11 期间客户端内旗舰模型词元不限量、AI 调用不受限；新用户注册另领 1 亿词元科学计算智能体额度","models":"平台旗舰模型（GLM-5.3 / DeepSeek-V4.1 / Kimi-K3 / Qwen3.8 / MiniMax-M3 等）+ 自研科学计算智能体","value":"活动期内不限量 + 1 亿词元智能体额度","billing":"活动期免费（仅限客户端内）","expiry":"2026-11-30","reset":"once","realname":"no","card":"no","difficulty":"2","url":"https://www.scnet.cn","source":"https://news.sciencenet.cn/htmlnews/2026/11/574358.shtm","verified":"2026-11-09","confidence":"high","notes":"关键区别——「不限量」锁在自家客户端里，不是一个能随便接的通用 API。支持 Windows / macOS（ARM 与 x86），手机号或微信登录即可，无需先充值。客户端内置 SClaw（基于 OpenClaw 的科研 Agent），可接飞书、钉钉、企业微信、QQ。","tags":"","days":21,"status":"ok"},{"id":"scnet-maas-newuser","product":"国家超算互联网","form":"api","name":"超算互联网 模型服务 · 新客 1000 万 Token 包","region":"cn","type":"signup","offer":"活动期内注册的新账号可领 1000 万 Token 包，注册即到账，每个账号一次","models":"DeepSeek（V4.1-Flash、V4.1-Flash-1017、V4-Pro-0813、V4-Flash-0731）/ 通义千问（Qwen3.8-Max、Qwen3.8-Flash）/ 智谱 GLM（5.3、5.3-Flash、5.2、5.1、5）/ 月之暗面 Kimi（K3、K3.1-Pro、K2.7-Code、K2.6、K2.5）/ MiniMax（M3、M3.1-Flash、M2.7、M2.5）/ 其他（Auto 自动路由、OCR、ASR、文生图、图像编辑、Embedding）","value":"1000 万 Token","billing":"一次性赠金，用完后按 Token 从余额扣","expiry":"2026-12-31","reset":"once","realname":"yes","card":"no","difficulty":"3","url":"https://www.scnet.cn/ui/mall/service/llm","source":"https://www.scnet.cn/help/docs/mainsite/mass/tutorial/quickstart.html","verified":"2026-11-09","confidence":"high","notes":"注册即到账，30 天有效，活动整体到 12-31。这个包本身锁定 GLM-5.3-Flash（1024K 上下文），官方保留按库存换规格的权利。真 API，兼容 OpenAI 与 Anthropic 协议，base_url 是 https://api.scnet.cn/api/llm/v1。按量用 sk- 开头的通用 key，Token Plan 用 sk-tp- 开头的专属 key，两者不能混用。赠金用完后会自动扣余额，别挂脚本放着跑。","tags":"","days":52,"status":"ok"},{"id":"scnet-maas-flashsale","product":"国家超算互联网","form":"api","name":"超算互联网 模型服务 · 0.1 元秒杀 5000 万词元包","region":"cn","type":"promo","offer":"0.1 元秒杀 5000 万词元包，原价十七八元","models":"DeepSeek（V4.1-Flash、V4.1-Flash-1017、V4-Pro-0813、V4-Flash-0731）/ 通义千问（Qwen3.8-Max、Qwen3.8-Flash）/ 智谱 GLM（5.3、5.3-Flash、5.2、5.1、5）/ 月之暗面 Kimi（K3、K3.1-Pro、K2.7-Code、K2.6、K2.5）/ MiniMax（M3、M3.1-Flash、M2.7、M2.5）/ 其他（Auto 自动路由、OCR、ASR、文生图、图像编辑、Embedding）","value":"5000 万词元（0.1 元）","billing":"一次性买断词元包","expiry":"2026-11-30","reset":"once","realname":"yes","card":"no","difficulty":"4","url":"https://www.scnet.cn/ui/mall/service/llm","source":"https://www.ccidnet.com/kx/1132459.jhtml","verified":"2026-11-09","confidence":"medium","notes":"每天 10:00 开售、每账号限一次、到账后 30 天有效，过 30 天作废。有二手源说它和 MaaS 其他新客权益是「六选一」而不是全拿，这条没在官方页核实，抢之前先看活动页。想稳一点可以直接走 MaaS 特惠专场，那里有 0.1 元起的旗舰模型 Token 套餐。","tags":"","days":21,"status":"ok"},{"id":"zhipu-signup","product":"智谱 GLM","form":"api","name":"智谱 GLM 新客赠额","region":"cn","type":"signup","offer":"手机号注册送 2000 万 Token 体验包，全系模型可用，另附 120 次图像与视频生成","models":"GLM 全系","value":"2000 万 Token","billing":"按 Token","expiry":"long","reset":"once","realname":"yes","card":"no","difficulty":"1","url":"https://maas-api.bigmodel.cn","source":"https://maas-api.bigmodel.cn/","verified":"2026-11-09","confidence":"high","notes":"**额度要实名认证之后才到账**，只注册不认证就一直是 0，这是「感觉没免费」最常见的原因。官方落地页现在写的是「新用户注册得 2000 万 Tokens」，注册后去控制台看「资源包」确认是否已发放。并发 30，OpenAI 兼容，改 Base URL 即可。","tags":"","days":null,"status":"long"},{"id":"zhipu-glm-flash","product":"智谱 GLM","form":"api","name":"智谱 GLM-Flash 免费档","region":"cn","type":"free_model","offer":"价格页直接标 0 元，输入免费、输出免费、缓存也免费","models":"GLM-4.7-Flash（200K，文本）、GLM-4.6V-Flash（视觉）、GLM-4-Flash-250414（128K）、GLM-Z1-Flash（128K）","value":"不限量，受并发限制","billing":"0 元","expiry":"long","reset":"unknown","realname":"yes","card":"no","difficulty":"1","url":"https://bigmodel.cn/pricing?tab=api","source":"https://bigmodel.cn/pricing?tab=api","verified":"2026-11-09","confidence":"high","notes":"官方价格页 FAQ 明确只点了两个——文本 GLM-4.7-Flash（200K）和视觉 GLM-4.6V-Flash，输入输出缓存全免费。关键提醒：GLM-5.3-Flash 名字里带 Flash 但**要钱**，标准价输入 0.8 元、输出 2.8 元（限时五折 0.4 / 1.4），别拿它当免费模型用，这是最容易踩的坑。免费档并发很低（实测约 1，社区另有 30 的说法），适合单人、小流量、批量离线处理，不适合多人并发服务。","tags":"","days":null,"status":"long"},{"id":"zhipu-invite","product":"智谱 GLM","form":"web","name":"智谱 GLM 邀好友","region":"cn","type":"signup","offer":"通过邀请链接注册，双方各得额外 Tokens，邀请人累计口径最高 2 亿","models":"GLM 全系","value":"最高 2 亿 Token（累计口径）","billing":"按 Token（赠金）","expiry":"unknown","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://maas-api.bigmodel.cn","source":"https://maas-api.bigmodel.cn/","verified":"2026-11-09","confidence":"medium","notes":"官方落地页写「最高可领取总计 2 亿 Tokens 资源包」，这是邀请累加的上限，不是单人一次到手。别被标题里的 2 亿误导，实际按邀请人数阶梯发放，到账以控制台资源包为准。","tags":"","days":null,"status":"unknown"},{"id":"zhipu-zcode-night","product":"智谱 GLM","form":"desktop","name":"智谱 ZCode / AutoClaw 夜间包","region":"cn","type":"daily","offer":"客户端左下角弹窗领取当日额度，23 点生效、次日 9 点过期","models":"GLM-5.3-Flash","value":"单日最高约 3 亿 Token（周末包口径 5 亿）","billing":"活动免费","expiry":"unknown","reset":"daily","realname":"yes","card":"no","difficulty":"3","url":"https://z.ai","source":"https://post.smzdm.com/p/am9v6rrz","verified":"2026-11-09","confidence":"medium","notes":"量极大但只能夜间用，且是活动制随时停。适合睡前挂长任务。额度仅客户端内可用，导不出标准 API。","tags":"","days":null,"status":"unknown"},{"id":"siliconflow-signup","product":"硅基流动","form":"api","name":"硅基流动 SiliconFlow","region":"cn","type":"signup","offer":"新用户注册送额度券，另做新手任务可再加","models":"DeepSeek / Qwen / GLM 等开源模型","value":"2000 万 Token（约 14 元）","billing":"按 Token","expiry":"long","reset":"once","realname":"yes","card":"no","difficulty":"1","url":"https://cloud.siliconflow.cn","source":"https://www.kuazhi.com/post/716439208.html","verified":"2026-11-09","confidence":"high","notes":"国内低延迟，OpenAI 兼容，支持微信/支付宝。新手任务能再拿一笔，别忘了做。","tags":"","days":null,"status":"long"},{"id":"siliconflow-small-models","product":"硅基流动","form":"api","name":"硅基流动小模型免费档","region":"cn","type":"free_model","offer":"9B 参数以下模型长期免费不限量","models":"Qwen2.5-7B、GLM-4-9B、DeepSeek-R1-Distill-8B 等","value":"无限量","billing":"0 元","expiry":"long","reset":"unknown","realname":"yes","card":"no","difficulty":"1","url":"https://cloud.siliconflow.cn","source":"https://www.kuazhi.com/post/716439208.html","verified":"2026-11-09","confidence":"high","notes":"小模型当分类器、意图识别、批量打标非常够用，零成本挂着跑。","tags":"","days":null,"status":"long"},{"id":"aliyun-bailian-new","product":"阿里云百炼","form":"api","name":"阿里云百炼（DashScope）","region":"cn","type":"signup","offer":"控制台首页「新手资源」手动领取，每个模型独立 100 万","models":"通义千问全系 + DeepSeek + Kimi + GLM 等 70+","value":"约 7000 万 Token（累计）","billing":"按 Token","expiry":"2026-12-31","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://bailian.console.aliyun.com","source":"https://post.m.smzdm.com/p/a6z42x4n","verified":"2026-11-09","confidence":"high","notes":"领到后 90 天有效，仅北京地域。双 11 宣传口径称「超 1 亿」，以控制台实发为准。","tags":"","days":52,"status":"ok"},{"id":"volcengine-ark-new","product":"火山方舟","form":"api","name":"火山引擎方舟（豆包）","region":"cn","type":"signup","offer":"新用户每个模型 50 万 Token 安心体验额度","models":"Doubao-Seed 系列、DeepSeek、Kimi、GLM","value":"每模型 50 万 Token","billing":"按 Token","expiry":"long","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://console.volcengine.com/ark","source":"https://post.m.smzdm.com/p/a6z42x4n","verified":"2026-11-09","confidence":"high","notes":"安心体验模式超额自动暂停，不会产生意外账单，但要记得关掉自动转付费。","tags":"","days":null,"status":"long"},{"id":"volcengine-daily","product":"火山方舟","form":"api","name":"火山方舟协作奖励计划","region":"cn","type":"daily","offer":"调用指定模型并上报推理数据，次日返还等量免费 Token 包","models":"Doubao-Seed-Evolving 等指定模型","value":"每日单模型上限 500 万 Token","billing":"按 Token","expiry":"unknown","reset":"daily","realname":"yes","card":"no","difficulty":"3","url":"https://console.volcengine.com/ark","source":"https://bbs.huaweicloud.cn/blogs/510346","verified":"2026-11-09","confidence":"medium","notes":"用多少返多少，返还额度 30 天有效。适合持续跑 Agent 迭代的人，本质是拿数据换额度。","tags":"","days":null,"status":"unknown"},{"id":"volcengine-double11","product":"火山方舟","form":"api","name":"火山引擎 11.11 AI 智选","region":"cn","type":"promo","offer":"实名后每个模型每天 200 万自动刷新，活动页标总可用 2000 万+/天","models":"Kimi-K3.1-Pro、DeepSeek-V4.1、GLM-5.3、Doubao-Seed-2.1","value":"2000 万+/天（4 模型合计）","billing":"按 Token","expiry":"2026-11-30","reset":"daily","realname":"yes","card":"no","difficulty":"2","url":"https://www.volcengine.com","source":"https://post.m.smzdm.com/p/a6z42x4n","verified":"2026-11-09","confidence":"medium","notes":"活动页没写死截止日，按大厂惯例 11 月中旬收尾，别等。每日刷新是国内最舒服的续杯形态。","tags":"","days":21,"status":"ok"},{"id":"tencent-tokenhub","product":"腾讯云 TokenHub","form":"api","name":"腾讯云 TokenHub / 混元","region":"cn","type":"signup","offer":"新用户每个模型各领 100 万 Token 免费体验包","models":"DeepSeek、Kimi、GLM、混元、MiniMax","value":"每模型 100 万 Token","billing":"按 Token","expiry":"2026-12-31","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://cloud.tencent.com/product/tokenhub","source":"https://post.smzdm.com/p/am9v6rrz","verified":"2026-11-09","confidence":"high","notes":"领取日起算 1 年有效。只领近期要用的模型，领了不用会白过期。","tags":"","days":52,"status":"ok"},{"id":"baidu-qianfan-free","product":"百度千帆","form":"api","name":"百度智能云千帆","region":"cn","type":"free_model","offer":"ERNIE-Speed / Lite / Tiny 永久免费，QPS 50","models":"ERNIE-Speed-8K 等","value":"无限量（QPS 50）","billing":"0 元","expiry":"long","reset":"unknown","realname":"yes","card":"no","difficulty":"1","url":"https://console.bce.baidu.com/qianfan","source":"https://blog.csdn.net/k0933/article/details/161116701","verified":"2026-11-09","confidence":"high","notes":"能力不算第一梯队，但 QPS 50 是国内免费档里最宽的，适合高并发打杂。","tags":"","days":null,"status":"long"},{"id":"iflytek-spark-free","product":"讯飞星火","form":"api","name":"讯飞星火 Spark Lite","region":"cn","type":"free_model","offer":"Spark Lite / X2.5-1.7B 长期免费，X2.5-4B 限时免费","models":"Spark Lite、Spark-X2.5-1.7B","value":"无限量","billing":"0 元","expiry":"long","reset":"unknown","realname":"yes","card":"no","difficulty":"1","url":"https://xinghuo.xfyun.cn","source":"https://www.yeyulingfeng.com/a/1159580.html","verified":"2026-11-09","confidence":"medium","notes":"中文与语音能力强。另有大额实名礼包（流传 10 亿 Token 口径），领取弹窗会默认勾选「用完自动计费」，务必取消。","tags":"","days":null,"status":"long"},{"id":"sensenova-tokenplan","product":"商汤日日新","form":"api","name":"商汤日日新 SenseNova","region":"cn","type":"daily","offer":"Token Plan 公测期整体免费，滚动窗口刷新，无需绑卡","models":"SenseNova-6.8-Flash-Lite、U1.5-Fast、DeepSeek-V4-Flash 等 7 款","value":"5 小时 12 万积分 + 每周 120 万积分","billing":"公测免费","expiry":"unknown","reset":"window","realname":"yes","card":"no","difficulty":"2","url":"https://platform.sensenova.cn/token-plan","source":"https://www.allagent.wiki/blog/ai-freebies-20261029","verified":"2026-11-09","confidence":"high","notes":"10-27 把 5h 上限从 6 万翻到 12 万，长期公测。多模态（OCR、识图）免费额度里最好用的一家。","tags":"","days":null,"status":"unknown"},{"id":"stepfun-stepplan","product":"阶跃星辰","form":"api","name":"阶跃星辰 Step Plan","region":"cn","type":"promo","offer":"登录送 15 天 + 完成首次调用再送 15 天 + 每邀 1 人双方各 15 天（上限 3 人）","models":"Step-5-Preview、Step-3.7-Flash、StepAudio-3","value":"最高 75 天（不拉人也有 30 天）","billing":"订阅制","expiry":"unknown","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://platform.stepfun.com","source":"https://www.allagent.wiki/blog/ai-freebies-20261029","verified":"2026-11-09","confidence":"high","notes":"送的是 99 元 Flash Mini 档权益，能调全部旗舰模型。坑：Base URL 必须填 https://api.stepfun.com/step_plan/v1，填标准地址不算「首次调用」且会扣自己余额。","tags":"","days":null,"status":"unknown"},{"id":"qiniu-ai","product":"七牛云","form":"api","name":"七牛云 AI 推理","region":"cn","type":"signup","offer":"创建第一个 API Key 即激活资源包","models":"DeepSeek、GLM、Qwen、Kimi、豆包等 50+","value":"300 万 Token（2 年有效）","billing":"按 Token","expiry":"2028-12-31","reset":"once","realname":"yes","card":"no","difficulty":"1","url":"https://www.qiniu.com/ai/models","source":"https://www.yeyulingfeng.com/a/1159580.html","verified":"2026-11-09","confidence":"high","notes":"一个 Key 通吃国内外模型，OpenAI / Anthropic 双协议。有效期 2 年，是少见的「慢过期」额度。","tags":"","days":783,"status":"ok"},{"id":"qiniu-double11","product":"七牛云","form":"api","name":"七牛云 Conatus 每日额度","region":"cn","type":"daily","offer":"完成认证后每天自动发放，0 点重置","models":"平台在售模型","value":"每天 1 亿 Token","billing":"按 Token","expiry":"2026-11-30","reset":"daily","realname":"yes","card":"no","difficulty":"2","url":"https://www.qiniu.com/ai/models","source":"https://post.m.smzdm.com/p/ae6qwe6k","verified":"2026-11-09","confidence":"medium","notes":"单日额度国内前列。历史充值满 100 元可升到 10 亿/天。","tags":"","days":21,"status":"ok"},{"id":"antling-ling32","product":"蚂蚁百灵","form":"api","name":"蚂蚁百灵 Ling-3.2-Flash","region":"cn","type":"promo","offer":"上线前两周 API 全免费，兼容 OpenAI / Anthropic 双协议","models":"Ling-3.2-flash（560B MoE，1M 上下文，多模态）","value":"期限内不限量","billing":"按 Token","expiry":"2026-11-19","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://developer.ant-ling.com","source":"https://www.chinaz.com/ainews/32130.shtml","verified":"2026-11-09","confidence":"high","notes":"11-05 发布，两周免费约到 11-19（按发布日推算，以控制台为准）。同期基准号称超过 Claude Opus 5，官方自测口径。Base URL https://api.ant-ling.com/v1","tags":"","days":10,"status":"expiring"},{"id":"workbuddy-web","product":"WorkBuddy","form":"web","name":"WorkBuddy 网页版","region":"cn","type":"free_model","offer":"浏览器打开官网直接对话，不用安装","models":"平台在售模型","value":"可用，但没有签到与成长计划","billing":"积分制（无签到）","expiry":"long","reset":"unknown","realname":"no","card":"no","difficulty":"1","url":"https://www.workbuddy.cn","source":"https://mp.weixin.qq.com/s?__biz=Mzg3NTUyMTU1Nw==&mid=2247487958","verified":"2026-11-09","confidence":"high","notes":"网页版定位是「随手用一下」：不碰本地文件、不能跑自动化、没有签到入口。为了领积分去装客户端的，别指望网页版能替代。","tags":"","days":null,"status":"long"},{"id":"workbuddy-buddy","product":"WorkBuddy","form":"desktop","name":"WorkBuddy Buddy 加油站","region":"cn","type":"daily","offer":"桌面客户端左下角头像 → Buddy 加油站 → 领取今日礼包；连签 7 天额外 1000","models":"平台内全模型（含限时 0 倍率模型）","value":"每天 100 积分（月约 3000）","billing":"积分制","expiry":"unknown","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://www.workbuddy.cn","source":"https://cloud.tencent.com/developer/article/2766229","verified":"2026-11-09","confidence":"high","notes":"只在电脑客户端有，网页版和手机端都没有。0 点刷新，当天不领作废。加油站是活动制，分期换期，换期后名字和周期会变，别假设永远开着。连签奖励口径有分歧——一说 7 天额外 1000，一说整轮 7 天合计 1600，以页面实际显示为准。","tags":"","days":null,"status":"unknown"},{"id":"workbuddy-monthly","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 体验版月赠积分","region":"cn","type":"daily","offer":"免费（体验版）账号每月自动发放基础积分，不用做任何操作","models":"平台内全模型","value":"每月 500 积分","billing":"积分制","expiry":"long","reset":"monthly","realname":"no","card":"no","difficulty":"1","url":"https://www.workbuddy.cn","source":"https://developer.cloud.tencent.com/article/2766229","verified":"2026-11-09","confidence":"high","notes":"每月 1 日刷新，当月有效、用不完清零。这是「底薪」，加油站和任务才是主力。500 积分大约够跑 30 个中等任务。","tags":"","days":null,"status":"long"},{"id":"workbuddy-travel","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 派 Buddy 去旅行","region":"cn","type":"daily","offer":"左下角头像 → 成长计划 → 派 Buddy 去旅行，点「派出去」，回来领积分与盲盒","models":"平台内全模型（仅用于兑换积分）","value":"每天 5~10 积分 + 盲盒","billing":"积分制","expiry":"unknown","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://www.workbuddy.cn","source":"https://developer.cloud.tencent.com/article/2766229","verified":"2026-11-09","confidence":"medium","notes":"收益看 Buddy 稀有度，R 级约 5~6 分，UR 级（暴富喵）8~10 分，10 分是单次上限。有加成 60% 出自 R 级。当顺手彩蛋，别当主力。攒的能量 10 点开一次盲盒，能开出积分、周边或限定形象。","tags":"","days":null,"status":"unknown"},{"id":"workbuddy-task","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 成长计划任务中心","region":"cn","type":"signup","offer":"头像 → 成长计划 → 任务，新手任务与体验任务，完成即得积分","models":"平台内全模型","value":"单任务 100~300，一次性合计 1000+","billing":"积分制","expiry":"unknown","reset":"once","realname":"no","card":"no","difficulty":"2","url":"https://www.workbuddy.cn","source":"https://developer.cloud.tencent.com/article/2766229","verified":"2026-11-09","confidence":"high","notes":"先清两个 300 分的大头（新建任务并发起对话、设计创意模式建 1 个画布），再顺手做 100 分的（体验灵感案例、桌面端对话 1 次、读完资料库介绍）。做完必须手动点「领取奖励」，不会自动到账。有些任务只给盲盒不给积分，动手前先看奖励栏。体验类任务启动十几秒就能停，不用等跑完。","tags":"","days":null,"status":"unknown"},{"id":"workbuddy-streak","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 连续登录活跃地图","region":"cn","type":"daily","offer":"连登满 7 / 14 / 28 天三个节点，分别兑换能量、积分、补登卡与抽奖次数","models":"平台内全模型","value":"最高 150 积分/档 + 补登卡","billing":"积分制","expiry":"unknown","reset":"daily","realname":"no","card":"no","difficulty":"2","url":"https://www.workbuddy.cn","source":"https://developer.cloud.tencent.com/article/2766229","verified":"2026-11-09","confidence":"medium","notes":"硬规则——当天必须真的跟 Buddy 对话过一次才算打卡，只打开不算，断一天连击清零。7 天档给 2 能量 + 补登卡，14 天档 +50 积分，28 天档 +150 积分。每个节点要自己点「兑换」，不点不会到账。","tags":"","days":null,"status":"unknown"},{"id":"workbuddy-lottery","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 福利抽奖","region":"cn","type":"daily","offer":"用连登送的抽奖次数在转盘抽奖，奖品为积分或周边","models":"平台内全模型（仅用于兑换积分）","value":"10 或 100 积分","billing":"积分制","expiry":"unknown","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://www.workbuddy.cn","source":"https://developer.cloud.tencent.com/article/2766229","verified":"2026-11-09","confidence":"medium","notes":"抽奖次数每日刷新，当天有就用掉，别攒过期。中 100 的概率不高，别算进固定收入。","tags":"","days":null,"status":"unknown"},{"id":"workbuddy-invite","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 邀约好友","region":"cn","type":"signup","offer":"好友通过你的链接注册并完成首次对话得 50；7 天内累计用满 3 天再得 100；好友 30 天内首次订阅付费，双方各得 500","models":"平台内全模型（仅用于兑换积分）","value":"最高 650 积分/人","billing":"积分制","expiry":"unknown","reset":"once","realname":"no","card":"no","difficulty":"3","url":"https://www.workbuddy.cn","source":"https://cloud.tencent.com/developer/article/2772631","verified":"2026-11-09","confidence":"medium","notes":"650 里最后 500 要先付费，别为了这点专门开订阅。协议明确禁止批量刷邀请，异常 IP 或设备会判违规并追回积分。国际版规则不同（我 +100、好友 +350），别混算。邀请人奖励通常 6 个月有效，新人礼 1 个月。","tags":"","days":null,"status":"unknown"},{"id":"workbuddy-bind","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 关联账号一次性积分","region":"cn","type":"signup","offer":"电脑端 设置 → 个人主页 → 前往管理中心，关联腾讯文档 / 腾讯会议 / ima / 腾讯网盘","models":"平台内全模型（仅用于兑换积分）","value":"100 积分","billing":"积分制","expiry":"unknown","reset":"once","realname":"no","card":"no","difficulty":"2","url":"https://www.workbuddy.cn","source":"https://cloud.tencent.com/developer/article/2772631","verified":"2026-11-09","confidence":"medium","notes":"最容易漏的一条，藏在设置里而不是活动页。关联免费，但暂不支持解绑，绑之前确认是你常用的账号。","tags":"","days":null,"status":"unknown"},{"id":"workbuddy-article","product":"WorkBuddy","form":"web","name":"WorkBuddy 社区投稿","region":"cn","type":"signup","offer":"在腾讯云开发者社区发布 WorkBuddy 实操文章并带上指定标签，按稿件质量给奖励","models":"平台内全模型（仅用于兑换积分）","value":"普通稿 500，精选最高 3000","billing":"积分或成长值（口径冲突）","expiry":"unknown","reset":"once","realname":"no","card":"no","difficulty":"4","url":"https://cloud.tencent.com/developer","source":"https://ai.chattools.top/article/68124","verified":"2026-11-09","confidence":"low","notes":"记一笔冲突——有信源说这篇奖励的是「成长值」而不是 AI 积分，也有信源说官方明确表示暂无对应的积分活动。所以它可能只是荣誉性的，投之前先在活动页确认奖励形式，别为了积分写一整篇。","tags":"","days":null,"status":"unknown"},{"id":"workbuddy-limited-task","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 限时专家体验任务","region":"cn","type":"promo","offer":"召唤指定的限时专家并对话一次，领积分；其中腾讯轻量云专家额外送 1 个月轻量应用服务器","models":"平台内全模型","value":"100 积分/个，另有实物或云资源","billing":"积分制","expiry":"2026-11-15","reset":"once","realname":"no","card":"no","difficulty":"2","url":"https://www.workbuddy.cn","source":"https://mp.weixin.qq.com/s?__biz=Mzg2NzI1ODY3Nw==&mid=2247483771","verified":"2026-11-09","confidence":"medium","notes":"成长计划任务里带截止日的那批，随版本更新换一批。11 月这一期看到三条——腾讯轻量云专家（截止 11-13，送 1 个月轻量云）、无畏契约拼豆专家（截止 11-15）、和平精英主题（11-02 已结束）。部分任务要求电脑端 5.5.3 以上。以任务页实际显示为准。","tags":"","days":6,"status":"expiring"},{"id":"workbuddy-hy4","product":"WorkBuddy","form":"desktop","name":"WorkBuddy 混元 Hy3 / Hy4 限免","region":"cn","type":"promo","offer":"Hy3 纯语言任务 0 积分；Hy4 preview 夜间窗口 0 倍率","models":"Hunyuan Hy3、Hy4-preview","value":"窗口内不扣积分","billing":"积分制","expiry":"2026-11-15","reset":"window","realname":"no","card":"no","difficulty":"2","url":"https://www.workbuddy.cn","source":"https://so.html5.qq.com/page/real/search_news?docid=70000021_7836af03e4a34152","verified":"2026-11-09","confidence":"medium","notes":"截止日口径冲突（一说 10-31 已到期，一说延至 11-15），以客户端模型选择器是否显示 0 倍率为准。生图生视频照常计费。","tags":"","days":6,"status":"expiring"},{"id":"qoder-daily","product":"Qoder","form":"desktop","name":"Qoder 每日 100 Credits","region":"cn","type":"daily","offer":"每天 10:00 开放新一轮，桌面端用量面板礼物图标手动领","models":"Qoder 全系（含 Qwen3.8-Flash 0 倍率）","value":"每天 100 Credits（30 天有效）","billing":"Credits 制","expiry":"unknown","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://qoder.com","source":"https://qoder.com/activities?state=manual","verified":"2026-11-09","confidence":"high","notes":"领取窗口到次日 10:00，错过不补，不累积。Qwen3.8-Flash 在 Qoder 内 0 倍率，用它不扣 Credits。","tags":"","days":null,"status":"unknown"},{"id":"qoder-trial","product":"Qoder","form":"desktop","name":"Qoder 新用户试用 / 邀请","region":"cn","type":"signup","offer":"新用户免费试用 2 周 Pro；邀请好友注册双方得 Credits","models":"全部旗舰模型","value":"试用期约 300 Credits；邀请奖励 50–1000 Credits 不等","billing":"Credits 制","expiry":"unknown","reset":"once","realname":"no","card":"no","difficulty":"1","url":"https://qoder.com/activities","source":"http://docs.qoder.com/zh/release-notes/lite-launch-announcement","verified":"2026-11-09","confidence":"high","notes":"网传「国际版免费 2000 积分」与官方文档口径不符（官方写 2 周 Pro 试用共 300 Credits），以下载后面板显示为准。试用每账号限一次，多开会被封。","tags":"","days":null,"status":"unknown"},{"id":"doubao-web","product":"豆包","form":"web","name":"豆包网页版","region":"cn","type":"free_model","offer":"浏览器打开直接对话，部分功能免登录可试","models":"豆包系列","value":"不限量（有频率限制）","billing":"完全免费","expiry":"long","reset":"unknown","realname":"yes","card":"no","difficulty":"1","url":"https://www.doubao.com","source":"https://www.doubao.com","verified":"2026-11-09","confidence":"medium","notes":"网页版免费，签到领额度只在电脑客户端。两个入口别搞混：网页版是「随便用」，客户端签到是「攒额度」。","tags":"","days":null,"status":"long"},{"id":"doubao-daily","product":"豆包","form":"desktop","name":"豆包（电脑端签到）","region":"cn","type":"daily","offer":"电脑版左侧活动位或「我 → 免费额度」签到","models":"豆包系列","value":"每天约 200 额度（周一翻倍）","billing":"免费额度","expiry":"unknown","reset":"daily","realname":"yes","card":"no","difficulty":"1","url":"https://www.doubao.com","source":"https://mp.weixin.qq.com/s?__biz=Mzk0NDg2OTY3NA==&mid=2247484200","verified":"2026-11-09","confidence":"medium","notes":"官方没公布具体数值，200 是实测口径。只在电脑端，漏签一天少 200。","tags":"","days":null,"status":"unknown"},{"id":"kimi-web","product":"Kimi","form":"web","name":"Kimi 网页版","region":"cn","type":"free_model","offer":"网页端直接对话，长上下文与联网搜索免费","models":"Kimi K3、K2.5","value":"不限量（有频率限制）","billing":"完全免费","expiry":"long","reset":"unknown","realname":"yes","card":"no","difficulty":"1","url":"https://kimi.com","source":"https://platform.moonshot.cn","verified":"2026-11-09","confidence":"medium","notes":"网页版免费，API 才要买券。注意 K2 自 10-31 起不再对 API 新用户开放，网页端不受影响。","tags":"","days":null,"status":"long"},{"id":"kimi-voucher","product":"Kimi","form":"api","name":"Kimi 开放平台（月之暗面）","region":"cn","type":"signup","offer":"新用户实名后发放代金券，抵扣 API 调用","models":"Kimi K3 系列、K2.5","value":"15 元代金券","billing":"按 Token","expiry":"unknown","reset":"once","realname":"yes","card":"no","difficulty":"1","url":"https://platform.moonshot.cn","source":"https://aitujian.cn/free-ai-api.html","verified":"2026-11-09","confidence":"high","notes":"券 3 个月有效。注意 Kimi K2 自 10-31 起不再对新注册用户开放，脚本里的模型名要换 K3 系列。","tags":"","days":null,"status":"unknown"},{"id":"deepseek-web","product":"DeepSeek","form":"web","name":"DeepSeek 网页版","region":"cn","type":"free_model","offer":"打开网页登录即可对话，深度思考与联网搜索默认可用","models":"DeepSeek-V4.1-Flash、V4-Pro","value":"不限量（有频率限制）","billing":"完全免费","expiry":"long","reset":"unknown","realname":"yes","card":"no","difficulty":"1","url":"https://chat.deepseek.com","source":"https://www.deepseek.com","verified":"2026-11-09","confidence":"high","notes":"网页版和 App 是全功能免费，只有 API 按 Token 收钱。想省钱就用网页版，要把能力接进程序才用 API。","tags":"","days":null,"status":"long"},{"id":"deepseek-app","product":"DeepSeek","form":"app","name":"DeepSeek 手机 App","region":"cn","type":"free_model","offer":"应用商店搜索安装，登录即用，与网页版同一套额度","models":"DeepSeek-V4.1-Flash、V4-Pro","value":"不限量（有频率限制）","billing":"完全免费","expiry":"long","reset":"unknown","realname":"yes","card":"no","difficulty":"1","url":"https://www.deepseek.com","source":"https://www.deepseek.com","verified":"2026-11-09","confidence":"high","notes":"iOS / Android 都有，功能与网页版基本一致，适合手机上随手问。","tags":"","days":null,"status":"long"},{"id":"deepseek-harness","product":"DeepSeek","form":"desktop","name":"DeepSeek Harness 桌面端","region":"cn","type":"signup","offer":"下载 Windows / macOS 安装包，首次登录送 6 元赠金，无需充值","models":"DeepSeek-V4.1-Flash、V4-Pro","value":"6 元赠金（限量，到账后 7 天有效）","billing":"赠金 + 按 Token","expiry":"unknown","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://www.deepseek.com","source":"https://www.chinatimes.com/cn/realtimenews/20261018000828-260409","verified":"2026-11-09","confidence":"high","notes":"6 元赠金看着少，但 Flash 空闲时段输入只要 1.5 元/百万 Token，够跑二十来个中等任务。赠金 7 天过期，别囤。它是 Agent 工作台（能读本地文件、跑定时任务），不是聊天窗口。","tags":"","days":null,"status":"unknown"},{"id":"deepseek-new","product":"DeepSeek","form":"api","name":"DeepSeek 开放平台","region":"cn","type":"signup","offer":"新用户注册赠送 Token","models":"DeepSeek V4 / V3.2","value":"100 万 ~ 500 万 Token（30 天有效）","billing":"按 Token","expiry":"unknown","reset":"once","realname":"yes","card":"no","difficulty":"1","url":"https://platform.deepseek.com","source":"https://www.toutiao.com/a7685597437486023203","verified":"2026-11-09","confidence":"medium","notes":"送多少口径不一（100 万 / 500 万都有人写），但官方单价本来就是全网最低之一，百万 Token 几毛钱，不必太纠结。","tags":"","days":null,"status":"unknown"},{"id":"modelscope-api","product":"魔搭社区","form":"api","name":"魔搭社区 ModelScope 推理 API","region":"cn","type":"daily","offer":"绑定阿里云账号后每天免费调用额度","models":"Qwen 系列及社区开源模型","value":"每天 2000 次调用","billing":"按次免费","expiry":"long","reset":"daily","realname":"yes","card":"no","difficulty":"2","url":"https://modelscope.cn","source":"https://aitujian.cn/free-ai-api.html","verified":"2026-11-09","confidence":"high","notes":"按「次」不按 Token，跑短 prompt 很划算；长 prompt 会很快吃满。","tags":"","days":null,"status":"long"},{"id":"mobile-moma","product":"移动云","form":"api","name":"移动云 MoMA","region":"cn","type":"signup","offer":"新用户控制台手动领取（限自营模型）","models":"移动自营模型","value":"2500 万 Tokens","billing":"按 Token","expiry":"2026-12-31","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://ecloud.10086.cn","source":"https://www.yeyulingfeng.com/a/1159580.html","verified":"2026-11-09","confidence":"medium","notes":"自领取起 30 天有效，限流 3000 tokens/分钟。运营商系里额度最实在的一家，模型能力一般。","tags":"","days":52,"status":"ok"},{"id":"teleai-daily","product":"天翼 AI","form":"desktop","name":"电信天翼 AI","region":"cn","type":"daily","offer":"下载客户端手机号注册，每天 0 点重置","models":"星辰系列","value":"工作日 1.8 亿/天，周末 2 亿/天","billing":"免费额度","expiry":"unknown","reset":"daily","realname":"yes","card":"no","difficulty":"1","url":"https://teleai.com.cn","source":"https://mp.weixin.qq.com/s?__biz=MzU2ODk4MDMyNQ==&mid=2247485863","verified":"2026-11-09","confidence":"medium","notes":"单日额度国内最高档。但额度限客户端内使用，导不出标准 API，适合当「白嫖型 ChatGPT」用。","tags":"","days":null,"status":"unknown"},{"id":"streamlake-coding","product":"快手万擎","form":"api","name":"快手万擎 StreamLake","region":"cn","type":"free_model","offer":"编码模型输入输出全免费","models":"KAT-Coder-Air-V1、KAT-Coder-Exp-72B-1010","value":"无限量","billing":"0 元","expiry":"unknown","reset":"unknown","realname":"yes","card":"no","difficulty":"2","url":"https://streamlake.com","source":"https://www.yeyulingfeng.com/a/1159580.html","verified":"2026-11-09","confidence":"medium","notes":"只标「免费」没承诺期限。新版 Air-V2.5 已转收费，认准 V1。","tags":"","days":null,"status":"unknown"},{"id":"shusheng-modian","product":"书生端砚","form":"web","name":"书生·端砚","region":"cn","type":"daily","offer":"微信扫码登录，每月发放墨点，1 墨点最高抵 5000 万 Token","models":"书生系列","value":"每月 10 墨点（约 5 亿 Token）","billing":"墨点制","expiry":"unknown","reset":"monthly","realname":"no","card":"no","difficulty":"1","url":"https://discovery.intern-ai.org.cn","source":"https://mp.weixin.qq.com/s?__biz=MzU2ODk4MDMyNQ==&mid=2247485863","verified":"2026-11-09","confidence":"medium","notes":"按月清零。换算比例取决于模型，别直接按 5 亿规划。","tags":"","days":null,"status":"unknown"},{"id":"xiaomi-mimo","product":"小米 MiMo","form":"api","name":"小米 MiMo 开放平台","region":"cn","type":"signup","offer":"新用户注册赠试用额度","models":"MiMo 推理系列","value":"未公开固定数值","billing":"按 Token","expiry":"unknown","reset":"once","realname":"yes","card":"no","difficulty":"2","url":"https://ai.xiaomi.com","source":"https://aitujian.cn/free-ai-api.html","verified":"2026-11-09","confidence":"low","notes":"另有 MiMo Orbit 创造者激励计划，需提交项目审核，通过后给大额 Token 包（不是注册就发）。","tags":"","days":null,"status":"unknown"},{"id":"baidu-aistudio","product":"百度 AI Studio","form":"web","name":"百度 AI Studio（算力）","region":"cn","type":"daily","offer":"每天赠送算力点，可跑 V100/A100 环境","models":"免费 GPU 算力（非 Token）","value":"每天 8 算力点（约 16 V100 小时）","billing":"免费算力","expiry":"long","reset":"daily","realname":"yes","card":"no","difficulty":"2","url":"https://aistudio.baidu.com","source":"https://aitujian.cn/free-ai-api.html","verified":"2026-11-09","confidence":"high","notes":"这是算力不是 Token，但对「自己部署开源模型 = 零调用成本」这条路是关键拼图。","tags":"","days":null,"status":"long"},{"id":"tencent-cloudstudio","product":"腾讯 Cloud Studio","form":"web","name":"腾讯 Cloud Studio（算力）","region":"cn","type":"daily","offer":"标准版每月赠开发时长 + GPU 时长，预装 Ollama 与 DeepSeek","models":"免费 GPU 算力（非 Token）","value":"每月 10000 分钟 + 10000 GPU 分钟（T4 16G）","billing":"免费算力","expiry":"long","reset":"monthly","realname":"yes","card":"no","difficulty":"2","url":"https://cloudstudio.net","source":"https://aitujian.cn/free-ai-api.html","verified":"2026-11-09","confidence":"high","notes":"浏览器里就是 VS Code，空闲约 10 分钟自动关，同时最多 2 个空间。","tags":"","days":null,"status":"long"},{"id":"moyu-double11","product":"魔芋 AI","form":"api","name":"魔芋 AI 双 11","region":"cn","type":"promo","offer":"新客 1000 万 + 老号回归 5000 万 + 企业认证 1 亿 + 邀请拉满 1.6 亿","models":"聚合多模型","value":"合计最高约 2.7 亿","billing":"按 Token","expiry":"2026-11-11","reset":"once","realname":"yes","card":"no","difficulty":"4","url":"https://moyu.cn","source":"https://mp.weixin.qq.com/s?__biz=MzU2ODk4MDMyNQ==&mid=2247485863","verified":"2026-11-09","confidence":"low","notes":"数字好看但拆分条件多（连签 11 天那档现在起步已经签不满）。单一来源，建议只当线索，自己上官网核。","tags":"","days":2,"status":"expiring"},{"id":"google-aistudio","product":"Google Gemini","form":"api","name":"Google AI Studio / Gemini API","region":"global","type":"free_model","offer":"Flash / Flash-Lite 系列免费层，每天配额重置，无需信用卡","models":"Gemini 3 Flash、3.5 Flash-Lite、2.5 Flash","value":"每天 1000–1500 请求，1M 上下文","billing":"免费层 + 按量","expiry":"long","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://aistudio.google.com","source":"https://aicost.tools/blog/best-llm-apis-with-a-free-tier","verified":"2026-11-09","confidence":"high","notes":"综合最强免费档：模型最新、上下文 1M、不要卡。代价是免费层内容官方明说可能用于改进产品，别喂敏感数据。Pro 系列不在免费层。","tags":"","days":null,"status":"long"},{"id":"groq","product":"Groq","form":"api","name":"Groq Cloud","region":"global","type":"free_model","offer":"免费层按模型给每日请求上限，邮箱注册即可","models":"gpt-oss-120b、gpt-oss-20b、Qwen3.6-27B、Llama 系列","value":"30 RPM，1000 请求/天，20 万 Token/天","billing":"按 Token","expiry":"long","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://console.groq.com","source":"https://continuumcode.ai/guides/free-llm-api/","verified":"2026-11-09","confidence":"high","notes":"LPU 推理速度极快，适合 Agent 里的高频小调用（意图分类、工具选择）。限流按组织算，多开 Key 没用。","tags":"","days":null,"status":"long"},{"id":"cerebras","product":"Cerebras","form":"api","name":"Cerebras Inference","region":"global","type":"free_model","offer":"免费层每天固定 Token 额度，无需信用卡","models":"gpt-oss-120b、Gemma-4-31B、Qwen 系列","value":"每天 100 万 Token（5 RPM，8K 上下文）","billing":"按 Token","expiry":"long","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://cloud.cerebras.ai","source":"https://continuumcode.ai/guides/free-llm-api/","verified":"2026-11-09","confidence":"medium","notes":"输出速度最快的一档（约 3000 tokens/s），但 8K 上下文是硬伤，长文档别指望。2026-07 起原先的永久大额度缩成 $5 试用，实际可用度要自己试。","tags":"","days":null,"status":"long"},{"id":"openrouter","product":"OpenRouter","form":"api","name":"OpenRouter","region":"global","type":"free_model","offer":"带 :free 后缀的模型免费调用，一个 Key 通吃多家","models":"DeepSeek、Llama、Qwen 等 20+ 免费模型","value":"20 RPM，50 请求/天（历史充值过 $10 升到 1000/天）","billing":"按 Token","expiry":"long","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://openrouter.ai","source":"https://continuumcode.ai/guides/free-llm-api/","verified":"2026-11-09","confidence":"high","notes":"最省事的多模型对比入口。免费模型名单经常变，且常被上游限流。国内访问偶有波动。","tags":"","days":null,"status":"long"},{"id":"mistral","product":"Mistral","form":"api","name":"Mistral La Plateforme","region":"global","type":"free_model","offer":"Experiment 免费档，限速可用全系模型","models":"Mistral Large、Codestral 等","value":"约 10 亿 Token/月（官方已不公布具体数值，看控制台）","billing":"按 Token","expiry":"long","reset":"monthly","realname":"no","card":"no","difficulty":"2","url":"https://console.mistral.ai","source":"https://aicost.tools/blog/best-llm-apis-with-a-free-tier","verified":"2026-11-09","confidence":"medium","notes":"欧洲厂商，1 请求/秒。免费能摸到旗舰模型，做横向评测很划算。","tags":"","days":null,"status":"long"},{"id":"cloudflare-workers-ai","product":"Cloudflare","form":"api","name":"Cloudflare Workers AI","region":"global","type":"free_model","offer":"免费套餐每天赠 Neurons，按模型换算成调用量","models":"Llama 4、Qwen、Mistral 等 50+","value":"每天 10000 Neurons","billing":"按 Neurons","expiry":"long","reset":"daily","realname":"no","card":"no","difficulty":"2","url":"https://developers.cloudflare.com/workers-ai/","source":"https://aicost.tools/blog/best-llm-apis-with-a-free-tier","verified":"2026-11-09","confidence":"high","notes":"计量单位是 Neurons 不是 Token，不同模型换算差别大，按实测排预算。UTC 0 点重置。适合已经在用 CF 的项目。","tags":"","days":null,"status":"long"},{"id":"github-models","product":"GitHub Models","form":"api","name":"GitHub Models","region":"global","type":"free_model","offer":"用 GitHub 账号直接调 GPT / Llama / Phi 等模型","models":"GPT-5、GPT-4.1、Llama、Phi","value":"10 RPM 起，50–150 请求/天","billing":"免费层","expiry":"unknown","reset":"daily","realname":"no","card":"no","difficulty":"1","url":"https://github.com/marketplace/models","source":"https://www.hqwc.cn/a/1500378.html","verified":"2026-11-09","confidence":"low","notes":"状态存疑：有信源称 2026-07-30 已退役，也有当月清单仍在列。用之前先打开页面确认入口还在不在——这条本身就是「免费清单必须看日期」的活例子。","tags":"","days":null,"status":"unknown"},{"id":"cohere","product":"Cohere","form":"api","name":"Cohere","region":"global","type":"free_model","offer":"试用 Key，无需信用卡","models":"Command A+ 系列","value":"每月 1000 次调用","billing":"按调用次数","expiry":"long","reset":"monthly","realname":"no","card":"no","difficulty":"1","url":"https://dashboard.cohere.com","source":"https://aicost.tools/blog/best-llm-apis-with-a-free-tier","verified":"2026-11-09","confidence":"high","notes":"按次数不按 Token，RAG / 检索场景（Embed、Rerank）比对话更值。","tags":"","days":null,"status":"long"},{"id":"nvidia-nim","product":"NVIDIA NIM","form":"api","name":"NVIDIA NIM (build.nvidia.com)","region":"global","type":"signup","offer":"邮箱注册后在 API Keys 页生成密钥，兼容 OpenAI 格式","models":"DeepSeek-V4.1-Flash、GLM-5.3-Flash 等百余模型","value":"1000 credits（约 40 RPM）","billing":"按 Token","expiry":"unknown","reset":"once","realname":"no","card":"no","difficulty":"2","url":"https://build.nvidia.com","source":"https://post.smzdm.com/p/am9v6rrz","verified":"2026-11-09","confidence":"high","notes":"2026-11 新开的大额免费口子，+86 手机号可注册，Location 选 China。Key 默认 12 个月有效，记得改成永不过期，且只显示一次。GLM-5.3 已于 10-28 下线，能用的免费版是 GLM-5.3-Flash。","tags":"","days":null,"status":"unknown"},{"id":"huggingface-inference","product":"Hugging Face","form":"api","name":"Hugging Face Inference Providers","region":"global","type":"free_model","offer":"免费账户每月极小额度的推理额度，可路由数千个社区模型","models":"社区模型（含 Llama、Qwen、DeepSeek 蒸馏版）","value":"约 $0.10/月","billing":"按量","expiry":"long","reset":"monthly","realname":"no","card":"no","difficulty":"2","url":"https://huggingface.co/docs/inference-providers","source":"https://www.yesmiracle.net/post/20261019-free-llm-api-tier-guide","verified":"2026-11-09","confidence":"high","notes":"典型「有免费层但不能用」：两次真实请求就见底。这里列出来是为了提醒你别把它当方案。","tags":"","days":null,"status":"long"},{"id":"opencode-zen","product":"OpenCode","form":"cli","name":"OpenCode Zen","region":"global","type":"free_model","offer":"客户端自带若干免费模型，装完即可用，不需自备 Key","models":"DeepSeek V4 Flash、MiMo-V2.6-Flash-Free、LongCat-2.0、Nemotron 3 Ultra","value":"免费模型不限量（有限速）","billing":"免费模型","expiry":"unknown","reset":"unknown","realname":"no","card":"no","difficulty":"1","url":"https://opencode.ai","source":"https://igetoken.com/deals","verified":"2026-11-09","confidence":"medium","notes":"免费档数据条款写明「可能用于改进模型」，涉密代码别用。模型会随平台调整，别写死模型名。","tags":"","days":null,"status":"unknown"},{"id":"kilocode-free","product":"Kilo Code","form":"ide","name":"Kilo Code","region":"global","type":"free_model","offer":"开源 AI 编程 Agent，内含十余个免费模型，不要 Key、不要卡","models":"NVIDIA Nemotron 3 Ultra、Nex-N2.5-Pro、MiniMax M2.7、腾讯混元 Hy3","value":"约 200 请求/小时","billing":"免费模型","expiry":"unknown","reset":"unknown","realname":"no","card":"no","difficulty":"1","url":"https://kilocode.ai","source":"https://www.aitntnews.com/newDetail.html?newId=29843","verified":"2026-11-09","confidence":"medium","notes":"VS Code / JetBrains / CLI 都有。免费模型列表是活的，新模型上线会自动出现。","tags":"","days":null,"status":"unknown"},{"id":"copilot-free","product":"GitHub Copilot","form":"ide","name":"GitHub Copilot Free","region":"global","type":"free_model","offer":"个人免费档，含代码补全与 Chat","models":"GPT / Claude Sonnet 可选","value":"每月 2000 次补全 + 50 次 Chat","billing":"订阅制","expiry":"long","reset":"monthly","realname":"no","card":"no","difficulty":"1","url":"https://github.com/features/copilot","source":"https://www.aitntnews.com/newDetail.html?newId=29843","verified":"2026-11-09","confidence":"high","notes":"轻度用户完全够用。学生认证后可直接免费用 Pro（GitHub Student Pack）。","tags":"","days":null,"status":"long"},{"id":"sambanova","product":"SambaNova","form":"api","name":"SambaNova Cloud","region":"global","type":"free_model","offer":"免费层，须先绑卡","models":"DeepSeek-V3、Llama 系列","value":"每天 20 万 Token（20 RPM）","billing":"按 Token","expiry":"long","reset":"daily","realname":"no","card":"yes","difficulty":"3","url":"https://cloud.sambanova.ai","source":"https://igetoken.com/","verified":"2026-11-09","confidence":"medium","notes":"RDU 芯片速度很快，但要绑卡，免费档近年收紧过。不想留卡信息就跳过。","tags":"","days":null,"status":"long"},{"id":"openai-trial","product":"OpenAI","form":"api","name":"OpenAI API 试用额度","region":"global","type":"signup","offer":"新账号赠送 API 额度","models":"GPT 系列","value":"$5（3 个月有效）","billing":"按 Token","expiry":"unknown","reset":"once","realname":"no","card":"yes","difficulty":"3","url":"https://platform.openai.com","source":"https://youmind.com/zh-CN/landing/x-viral-articles/free-ai-tiers-guide","verified":"2026-11-09","confidence":"medium","notes":"通常需绑卡，且部分区号不发。$5 跑不了几次旗舰模型，只够验证联通性。","tags":"","days":null,"status":"unknown"},{"id":"anthropic-trial","product":"Anthropic","form":"api","name":"Anthropic API 试用额度","region":"global","type":"signup","offer":"新账号赠送 API 额度","models":"Claude 系列","value":"约 $5（14 天有效）","billing":"按 Token","expiry":"unknown","reset":"once","realname":"no","card":"yes","difficulty":"4","url":"https://console.anthropic.com","source":"https://youmind.com/zh-CN/landing/x-viral-articles/free-ai-tiers-guide","verified":"2026-11-09","confidence":"low","notes":"额度小、时效短、门槛高。同类需求更建议走 OpenRouter 的 :free 或 Cloudflare 路由。","tags":"","days":null,"status":"unknown"},{"id":"xai-grok","product":"xAI Grok","form":"api","name":"xAI Grok API","region":"global","type":"daily","offer":"每月基础免费额度，同意数据用于训练可提到更高档","models":"Grok 系列","value":"$25/月（共享数据 $150/月）","billing":"按 Token","expiry":"unknown","reset":"monthly","realname":"no","card":"yes","difficulty":"3","url":"https://x.ai/api","source":"https://youmind.com/zh-CN/landing/x-viral-articles/free-ai-tiers-guide","verified":"2026-11-09","confidence":"low","notes":"与 OpenAI 类似属「绑卡 + 数据换额度」模式。单一来源，需自行核。","tags":"","days":null,"status":"unknown"}];
+const META = {"built": "2026-11-09", "total": 69};
+
+const FORM = {web:"网页版", app:"手机 App", desktop:"桌面客户端", ide:"IDE 插件", cli:"命令行", api:"API"};
+const TYPE = {promo:"限时活动", daily:"每日续杯", signup:"注册一次性", free_model:"长期 0 元"};
+const DIFF = ["","★","★★","★★★","★★★★","★★★★★"];
+
+const state = {region:"cn", q:"", type:"", form:"", hideExpired:true, noRealname:false, sort:"urgent"};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function counts(){
+  const c = {cn:0, global:0, all:DATA.length};
+  DATA.forEach(d => c[d.region]++);
+  document.querySelectorAll("#tabs .tab").forEach(t => {
+    t.querySelector(".n").textContent = c[t.dataset.region];
+  });
+}
+
+function cdText(d){
+  if(d.status==="expired") return "已过期";
+  if(d.days===null||d.days===undefined) return d.expiry==="long"?"长期":"未公布";
+  if(d.days===0) return "今天到期";
+  return "剩 "+d.days+" 天";
+}
+function cdClass(d){
+  if(d.status==="expired") return "hot";
+  if(d.days===null||d.days===undefined) return "";
+  if(d.days<=7) return "hot";
+  if(d.days<=21) return "warn";
+  return "";
+}
+
+function passes(d){
+  if(state.region!=="all" && d.region!==state.region) return false;
+  if(state.type && d.type!==state.type) return false;
+  if(state.form && d.form!==state.form) return false;
+  if(state.hideExpired && d.status==="expired") return false;
+  if(state.noRealname && d.realname==="yes") return false;
+  if(state.q){
+    const hay = (d.product+" "+d.name+" "+d.offer+" "+d.models+" "+d.billing+" "+d.value+" "+d.notes).toLowerCase();
+    if(!hay.includes(state.q.toLowerCase())) return false;
+  }
+  return true;
+}
+
+function card(d){
+  const gates = [];
+  if(d.realname==="yes") gates.push('<span class="warn">需实名</span>');
+  if(d.card==="yes") gates.push('<span class="warn">需绑卡</span>');
+  if(!gates.length) gates.push("免实名免绑卡");
+  const modelBlock = d.models ? '<div><span class="lbl">可用模型</span><br>'+esc(d.models)+'</div>' : "";
+  const noteBlock = d.notes ? '<div style="margin-top:'+(d.models?"8px":"0")+'"><span class="lbl">备注</span><br>'+esc(d.notes)+'</div>' : "";
+  const detail = (modelBlock||noteBlock)
+    ? '<details><summary>'+(d.models?"模型与备注":"备注")+'</summary><div class="body">'+modelBlock+noteBlock+'</div></details>'
+    : "";
+  return '<article class="card" data-status="'+d.status+'">'
+    + '<div class="ctop">'
+    +   '<span class="tag form">'+esc(FORM[d.form]||d.form)+'</span>'
+    +   '<span class="tag '+d.type+'">'+esc(TYPE[d.type]||d.type)+'</span>'
+    +   '<span class="cd '+cdClass(d)+'">'+cdText(d)+'</span>'
+    + '</div>'
+    + '<h4>'+esc(d.name)+'</h4>'
+    + '<div class="big">'+esc(d.value)+'</div>'
+    + '<div class="billing">'+esc(d.billing)+'</div>'
+    + '<p class="offer">'+esc(d.offer)+'</p>'
+    + detail
+    + '<div class="kv"><span>门槛 '+gates.join(" / ")+'</span>'
+    +   '<span>难度 <b>'+(DIFF[+d.difficulty]||"")+'</b></span>'
+    +   '<span>复核 <b>'+esc(d.verified.slice(5))+'</b></span>'
+    +   '<span>可信 <b class="'+(d.confidence==="low"?"warn":"")+'">'+({high:"高",medium:"中",low:"低"}[d.confidence]||"")+'</b></span>'
+    + '</div>'
+    + '<div class="links">'
+    +   '<a href="'+esc(d.url)+'" target="_blank" rel="noopener">官网 ↗</a>'
+    +   '<a href="'+esc(d.source)+'" target="_blank" rel="noopener">出处 ↗</a>'
+    + '</div>'
+    + '</article>';
+}
+
+function render(){
+  const list = DATA.filter(passes);
+
+  // 临期提醒
+  const urgent = list.filter(d => d.days!==null && d.days!==undefined && d.days>=0 && d.days<=21)
+                     .sort((a,b)=>a.days-b.days);
+  let html = "";
+  if(urgent.length){
+    html += '<div class="sectionhead soon"><h2>临期提醒</h2>'
+         +  '<span class="hint">21 天内截止，先领再说</span>'
+         +  '<span class="cnt">'+urgent.length+' 条</span></div><div class="urgent">';
+    urgent.forEach(d => {
+      html += '<a class="urow" href="'+esc(d.url)+'" target="_blank" rel="noopener">'
+           +  '<span class="d'+(d.days>7?" warn":"")+'">'+(d.days===0?"今天":"剩 "+d.days+" 天")+'</span>'
+           +  '<span class="pn">'+esc(d.product)+'</span>'
+           +  '<span class="vn">'+esc(d.value)+' · '+esc(d.billing)+'</span>'
+           +  '<span class="go">'+esc(FORM[d.form]||d.form)+' ↗</span></a>';
+    });
+    html += '</div>';
+  }
+
+  // 按产品分组
+  const groups = new Map();
+  list.forEach(d => {
+    if(!groups.has(d.product)) groups.set(d.product, []);
+    groups.get(d.product).push(d);
+  });
+
+  const arr = [...groups.entries()].map(([p, its])=>{
+    const days = its.map(d=>d.days).filter(x=>x!==null&&x!==undefined);
+    return {p, its, minDays: days.length?Math.min(...days):Infinity, maxDiff: Math.max(...its.map(d=>+d.difficulty||3))};
+  });
+
+  if(state.sort==="count") arr.sort((a,b)=> b.its.length-a.its.length || a.p.localeCompare(b.p,"zh"));
+  else if(state.sort==="easy") arr.sort((a,b)=> a.maxDiff-b.maxDiff || b.its.length-a.its.length);
+  else if(state.sort==="name") arr.sort((a,b)=> a.p.localeCompare(b.p,"zh"));
+  else arr.sort((a,b)=> a.minDays-b.minDays || b.its.length-a.its.length);
+
+  if(!arr.length){
+    html += '<div class="empty">没有符合条件的条目，换个筛选条件试试。</div>';
+  }
+
+  if (arr.length) {
+    html += '<div class="sectionhead"><h2>按产品看</h2>'
+         +  '<span class="hint">同一产品的不同入口分开写，展开可看模型与备注</span>'
+         +  '<span class="cnt">'+arr.length+' 个产品</span></div>';
+  }
+
+  if (arr.length) html += '<div class="clusters">';
+  arr.forEach(g => {
+    const order = ["web","app","desktop","ide","cli","api"];
+    g.its.sort((a,b)=> order.indexOf(a.form)-order.indexOf(b.form) || (a.days??999)-(b.days??999));
+    const soon = g.its.filter(d=>d.days!==null&&d.days!==undefined&&d.days>=0&&d.days<=21);
+    const dl = soon.length ? '<span class="deadline">最近截止 '+soon[0].expiry+'</span>' : "";
+    const npromo = g.its.filter(d=>d.type==="promo").length;
+    const span = Math.min(g.its.length, 3);
+    html += '<div class="pgroup" style="grid-column:span '+span+'"><div class="phead">'
+         +  '<h3>'+esc(g.p)+'</h3>'
+         +  '<span class="pill">'+g.its.length+' 个入口'+(npromo?' · 限时 '+npromo:'')+'</span>'
+         +  dl
+         +  '</div><div class="grid">'+ g.its.map(card).join("") +'</div></div>';
+  });
+  if (arr.length) html += '</div>';
+
+  $("#out").innerHTML = html;
+
+  const n = list.length;
+  const longFree = list.filter(d=>d.type==="free_model").length;
+  const live = list.filter(d=>d.type==="daily").length;
+  const prom = list.filter(d=>d.type==="promo" && d.status!=="expired").length;
+  const regionLabel = state.region === "cn" ? `国内 ${n} 条`
+                    : state.region === "global" ? `海外 ${n} 条`
+                    : `全部 ${n} 条`;
+  $("#lede").innerHTML = `
+    <div>
+      <h2>${regionLabel}</h2>
+      <p>同一个 AI 在不同入口的免费政策完全不同，所以这里按 <b class="k">产品 × 形态</b> 拆开写，一条只讲一个入口。</p>
+    </div>
+    <div class="statrow">
+      <div class="stat"><b>${longFree}</b><span>长期 0 元</span></div>
+      <div class="stat"><b>${live}</b><span>可续杯</span></div>
+      <div class="stat"><b>${prom}</b><span>限时在跑</span></div>
+    </div>`;
+}
+
+// 事件
+document.querySelectorAll("#tabs .tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    state.region = t.dataset.region;
+    document.querySelectorAll("#tabs .tab").forEach(x=>x.setAttribute("aria-selected", x===t));
+    render();
+  });
+});
+document.querySelectorAll("#tabs .tab").forEach(x=>{
+  x.setAttribute("aria-selected", x.dataset.region===state.region);
+});
+
+function bindChips(sel, key){
+  document.querySelectorAll(sel+" .chip").forEach(c=>{
+    c.addEventListener("click",()=>{
+      state[key] = c.dataset.v;
+      document.querySelectorAll(sel+" .chip").forEach(x=>x.setAttribute("aria-pressed", x===c));
+      render();
+    });
+  });
+}
+bindChips("#fType","type");
+bindChips("#fForm","form");
+
+$("#tHideExpired").addEventListener("click",e=>{
+  state.hideExpired = !state.hideExpired;
+  e.currentTarget.setAttribute("aria-pressed", state.hideExpired);
+  render();
+});
+$("#tNoRealname").addEventListener("click",e=>{
+  state.noRealname = !state.noRealname;
+  e.currentTarget.setAttribute("aria-pressed", state.noRealname);
+  render();
+});
+$("#sort").addEventListener("change",e=>{ state.sort = e.target.value; render(); });
+
+let timer;
+$("#q").addEventListener("input",e=>{
+  clearTimeout(timer);
+  timer = setTimeout(()=>{ state.q = e.target.value.trim(); render(); }, 120);
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="/" && document.activeElement!==$("#q")){ e.preventDefault(); $("#q").focus(); }
+  if(e.key==="Escape" && document.activeElement===$("#q")){ $("#q").value=""; state.q=""; render(); $("#q").blur(); }
+});
+
+$("#buildInfo").textContent = "数据截至 " + META.built + " · 共 " + DATA.length + " 条 · 国内 " + DATA.filter(d=>d.region==="cn").length + " / 海外 " + DATA.filter(d=>d.region==="global").length;
+counts();
+render();
+</script>
+</body>
+</html>

@@ -19,6 +19,26 @@
 
 ---
 
+## 🔍 网页版：`site/index.html`
+
+表格看长了眼睛累。仓库里带了一个**单文件网页**，双击就能开，不联网、不装依赖：
+
+- **国内 / 海外 分开**，默认落在国内，52 条；
+- 按**产品 × 形态**分组，同一个 AI 的网页版、客户端、API 摆在一起；
+- 顶栏可按「领取方式 / 形态」筛选，勾「免实名」只看不用身份证的；
+- 顶部自动列出 **21 天内截止**的条目，按剩余天数排序；
+- 搜索框按 `/` 聚焦，支持搜产品名、模型名、额度数字。
+
+网页和 README 共用 `data/providers.yaml` 这一份数据：
+
+```bash
+python3 scripts/build_site.py   # 数据改了，重生成 site/index.html
+```
+
+想在 GitHub Pages 上发布，`.github/workflows/pages.yml` 已经写好，仓库 Settings → Pages → Source 选 **GitHub Actions** 即可，之后每次 push 自动更新。
+
+---
+
 ## 先看这个：现在最值得动手的 5 条
 
 如果只花十分钟，按这个顺序来：
@@ -271,15 +291,18 @@ ZCode 夜间包、天翼 AI、豆包客户端额度，基本只能在它自己�
 data/providers.yaml     单一数据源，50+ 条，改这里
 data/schema.md          字段含义
 scripts/render.py       渲染 README 的两张表 + docs/products.md
+scripts/build_site.py   生成单文件网页 site/index.html
 scripts/check.py        体检：过期 / 快过期 / 久未复核
 scripts/_data.py        极简加载器（零第三方依赖）
 docs/products.md        按产品聚合的视图（自动生成，勿手改）
+site/index.html         网页版（自动生成，勿手改）
 ```
 
 改完数据跑两条命令：
 
 ```bash
 python3 scripts/render.py     # 重生成 README 表格
+python3 scripts/build_site.py # 重生成网页版
 python3 scripts/check.py      # 看看有多少过期了
 ```
 
